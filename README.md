@@ -1,2 +1,2 @@
-# GraphinCalc
-Uses the advanced phyiscs calulater and incorperates it into a desktop graphing calculator 
+# GraphingCalc
+Uses the advanced physics calculator and incorporates it into a desktop graphing calculator 
