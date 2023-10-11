@@ -114,6 +114,12 @@ public class GCMain extends Application {
             points[i] = new Line(initialPoints[i - 1 == -1 ? 0 : i - 1], ((i - 1) * 60) - 150, initialPoints[i], (i * 60) -150);
             points[i].setStrokeWidth(2);
             points[i].setStroke(Color.RED);
+
+            //Reworking required with co-ordinates and graph evaluation
+
+            // 1 : Add handling for negative numbers and multiplication without the need for '*'
+            // 2 : Calculate the position in the graph with the fixed eval
+            // 3 : change those values to correspond to the pixel values where they can be used to draw the graph
         }
         return points;
     }

@@ -112,7 +112,7 @@ public class HandleStack {
     }
 
     private static int precedence(char operator) {
-        if (operator == '+' || operator == '-') {
+        if (operator == '+') {
             return 1;
         } else if (operator == '*' || operator == '/') {
             return 2;
@@ -123,12 +123,30 @@ public class HandleStack {
 
     private static void performOperation(Stack<Double> operandStack, Stack<Character> operatorStack) {
         char operator = operatorStack.pop();
+        // Check if the operator stack is empty before accessing it
+        if (operandStack.isEmpty()) {
+            if (operator == '-') {
+                // Unary negation
+                operandStack.push(0.0); // Push 0 for negation
+            } else {
+                throw new IllegalArgumentException("Invalid expression");
+            }
+        }
         double operand2 = operandStack.pop();
         double operand1 = operandStack.pop();
 
         switch (operator) {
             case '+' -> operandStack.push(operand1 + operand2);
-            case '-' -> operandStack.push(operand1 - operand2);
+            case '-' -> {
+                // Check if the '-' is a binary subtraction or a unary negation
+                if (operatorStack.isEmpty() || operatorStack.peek() == '(') {
+                    // Unary negation
+                    operandStack.push(-operand2);
+                } else {
+                    // Binary subtraction
+                    operandStack.push(operand1 - operand2);
+                }
+            }
             case '*' -> operandStack.push(operand1 * operand2);
             case '/' -> {
                 if (operand2 == 0) {
