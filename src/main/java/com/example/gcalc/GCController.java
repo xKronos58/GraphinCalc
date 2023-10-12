@@ -11,16 +11,8 @@ import java.io.IOException;
 public class GCController {
     public Button BCalcBtn;
     public Button SCalcBtn;
-    @FXML
-    private Label welcomeText;
-
-    @FXML
-    protected void onHelloButtonClick() {
-        welcomeText.setText("Welcome to JavaFX Application!");
-    }
-
-    @FXML
-    private Button gCalcBtn;
+    public Button gCalcBtn;
+    public Button PCalcBtn;
 
     @FXML
     protected void changeCalc(ActionEvent actionEvent) {
