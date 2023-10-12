@@ -51,6 +51,15 @@ public class HandleStack {
                 }
                 i--; // Move back one step to account for the loop increment
                 operandStack.push(Double.parseDouble(operand.toString()));
+            } else if (currentChar == 'r' && expression.charAt(i + 1 < expression.length() ? i + 1 : 0) == '('){
+                i += 2; // Skips over the "r(" to grab the number and return the sqrt(x) version
+                StringBuilder operand = new StringBuilder();
+                while(i < expression.length() && expression.charAt(i) != ')') { // Checks if it is inside the sqrt expression
+                    operand.append(expression.charAt(i));
+                    i++;
+                }                       //  vv Note this is a recursive call although should not run into issues as long as r(r()) is not called.
+                operandStack.push(Math.sqrt(evaluate(operand.toString()))); // Takes the returned number and pushes the sqrt version   | Note r(r(x)) does not
+                //                          ^^ Evaluates the number to allow for interpolated root equations ex : r(2*8) will return 4 | Work, use cases are minimal
             } else if (currentChar == '(') {
                 operatorStack.push(currentChar);
             } else if (currentChar == ')') {
@@ -104,7 +113,7 @@ public class HandleStack {
     }
 
     private static boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^' || c == 'r';
     }
 
     private static boolean isConst(char c, char c1) {
@@ -112,7 +121,7 @@ public class HandleStack {
     }
 
     private static int precedence(char operator) {
-        if (operator == '+') {
+        if (operator == '+' || operator == '-') {
             return 1;
         } else if (operator == '*' || operator == '/') {
             return 2;
