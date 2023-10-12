@@ -32,6 +32,7 @@ public class GCController {
     }
 
     public void changeCalcB(ActionEvent actionEvent) throws IOException {
+        GCMain.ShowBasicCalc();
     }
 
     public void changeCalcP(ActionEvent actionEvent) throws IOException {
