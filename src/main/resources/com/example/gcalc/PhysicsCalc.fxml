@@ -16,15 +16,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
-            <Button GridPane.columnIndex="0" GridPane.rowIndex="0" fx:id="gCalcBtn" onAction="#changeCalc" prefWidth="40" prefHeight="20">Gra</Button>
-            <Button GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="BCalcBtn" onAction="#changeCalcB" prefWidth="40" prefHeight="20">Bas</Button>
-            <Button GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="SCalcBtn" onAction="#changeCalcS" prefWidth="40" prefHeight="20">Sci </Button>
+            <Button GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="gCalcBtn" onAction="#changeCalc" prefWidth="40" prefHeight="20">Gra</Button>
+            <Button GridPane.columnIndex="0" GridPane.rowIndex="2" fx:id="BCalcBtn" onAction="#changeCalcB" prefWidth="40" prefHeight="20">Bas</Button>
+            <Button GridPane.columnIndex="0" GridPane.rowIndex="3" fx:id="SCalcBtn" onAction="#changeCalcS" prefWidth="40" prefHeight="20">Sci </Button>
+            <TextField GridPane.columnSpan="2" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="Infinity" prefHeight="40" fx:id="EquationField" onAction="#onEnter"/>
         </GridPane>
     </bottom>
     <center>
         <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="599.0">
-                <VBox layoutY="194.0" prefHeight="630" prefWidth="600" />
+                <VBox layoutY="194.0" prefHeight="630" prefWidth="600" fx:id="textScreen"/>
             </AnchorPane>
         </ScrollPane>
     </center>

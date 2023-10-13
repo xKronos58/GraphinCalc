@@ -50,14 +50,24 @@ public class HandleStack {
                     i++;
                 }
                 i--; // Move back one step to account for the loop increment
-                operandStack.push(Double.parseDouble(operand.toString()));
+                Double parsedOperand = (Double.parseDouble(operand.toString()));
+                // Check if the previous character was an operator
+                if (operatorStack.isEmpty()) {
+                    break;
+                } else if (isPrevOper(operatorStack.lastElement())) {
+                    // If the previous character was an operator, this '-' is a unary negation
+                    operandStack.push(- parsedOperand);
+                } else {
+                    // If not, this '-' is a binary subtraction
+                    operandStack.push(parsedOperand);
+                }
             } else if (currentChar == 'r' && expression.charAt(i + 1 < expression.length() ? i + 1 : 0) == '('){
                 i += 2; // Skips over the "r(" to grab the number and return the sqrt(x) version
                 StringBuilder operand = new StringBuilder();
                 while(i < expression.length() && expression.charAt(i) != ')') { // Checks if it is inside the sqrt expression
                     operand.append(expression.charAt(i));
                     i++;
-                }                       //  vv Note this is a recursive call although should not run into issues as long as r(r()) is not called.
+                }                       //  vv Note this is a recursive call, although it should not run into issues as long as r(r()) is not called.
                 operandStack.push(Math.sqrt(evaluate(operand.toString()))); // Takes the returned number and pushes the sqrt version   | Note r(r(x)) does not
                 //                          ^^ Evaluates the number to allow for interpolated root equations ex : r(2*8) will return 4 | Work, use cases are minimal
             } else if (currentChar == '(') {
@@ -77,14 +87,6 @@ public class HandleStack {
                     case 'e' -> operandStack.push(Constants.e);
                     case 'p' -> { if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'i') operandStack.push(Constants.pi); }
                     case '_' -> { if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'm') operandStack.push(Constants.pico0); }
-//                    case 'l' -> { if(expression.charAt(i + 1) == '(') {
-//                        int j = i;
-//                        while (j < expression.length() && expression.charAt(j) != ')') {
-//                            j++;
-//                        }
-//                        operandStack.push(Math.log(Double.parseDouble(expression.substring(i, j))));
-//                        i = j;
-//                    }}
                 }
             }
         }
@@ -130,9 +132,17 @@ public class HandleStack {
         return 0;
     }
 
+    private static boolean isPrevOper(char op) {
+        return op == '-';
+    }
+
     private static void performOperation(Stack<Double> operandStack, Stack<Character> operatorStack) {
+        if (operatorStack.isEmpty()) {
+            throw new IllegalArgumentException("Invalid expression");
+        }
         char operator = operatorStack.pop();
-        // Check if the operator stack is empty before accessing it
+
+        // Check if the operand stack is empty before accessing it
         if (operandStack.isEmpty()) {
             if (operator == '-') {
                 // Unary negation
@@ -140,30 +150,31 @@ public class HandleStack {
             } else {
                 throw new IllegalArgumentException("Invalid expression");
             }
-        }
-        double operand2 = operandStack.pop();
-        double operand1 = operandStack.pop();
+        } else {
+            double operand2 = operandStack.pop();
+            double operand1 = operandStack.pop();
 
-        switch (operator) {
-            case '+' -> operandStack.push(operand1 + operand2);
-            case '-' -> {
-                // Check if the '-' is a binary subtraction or a unary negation
-                if (operatorStack.isEmpty() || operatorStack.peek() == '(') {
-                    // Unary negation
-                    operandStack.push(-operand2);
-                } else {
-                    // Binary subtraction
-                    operandStack.push(operand1 - operand2);
+            switch (operator) {
+                case '+' -> operandStack.push(operand1 + operand2);
+                case '-' -> {
+                    // Check if the '-' is a binary subtraction or a unary negation
+                    if (operatorStack.isEmpty() || operatorStack.peek() == '(') {
+                        // Unary negation
+                        operandStack.push(-operand2);
+                    } else {
+                        // Binary subtraction
+                        operandStack.push(operand1 - operand2);
+                    }
                 }
-            }
-            case '*' -> operandStack.push(operand1 * operand2);
-            case '/' -> {
-                if (operand2 == 0) {
-                    throw new ArithmeticException("Division by zero");
+                case '*' -> operandStack.push(operand1 * operand2);
+                case '/' -> {
+                    if (operand2 == 0) {
+                        throw new ArithmeticException("Division by zero");
+                    }
+                    operandStack.push(operand1 / operand2);
                 }
-                operandStack.push(operand1 / operand2);
+                case '^' -> operandStack.push(Math.pow(operand1, operand2));
             }
-            case '^' -> operandStack.push(Math.pow(operand1, operand2));
         }
     }
 }
