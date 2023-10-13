@@ -28,7 +28,7 @@ To run the application, you'll need to compile and execute the Java code. Here a
   cd GraphinCalc
   ```
 2. Compile the Java code:
-`javac com/example/gcalc/Calculator/GCMAIN.java`
+`javac com/example/gcalc/GCMAIN.java`
  - Or Open the repository inside in ide like Intelij.
 3. Use the calculator and physics toolkit features to perform calculations and graph equations.
 
