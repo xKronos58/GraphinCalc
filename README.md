@@ -29,7 +29,7 @@ To run the application, you'll need to compile and execute the Java code. Here a
   ```
 2. Compile the Java code:
 `javac com/example/gcalc/GCMAIN.java`
- - Or Open the repository inside in ide like Intelij.
+ - Or Open the repository inside in IDE like Intelij Idea.
 3. Use the calculator and physics toolkit features to perform calculations and graph equations.
 
 ## Usage
