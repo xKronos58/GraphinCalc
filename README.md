@@ -1,7 +1,8 @@
 # Graphing Calculator and Physics Toolkit
+### <span style="color: red;">WARNING! This is an early rendition and does not have desired graphing outcomes, large reworks to logic are in the process</span> ###
 
 ![Application Screenshot](src/images/screenshot.png)
-NOTE: Physics interface is in early testing and the GUI will be reworked
+### NOTE: Physics interface is in early testing and the GUI will be reworked
 ![Physics Screenshot](src/images/pscreenshot.png)
 This Graphing Calculator and Physics Toolkit is a versatile Java application that combines the functionality of a graphing calculator with physics-related features. It allows users to perform various mathematical calculations, graph equations, and access predefined physics equations.
 

@@ -36,10 +36,10 @@ public class HandleStack {
         }
     }
 
-    public static double evaluate(String expression) {
+    public static double evaluate(String _expression) {
         Stack<Double> operandStack = new Stack<>();
         Stack<Character> operatorStack = new Stack<>();
-
+        String expression = _expression.toLowerCase();
         for (int i = 0; i < expression.length(); i++) {
             char currentChar = expression.charAt(i);
 
@@ -51,6 +51,32 @@ public class HandleStack {
                 }
                 i--; // Move back one step to account for the loop increment
                 operandStack.push(Double.parseDouble(operand.toString()));
+            } else if ((currentChar == 'r' && expression.charAt(i + 1 < expression.length() ? i + 1 : 0) == '(') || (expression.startsWith("sqrt(", i))) {
+                i += expression.startsWith("sqrt(", i) ? 5 : 2; // Skips over the "r(" to grab the number and return the sqrt(x) version
+                StringBuilder operand = new StringBuilder();
+                while (i < expression.length() && expression.charAt(i) != ')') { // Checks if it is inside the sqrt expression
+                    operand.append(expression.charAt(i));
+                    i++;
+                }                       //  vv Note this is a recursive call, although it should not run into issues as long as r(r()) is not called.
+                operandStack.push(Math.sqrt(evaluate(operand.toString()))); // Takes the returned number and pushes the sqrt version   | Note r(r(x)) does not
+                //                          ^^ Evaluates the number to allow for interpolated root equations ex : r(2*8) will return 4 | Work, use cases are minimal
+            } else if (expression.startsWith("sin(", i)
+                    || expression.startsWith("cos(", i)
+                    || expression.startsWith("tan(", i)
+                    || expression.startsWith("log(", i)) {
+                int o = i;
+                i += 4; // Skips over the "sin(" to grab the number and return the sqrt(x) version
+                StringBuilder operand = new StringBuilder();
+                while (i < expression.length() && expression.charAt(i) != ')') { // Checks if it is inside the sqrt expression
+                    operand.append(expression.charAt(i));
+                    i++;
+                }
+                switch (expression.substring(o, o + 3)) {
+                    case "sin" -> operandStack.push(Math.sin(evaluate(operand.toString())));
+                    case "cos" -> operandStack.push(Math.cos(evaluate(operand.toString())));
+                    case "tan" -> operandStack.push(Math.tan(evaluate(operand.toString())));
+                    case "log" -> operandStack.push(Math.log(evaluate(operand.toString())));
+                }
             } else if (currentChar == '(') {
                 operatorStack.push(currentChar);
             } else if (currentChar == ')') {

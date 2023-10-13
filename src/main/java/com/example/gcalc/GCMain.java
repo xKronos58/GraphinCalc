@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.LineTo;
@@ -25,6 +26,7 @@ import java.io.IOException;
 public class GCMain extends Application {
     public static boolean isGraphingCalc = true;
     static TextField tf = new TextField();
+    static VBox equations = new VBox();
     static Group gp = new Group();
     static Scene main = drawGraphingCalc();
     static Stage _stage = null;
@@ -49,7 +51,10 @@ public class GCMain extends Application {
                     if (isGraphingCalc)
                     {
                         Line[] points = evalGraph(tf.getText());
+                        Text graph = new Text(tf.getText());
+                        equations.getChildren().add(graph);
                         for (Line point : points) gp.getChildren().add(point);
+                        tf.setText("y=");
                     }
                     else
                         gp.getChildren().add(addAns(Main.tfEval(tf.getText()), tf.getText()));
@@ -78,7 +83,7 @@ public class GCMain extends Application {
         // calculation time
         // then draw a line between the dots
 
-        // Though, using f(x) i can go through and plot a point at the position of the graph
+        // Though, using y i can go through and plot a point at the position of the graph
         // This will require going through the stack and evaluating the equation with x being substituted
 
         double[] initialPoints = new double[30];
@@ -167,9 +172,11 @@ public class GCMain extends Application {
         tf.setPrefHeight(50);
         tf.snapPositionX(600);
         tf.setText("y=");
+        equations.setPrefWidth(150);
+        equations.setLayoutY(50);
 
         gp.getChildren().add(tf);
-
+        gp.getChildren().add(equations);
         //Creating a Group object
         for (Line line : BG_grid) gp.getChildren().add(line);
 
