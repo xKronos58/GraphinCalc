@@ -179,7 +179,7 @@ public class GCMain extends Application {
                 x[i-1], y[i-1]);
 
         out[i].setStroke(Color.RED);
-        out[i].setStrokeWidth(1);
+        out[i].setStrokeWidth(2);
 
         System.out.println("(" + x[i] + ", " + y[i] + ")");
     }
