@@ -40,34 +40,66 @@ public class HandleStack {
         Stack<Double> operandStack = new Stack<>();
         Stack<Character> operatorStack = new Stack<>();
         String expression = _expression.toLowerCase();
+
+        boolean lastTokenWasOperator = true, negative = false;
+
         for (int i = 0; i < expression.length(); i++) {
             char currentChar = expression.charAt(i);
 
-            if (Character.isDigit(currentChar) || currentChar == '.') {
+            if (Character.isDigit(currentChar) || (currentChar == '.')) {
                 StringBuilder operand = new StringBuilder();
                 while (i < expression.length() && (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) {
                     operand.append(expression.charAt(i));
                     i++;
                 }
                 i--; // Move back one step to account for the loop increment
-                operandStack.push(Double.parseDouble(operand.toString()));
-            } else if ((currentChar == 'r' && expression.charAt(i + 1 < expression.length() ? i + 1 : 0) == '(') || (expression.startsWith("sqrt(", i))) {
-                i += expression.startsWith("sqrt(", i) ? 5 : 2; // Skips over the "r(" to grab the number and return the sqrt(x) version
+                double number = Double.parseDouble(operand.toString());
+                if(negative) {
+                    operandStack.push(number * -1);
+                    break;
+                }
+
+                operandStack.push(number);
+                lastTokenWasOperator = false;
+            } else if (isOperator(currentChar)) {
+                while (!operatorStack.isEmpty() && precedence(operatorStack.peek()) >= precedence(currentChar)) {
+                    performOperation(operandStack, operatorStack);
+                }
+                operatorStack.push(currentChar);
+                lastTokenWasOperator = true;
+            } else if (currentChar == '-') {
+                if (lastTokenWasOperator) {
+                    negative = true;
+                } else {
+                    while (!operatorStack.isEmpty() && precedence(operatorStack.peek()) >= precedence(currentChar)) {
+                        performOperation(operandStack, operatorStack);
+                    }
+                    operatorStack.push(currentChar);
+                }
+                lastTokenWasOperator = true;
+            } else if (currentChar == '(') {
+                operatorStack.push(currentChar);
+                lastTokenWasOperator = true;
+            } else if (currentChar == ')') {
+                while (!operatorStack.isEmpty() && operatorStack.peek() != '(') {
+                    performOperation(operandStack, operatorStack);
+                }
+                operatorStack.pop(); // Pop the '('
+                lastTokenWasOperator = false;
+            } else if (currentChar == 'r' && (i + 1) < expression.length() && expression.charAt(i + 1) == '(') {
+                i += 2; // Skip "r("
                 StringBuilder operand = new StringBuilder();
-                while (i < expression.length() && expression.charAt(i) != ')') { // Checks if it is inside the sqrt expression
+                while (i < expression.length() && expression.charAt(i) != ')') {
                     operand.append(expression.charAt(i));
                     i++;
-                }                       //  vv Note this is a recursive call, although it should not run into issues as long as r(r()) is not called.
-                operandStack.push(Math.sqrt(evaluate(operand.toString()))); // Takes the returned number and pushes the sqrt version   | Note r(r(x)) does not
-                //                          ^^ Evaluates the number to allow for interpolated root equations ex : r(2*8) will return 4 | Work, use cases are minimal
-            } else if (expression.startsWith("sin(", i)
-                    || expression.startsWith("cos(", i)
-                    || expression.startsWith("tan(", i)
-                    || expression.startsWith("log(", i)) {
+                }
+                operandStack.push(Math.sqrt(evaluate(operand.toString())));
+                lastTokenWasOperator = false;
+            } else if (currentChar == 's' || currentChar == 'c' || currentChar == 't' || currentChar == 'l') {
                 int o = i;
-                i += 4; // Skips over the "sin(" to grab the number and return the sqrt(x) version
+                i += 4; // Skips over "sin(" to grab the number and return the sqrt(x) version
                 StringBuilder operand = new StringBuilder();
-                while (i < expression.length() && expression.charAt(i) != ')') { // Checks if it is inside the sqrt expression
+                while (i < expression.length() && expression.charAt(i) != ')') {
                     operand.append(expression.charAt(i));
                     i++;
                 }
@@ -77,32 +109,7 @@ public class HandleStack {
                     case "tan" -> operandStack.push(Math.tan(evaluate(operand.toString())));
                     case "log" -> operandStack.push(Math.log(evaluate(operand.toString())));
                 }
-            } else if (currentChar == '(') {
-                operatorStack.push(currentChar);
-            } else if (currentChar == ')') {
-                while (!operatorStack.isEmpty() && operatorStack.peek() != '(') {
-                    performOperation(operandStack, operatorStack);
-                }
-                operatorStack.pop(); // Pop the '('
-            } else if (isOperator(currentChar)) {
-                while (!operatorStack.isEmpty() && precedence(operatorStack.peek()) >= precedence(currentChar)) {
-                    performOperation(operandStack, operatorStack);
-                }
-                operatorStack.push(currentChar);
-            } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))){
-                switch (currentChar) {
-                    case 'e' -> operandStack.push(Constants.e);
-                    case 'p' -> { if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'i') operandStack.push(Constants.pi); }
-                    case '_' -> { if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'm') operandStack.push(Constants.pico0); }
-//                    case 'l' -> { if(expression.charAt(i + 1) == '(') {
-//                        int j = i;
-//                        while (j < expression.length() && expression.charAt(j) != ')') {
-//                            j++;
-//                        }
-//                        operandStack.push(Math.log(Double.parseDouble(expression.substring(i, j))));
-//                        i = j;
-//                    }}
-                }
+                lastTokenWasOperator = false;
             }
         }
 
@@ -117,20 +124,26 @@ public class HandleStack {
         }
     }
 
-    public static double evaluateGraph(String equation, int point) {
-        int i = 0;
-        while(equation.charAt(i) != 'x')
+
+    public static double evaluateGraph(String equation, double point) {
+        StringBuilder finalEquation = new StringBuilder();
+        int i = 0, o = 0, j = 0;
+        while(i < equation.length()) {
+            if(equation.charAt(i) == 'x')
+            {
+                finalEquation.append(equation, j, i);
+                finalEquation.append(point);
+                j = i + 1;
+                o++;
+            }
             i++;
+        }
 
-        String subX = equation.substring(2, i) + point + equation.substring(i + 1);
-
-        System.out.println(subX);
-
-        return evaluate(subX);
+        return evaluate(String.valueOf(finalEquation));
     }
 
     private static boolean isOperator(char c) {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+        return c == '+' || c == '*' || c == '/' || c == '^';
     }
 
     private static boolean isConst(char c, char c1) {
@@ -150,29 +163,13 @@ public class HandleStack {
     private static void performOperation(Stack<Double> operandStack, Stack<Character> operatorStack) {
         char operator = operatorStack.pop();
         // Check if the operator stack is empty before accessing it
-        if (operandStack.isEmpty()) {
-            if (operator == '-') {
-                // Unary negation
-                operandStack.push(0.0); // Push 0 for negation
-            } else {
-                throw new IllegalArgumentException("Invalid expression");
-            }
-        }
+
         double operand2 = operandStack.pop();
         double operand1 = operandStack.pop();
 
         switch (operator) {
             case '+' -> operandStack.push(operand1 + operand2);
-            case '-' -> {
-                // Check if the '-' is a binary subtraction or a unary negation
-                if (operatorStack.isEmpty() || operatorStack.peek() == '(') {
-                    // Unary negation
-                    operandStack.push(-operand2);
-                } else {
-                    // Binary subtraction
-                    operandStack.push(operand1 - operand2);
-                }
-            }
+            case '-' -> operandStack.push(operand1 - operand2);
             case '*' -> operandStack.push(operand1 * operand2);
             case '/' -> {
                 if (operand2 == 0) {

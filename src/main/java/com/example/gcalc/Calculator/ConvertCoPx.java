@@ -8,12 +8,12 @@ public class ConvertCoPx {
         // x = -15 -> 15
 
 
-        return X == 0 ? 450 : (450 + (20 * X));
+        return X == 0 ? 315 : (315 + ( X));
 
 
     }
 
     public static double convertY(double Y) {
-        return (Y * 20) - 150;
+        return Y; // ?? TODO Fix the co-ords system
     }
 }
