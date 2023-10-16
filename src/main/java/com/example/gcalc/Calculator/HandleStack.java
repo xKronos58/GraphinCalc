@@ -110,6 +110,19 @@ public class HandleStack {
                     case "log" -> operandStack.push(Math.log(evaluate(operand.toString())));
                 }
                 lastTokenWasOperator = false;
+            } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
+                switch (currentChar) {
+                    case 'e' -> operandStack.push(Constants.e);
+                    case 'p' -> {
+                        if (expression.length() >= i + 1 && expression.charAt(i + 1) == 'i')
+                            operandStack.push(Constants.pi);
+                    }
+                    case '_' -> {
+                        if (expression.length() >= i + 1 && expression.charAt(i + 1) == 'm')
+                            operandStack.push(Constants.pico0);
+                    }
+                }
+                lastTokenWasOperator = false;
             }
         }
 

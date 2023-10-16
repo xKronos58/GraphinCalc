@@ -135,8 +135,8 @@ public class GCMain extends Application {
 
     public static Line[] positive(String equation) {
 
-        Line[] out = new Line[75];
-        double[] x = new double[150], y = new double[150];
+        Line[] out = new Line[150];
+        double[] x = new double[300], y = new double[300];
         x[0] = 450.0; // X 0 point on the graph (in pixels)
         y[0] = 150.0; // Y 0 point on the graph (in pixels)
 
@@ -147,6 +147,8 @@ public class GCMain extends Application {
                 x[i] = x[0] + (i * 2);
                 y[i] = y[0] - (HandleStack.evaluateGraph(equation, (double) i/5) * 10);
                 makeLine(out, x, y, i);
+//                if(offGrid(x[i], y[i])) TODO modify so that it cuts lines that pass off the screen to be removed for efficiency
+//                    return out;
             }
         }
 
@@ -155,8 +157,8 @@ public class GCMain extends Application {
 
     public static Line[] negative(String equation) {
 
-        Line[] out = new Line[75];
-        double[] x = new double[150], y = new double[150];
+        Line[] out = new Line[150];
+        double[] x = new double[300], y = new double[300];
         x[0] = 450.0; // X 0 point on the graph (in pixels)
         y[0] = 150.0; // Y 0 point on the graph (in pixels)
 
@@ -167,10 +169,16 @@ public class GCMain extends Application {
                 x[i] = x[0] + (i * 2) * -1;
                 y[i] = y[0] - (HandleStack.evaluateGraph(equation, (double) i/5) * 10) * -1;
                 makeLine(out, x, y, i);
+//                if(offGrid(x[i], y[i]))
+//                    return out;
             }
         }
 
         return out;
+    }
+
+    private static boolean offGrid(double x, double y) {
+        return x < 150 || x > 750 || y > 300 || y < 0;
     }
 
     private static void makeLine(Line[] out, double[] x, double[] y, int i) {

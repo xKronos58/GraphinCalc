@@ -7,8 +7,14 @@
     <bottom>
         <GridPane BorderPane.alignment="CENTER">
             <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="20.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="244.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="458.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="437.0" minWidth="0.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="380.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.0" minWidth="10.0" prefWidth="87.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.0" minWidth="0.0" prefWidth="87.0" />
             </columnConstraints>
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -16,10 +22,41 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
-            <Button fx:id="gCalcBtn" onAction="#changeCalc" prefHeight="20" prefWidth="40" GridPane.columnIndex="0" GridPane.rowIndex="1">Gra</Button>
-            <Button fx:id="BCalcBtn" onAction="#changeCalcB" prefHeight="20" prefWidth="40" GridPane.columnIndex="0" GridPane.rowIndex="2">Bas</Button>
-            <Button fx:id="SCalcBtn" onAction="#changeCalcS" prefHeight="20" prefWidth="40" GridPane.columnIndex="0" GridPane.rowIndex="3">Sci </Button>
-            <TextField fx:id="EquationField" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
+            <Button fx:id="gCalcBtn" onAction="#changeCalc" prefHeight="20" prefWidth="80" GridPane.columnIndex="7" text="Graphing" GridPane.rowIndex="1"/>
+            <Button fx:id="BCalcBtn" onAction="#changeCalcB" prefHeight="20" prefWidth="80" GridPane.columnIndex="7" text="Basic" GridPane.rowIndex="2"/>
+            <Button fx:id="SCalcBtn" onAction="#changeCalcS" prefHeight="20" prefWidth="80" GridPane.columnIndex="7" text="Scientific" GridPane.rowIndex="3"/>
+
+            <TextField fx:id="EquationField" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" GridPane.columnIndex="0" GridPane.columnSpan="7" GridPane.rowIndex="0" />
+            <Button fx:id="Equals" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" text="=" GridPane.columnIndex="7" GridPane.rowIndex="0"/>
+
+            <Button fx:id="piBtn" onAction="#addPi" prefHeight="20" prefWidth="Infinity" text="π" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Button fx:id="eBtn" onAction="#addE" prefHeight="20" prefWidth="Infinity" text="E" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Button fx:id="logBtn" onAction="#log" prefHeight="20" prefWidth="Infinity" text="Log()" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+
+            <Button fx:id="sinBtn" onAction="#sin" prefHeight="20" prefWidth="Infinity" text="Sin()" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="cosBtn" onAction="#cos" prefHeight="20" prefWidth="Infinity" text="Cos()" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="tanBtn" onAction="#tan" prefHeight="20" prefWidth="Infinity" text="Tan()" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+            <Button fx:id="rootBtn" onAction="#root" prefHeight="20" prefWidth="Infinity" text="√" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="sqrtBtn" onAction="#sqrd" prefHeight="20" prefWidth="Infinity" text="x²" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="poeBtn" onAction="#poe" prefHeight="20" prefWidth="Infinity" text="x^e" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+            <Button fx:id="mfdBtn" onAction="#mfd" prefHeight="20" prefWidth="Infinity" text="mfd0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="spdBtn" onAction="#spd" prefHeight="20" prefWidth="Infinity" text="spd0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button fx:id="masBtn" onAction="#mas" prefHeight="20" prefWidth="Infinity" text="mas0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+
+            <Button fx:id="sopBtn" onAction="#sop" prefHeight="20" prefWidth="Infinity" text="sop0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="convBtn" onAction="#conv" prefHeight="20" prefWidth="Infinity" text="conv" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+            <Button fx:id="tevBtn" onAction="#tev" prefHeight="20" prefWidth="Infinity" text="tev0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+
+            <Button fx:id="solveBtn" onAction="#solve" prefHeight="20" prefWidth="Infinity" text="Solve()" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <Button fx:id="expandBtn" onAction="#expand" prefHeight="20" prefWidth="Infinity" text="Expand()" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <Button fx:id="factorBtn" onAction="#factor" prefHeight="20" prefWidth="Infinity" text="Factor()" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+
+            <Button fx:id="braoBtn" onAction="#openBrace" prefHeight="20" prefWidth="Infinity" text="(" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+            <Button fx:id="bracBtn" onAction="#closeBrace" prefHeight="20" prefWidth="Infinity" text=")" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+            <Button fx:id="arthBtn" onAction="#arthsymb" prefHeight="20" prefWidth="Infinity" text="+-..." GridPane.columnIndex="6" GridPane.rowIndex="3" />
+
         </GridPane>
     </bottom>
     <center>
