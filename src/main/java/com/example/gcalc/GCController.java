@@ -2,6 +2,9 @@ package com.example.gcalc;
 
 import com.example.gcalc.Calculator.EvalEquation;
 import com.example.gcalc.Calculator.HandleStack;
+import com.example.gcalc.advancedCalculations.Expand;
+import com.example.gcalc.advancedCalculations.Factor;
+import com.example.gcalc.advancedCalculations.Solve;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,10 +45,14 @@ public class GCController {
     public Button braoBtn;
     public Button bracBtn;
     public Button arthBtn;
+    public Boolean solve = false;
+    public Boolean expand = false;
+    public Boolean factor = false;
 
     @FXML
     protected void changeCalc(ActionEvent actionEvent) {
         GCMain.ShowGraphingCalc();
+
     }
 
     public void changeCalcS(ActionEvent actionEvent) throws IOException {
@@ -60,10 +67,33 @@ public class GCController {
         GCMain.ShowPhysicsCalc();
     }
 
+    public static String combineArrays(double[] ans) {
+        if(ans.length == 1)
+            return ans[0] + " ";
+        else
+        {
+            // For the case of a quadratic or other type of equation where more than one ans will be returned,
+            // specifically when calculating x intersects within graphing
+            StringBuilder sb = new StringBuilder();
+            for(double _ans : ans) sb.append(_ans).append(", ");
+            return sb.toString();
+        }
+    }
+
     public void onEnter(ActionEvent actionEvent) throws IOException {
+        Text t;
+
+        // Checks the type of method being used
         if(EquationField.getText().equals("") || HandleStack.handlePredefinedEquation(EquationField.getText()))
             return;
-        Text t = new Text(EquationField.getText() + '=' + HandleStack.evaluate(EquationField.getText()));
+        else if (solve)
+            t = new Text(EquationField.getText() + '=' + combineArrays(Solve.solve(EquationField.getText())));
+        else if (expand)
+            t = new Text(EquationField.getText() + '=' + Expand.expand(EquationField.getText()));
+        else if (factor)
+            t = new Text(EquationField.getText() + '=' + Factor.factor(EquationField.getText()));
+        else
+            t = new Text(EquationField.getText() + '=' + HandleStack.evaluate(EquationField.getText()));
         textScreen.getChildren().add(t);
         EquationField.clear();
     }
@@ -130,14 +160,17 @@ public class GCController {
 
     public void solve(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "solve(");
+        solve = true;
     }
 
     public void expand(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "expand(");
+        expand = true;
     }
 
     public void factor(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "factor(");
+        factor = true;
     }
 
     public void openBrace(ActionEvent actionEvent) {

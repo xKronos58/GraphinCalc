@@ -169,7 +169,7 @@ public class GCMain extends Application {
                 x[i] = x[0] + (i * 2) * -1;
                 y[i] = y[0] - (HandleStack.evaluateGraph(equation, (double) i/5) * 10) * -1;
                 makeLine(out, x, y, i);
-//                if(offGrid(x[i], y[i]))
+//                if(offGrid(x[i], y[i])) TODO modify so that it cuts lines that pass off the screen to be removed for efficiency
 //                    return out;
             }
         }
@@ -194,6 +194,7 @@ public class GCMain extends Application {
 
     public static void ShowGraphingCalc() {
         _stage.setScene(main);
+        _stage.setTitle("Graphing Calculator");
     }
 
     //NOTE Change a public stage rather than parse it through the methods as it can not be parsed into the controller where
@@ -202,7 +203,7 @@ public class GCMain extends Application {
     public static void ShowPhysicsCalc() throws IOException {
         FXMLLoader loader = new FXMLLoader(GCMain.class.getResource("PhysicsCalc.fxml"));
         Parent PhysicsCalc = loader.load();
-
+        _stage.setTitle("Physics Calculator");
         Scene mainCallWindow = new Scene (PhysicsCalc, 800, 600);
         _stage.setScene(mainCallWindow);
     }
@@ -210,7 +211,7 @@ public class GCMain extends Application {
     public static void ShowScientificCalc() throws IOException {
         FXMLLoader loader = new FXMLLoader(GCMain.class.getResource("ScientificCalc.fxml"));
         Parent ScientificCalc = loader.load();
-
+        _stage.setTitle("Scientific Calculator");
         Scene mainCallWindow = new Scene(ScientificCalc, 200, 600);
         _stage.setScene(mainCallWindow);
     }
@@ -218,7 +219,7 @@ public class GCMain extends Application {
     public static void ShowBasicCalc() throws IOException {
         FXMLLoader loader = new FXMLLoader(GCMain.class.getResource("BasicCalc.fxml"));
         Parent BasicCalc = loader.load();
-
+        _stage.setTitle("Calculator");
         Scene mainCallWindow = new Scene(BasicCalc, 200, 600);
         _stage.setScene(mainCallWindow);
     }
