@@ -11,6 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -87,13 +90,19 @@ public class GCController {
         if(EquationField.getText().equals("") || HandleStack.handlePredefinedEquation(EquationField.getText()))
             return;
         else if (solve)
-            t = new Text(EquationField.getText() + '=' + combineArrays(Solve.solve(EquationField.getText())));
+            t = new Text(EquationField.getText() + "\n    = " +
+                        combineArrays(Solve.solve(EquationField.getText())));
         else if (expand)
-            t = new Text(EquationField.getText() + '=' + Expand.expand(EquationField.getText()));
+            t = new Text(EquationField.getText() + "\n    = " +
+                        Expand.expand(EquationField.getText()));
         else if (factor)
-            t = new Text(EquationField.getText() + '=' + Factor.factor(EquationField.getText()));
+            t = new Text(EquationField.getText() + "\n    = " +
+                        Factor.factor(EquationField.getText()));
         else
-            t = new Text(EquationField.getText() + '=' + HandleStack.evaluate(EquationField.getText()));
+            t = new Text(EquationField.getText() + "\n    = " +
+                        HandleStack.evaluate(EquationField.getText()));
+
+        t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
         textScreen.getChildren().add(t);
         EquationField.clear();
     }

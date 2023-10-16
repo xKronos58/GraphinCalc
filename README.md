@@ -52,6 +52,14 @@ To run the application, you'll need to compile and execute the Java code. Here a
 - To convert units: `conv`
 - Explore more opening the [Supported Equations](supportedEquationList.md) File
 
+## Issues
+
+- When typing equations use mathematical notation symbols like `* and pi` rather than `x and π`
+- Some methods are still a work in progress like `Solve(), Expand(), Factor()`
+- Graphs are not currently 100% accurate as there are still tweaks when converting and f(x) to px Values
+- Log() is based of the Java `Math.log()` which returns the natural logarithm (base e), so will be different to other calculators.
+- The Basic and Scientific calculators are NIU at this point in time as the main focus of this project is the graphing and physics portions, so they are not a priority
+
 ## Contributing
 
 Contributions to this project are welcome. If you have ideas for improvements or new features, feel free to open an issue or submit a pull request.
