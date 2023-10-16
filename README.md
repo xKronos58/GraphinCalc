@@ -55,6 +55,7 @@ To run the application, you'll need to compile and execute the Java code. Here a
 ## Issues
 
 - When typing equations use mathematical notation symbols like `* and pi` rather than `x and π`
+- You need to scroll down in the physics calculator to view the asnwer as it is spawned lower in the `VBOX` than it should 
 - Some methods are still a work in progress like `Solve()` A fill list can be found [Here](Progrss.md)
 - Graphs are not currently 100% accurate as there are still tweaks when converting and f(x) to px Values
 - Log() is based of the Java `Math.log()` which returns the natural logarithm (base e), so will be different to other calculators.
