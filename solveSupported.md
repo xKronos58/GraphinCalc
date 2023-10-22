@@ -1,0 +1,34 @@
+### Linear Equations:
+Equations of the form: `ax + b = 0`
+Example: `2x + 3 = 0`
+### Quadratic Equations:
+Equations of the form: `ax^2 + bx + c = 0`
+Example: `x^2 - 4x + 4 = 0`
+### Polynomial Equations:
+Equations involving higher-order polynomials.
+Example: `3x^3 - 6x^2 + 2x - 5 = 0`
+### Exponential Equations:
+Equations with exponential terms, like `a * 2^x = b`.
+Example: `2 * 2^x = 8`
+### Logarithmic Equations:
+Equations with logarithmic terms, like `log_a(x) = b`.
+Example: `log_2(x) = 3`
+### Trigonometric Equations:
+Equations involving trigonometric functions, such as sin(x) = 0 or cos(x) = 1.
+Example: `sin(x) = 0`
+### Simultaneous Equations:
+Sets of equations with multiple variables.
+Example:
+```
+2x + 3y = 8
+4x - 2y = 6
+```
+### Other Special Functions:
+Equations involving special functions like square roots, absolute values, etc.
+Example: `sqrt(x) - 3 = 0`
+### Inequalities:
+Equations that represent inequalities rather than exact solutions.
+Example: `3x - 5 < 7`
+### Parametric Equations:
+Equations that have parameters as input, making it necessary to handle these parameters appropriately.
+Example: `x = t^2, y = 2t`
