@@ -8,8 +8,8 @@ Example: `x^2 - 4x + 4 = 0`
 Equations involving higher-order polynomials.
 Example: `3x^3 - 6x^2 + 2x - 5 = 0`
 ### Exponential Equations:
-Equations with exponential terms, like `a * 2^x = b`.
-Example: `2 * 2^x = 8`
+Equations with exponential terms, like `a * e^x = b`.
+Example: `2 * e^x = 8`
 ### Logarithmic Equations:
 Equations with logarithmic terms, like `log_a(x) = b`.
 Example: `log_2(x) = 3`

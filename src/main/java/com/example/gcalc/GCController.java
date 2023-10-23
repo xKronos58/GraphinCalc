@@ -91,7 +91,7 @@ public class GCController {
             return;
         else if (solve)
             t = new Text(EquationField.getText() + "\n    = " +
-                        Solve.solve(EquationField.getText()));
+                        Solve.solve(EquationField.getText()) );
         else if (expand)
             t = new Text(EquationField.getText() + "\n    = " +
                         Expand.expand(EquationField.getText()));

@@ -1,5 +1,7 @@
 package com.example.gcalc.advancedCalculations;
 
+import com.example.gcalc.util;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,44 +9,21 @@ public class Solve {
     public static double solve(String rawEquation) {
         // Types of equations that are supported view solveSupported.md
 
-        String equation = rawEquation.substring(5, rawEquation.length() - 4);
+        String equation = rawEquation.substring(util.until(0, rawEquation, '(') + 1, rawEquation.length() - 3);
         char variable = rawEquation.charAt(rawEquation.length() - 2);
-
-        switch (findEquationType(equation)) {
-            case LINEAR -> {
-                return equationSolutions.LINEAR(equation, variable);
-            } case QUADRATIC -> {
-                return equationSolutions.QUADRATIC(equation, variable);
-            } case POLYNOMIAL -> {
-                return equationSolutions.POLYNOMIAL(equation, variable);
-            } case EXPONENTIAL -> {
-                return equationSolutions.EXPONENTIAL(equation, variable);
-            } case LOGARITHMIC -> {
-                return equationSolutions.LOGARITHMIC(equation, variable);
-            } case TRIGONOMETRIC -> {
-                return equationSolutions.TRIGONOMETRIC(equation, variable);
-            } case SIMULTANEOUS -> {
-                return equationSolutions.SIMULTANEOUS(equation, variable);
-            } case OTHER -> {
-                return equationSolutions.OTHER(equation, variable);
-            } case INEQUALITY -> {
-                return equationSolutions.INEQUALITY(equation, variable);
-            } case PARAMETRIC -> {
-                return equationSolutions.PARAMETRIC(equation, variable);
-            } default -> {
-                return 0.0; // This will never be hit, is just there to silence an error
-            }
-        }
+        Equation eqType = findEquationType(equation);
+        System.out.println(eqType.toString());
+        return eqType.solve(equation, variable);
     }
 
     public static Equation findEquationType(String equation) {
-        if (equation.matches("[-+]?[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*0")) {
+        if (equation.matches("[-+]?[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*[-+]?\\s*[0-9]+\n")) {
             return Equation.LINEAR;
         } else if (equation.matches("[-+]?[0-9]*x\\^2\\s*[-+]?\\s*[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*0")) {
             return Equation.QUADRATIC;
         } else if (equation.matches("ALKSDJSANKLD" /* TODO: Figure out how to determine polynomial*/)) {
             return Equation.POLYNOMIAL;
-        } else if (equation.contains("e^(")) {
+        } else if (equation.contains("e^")) {
             return Equation.EXPONENTIAL;
         } else if (equation.contains("log(")) {
             return Equation.LOGARITHMIC;
@@ -62,49 +41,99 @@ public class Solve {
     }
 
     public enum Equation {
-        LINEAR,
-        QUADRATIC,
-        POLYNOMIAL,
-        EXPONENTIAL,
-        LOGARITHMIC,
-        TRIGONOMETRIC,
-        SIMULTANEOUS, /* HOW THE FUCK DO YOU SPELL IT??? */
-        OTHER,
-        INEQUALITY,
-        PARAMETRIC;
-    }
-}
+        LINEAR {
+            @Override
+            public Double solve(String equation, char variable) {
+                int x1 = util.until(0, equation, variable);
+                double a, b;
+                a = Double.parseDouble(equation.substring(0, x1));
+                b = Double.parseDouble(equation.substring(x1, equation.length() - 1));
+                if(a != 0)
+                    return -b/a;
+                else
+                    throw new ArithmeticException("No real solutions for this Linear equation");
+            }
+        },
+        QUADRATIC {
+            @Override
+            public Double solve(String equation, char variable) {
+                // Split the equation into variables that can be put into the quadratic formula
+                int x1 = util.until(0, equation, 'x'), x2 = util.until(x1, equation, 'x');
+                double a, b, c;
+                a = Double.parseDouble(equation.substring(0, x1));
+                b = Double.parseDouble(equation.substring(x1+1, x2));
+                c = Double.parseDouble(equation.substring(x2 + 1, equation.length() - 1));
 
-class equationSolutions {
-    public static Double LINEAR(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double QUADRATIC(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double POLYNOMIAL(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double EXPONENTIAL(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double LOGARITHMIC(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double TRIGONOMETRIC(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double SIMULTANEOUS(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double OTHER(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double INEQUALITY(String equation, char variable) {
-        return 0.0;
-    }
-    public static Double PARAMETRIC(String equation, char variable) {
-        return 0.0;
+                double discriminant = b * b - 4 * a * c;
+                if (discriminant > 0) {
+                    double root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+                    double root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                    return root1;
+                    //TODO handle second root
+                } else if (discriminant == 0) {
+                    return (-b / (2 * a));
+                } else {
+                    throw new ArithmeticException("No real solutions for this quadratic equation.");
+                }
+            }
+        },
+        POLYNOMIAL {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0; // Note this does not need to be written until a regex can be created for a polynomial function
+            }
+        },
+        EXPONENTIAL {
+            @Override
+            public Double solve(String equation, char variable) {
+                // Equation type a + e^(bx) = c
+                int c1 = util.untilSymbol(1, equation);
+                double a = Double.parseDouble(equation.substring(0, c1)), // Grabs the first value
+                        b = Double.parseDouble(equation.substring(util.until(c1, equation, '(') + 1, util.until(c1, equation, variable) -1)), // Grabs the coefficient to the value inside the exponent
+                        c = Double.parseDouble(equation.substring(util.until(0, equation, '=') + 1)); // Grabs the final value
+                if(a > 0 && b > 0 && c >= 0) // Checks if a & b are non-zero and if c is non-negative
+                    return Math.log(c - a) * (b / a); // TODO needs to be reworked.
+                throw new ArithmeticException("There is no solution to this equation");
+            }
+        },
+        LOGARITHMIC {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0;
+            }
+        },
+        TRIGONOMETRIC {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0;
+            }
+        },
+        SIMULTANEOUS {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0;
+            }
+        },
+        OTHER {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0;
+            }
+        },
+        INEQUALITY {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0;
+            }
+        },
+        PARAMETRIC {
+            @Override
+            public Double solve(String equation, char variable) {
+                return 0.0;
+            }
+        };
+
+        public abstract Double solve(String equation, char variable);
     }
 }
 

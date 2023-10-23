@@ -95,7 +95,12 @@ public class HandleStack {
                 }
                 operandStack.push(Math.sqrt(evaluate(operand.toString())));
                 lastTokenWasOperator = false;
-            } else if (currentChar == 's' || currentChar == 'c' || currentChar == 't' || currentChar == 'l') {
+            } else if (i + 4 < expression.length() && (
+                    (currentChar == 's' && expression.charAt(i + 1) == 'i')
+                            || (currentChar == 'c' && expression.charAt(i + 1) == 'o')
+                            || (currentChar == 't' && expression.charAt(i + 1) == 'a')
+                            || (currentChar == 'l' && expression.charAt(i + 1) == 'o')
+                            || (currentChar == '_' && expression.charAt(i + 1) == 'l'))) {
                 int o = i;
                 i += 4; // Skips over "sin(" to grab the number and return the sqrt(x) version
                 StringBuilder operand = new StringBuilder();
@@ -107,19 +112,38 @@ public class HandleStack {
                     case "sin" -> operandStack.push(Math.sin(evaluate(operand.toString())));
                     case "cos" -> operandStack.push(Math.cos(evaluate(operand.toString())));
                     case "tan" -> operandStack.push(Math.tan(evaluate(operand.toString())));
-                    case "log" -> operandStack.push(Math.log(evaluate(operand.toString())));
+                    case "log" -> operandStack.push(Math.log10(evaluate(operand.toString())));
+                    case "_ln" -> operandStack.push(Math.log(evaluate(operand.toString())));
+
                 }
                 lastTokenWasOperator = false;
             } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
+                final boolean c = expression.length() >= i + 1 && expression.charAt(i + 1) == 'c';
                 switch (currentChar) {
                     case 'e' -> operandStack.push(Constants.e);
                     case 'p' -> {
                         if (expression.length() >= i + 1 && expression.charAt(i + 1) == 'i')
                             operandStack.push(Constants.pi);
-                    }
-                    case '_' -> {
+                        else if (expression.length() >= i + 1 && (expression.charAt(i + 1) == 'h'))
+                            operandStack.push(Constants.phi);
+                    } case '_' -> {
                         if (expression.length() >= i + 1 && expression.charAt(i + 1) == 'm')
                             operandStack.push(Constants.pico0);
+                    } case 't' -> {
+                        if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'u')
+                            operandStack.push(Constants.tau);
+                    } case 's' -> {
+                        if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'g')
+                            operandStack.push(Constants.superGoldenRatio);
+                    } case 'm' -> {
+                        if(c)
+                            operandStack.push(Constants.superGoldenRatio);
+                    } case 'k' -> {
+                        if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'b')
+                            operandStack.push(Constants.KBC);
+                    } case 'w' -> {
+                        if(c)
+                            operandStack.push(Constants.WC);
                     }
                 }
                 lastTokenWasOperator = false;
@@ -160,7 +184,16 @@ public class HandleStack {
     }
 
     private static boolean isConst(char c, char c1) {
-        return c == 'e' || (c == 'p' && c1 == 'i') || (c == '_' && c1 == 'm')/* || c == 'l'*/;
+        return c == 'e'                    // e
+                || (c == 'p' && c1 == 'i') // π
+                || (c == '_' && c1 == 'm') // µ0
+                || (c == 't' && c1 == 'u') // tau
+                || (c == 'p' && c1 == 'h') // phi
+                || (c == 's' && c1 == 'g') // sgr
+                || (c == 'm' && c1 == 'c') // CCHL
+                || (c == 'k' && c1 == 'b') // KBC
+                || (c == 'w' && c1 == 'c') // WC
+                ;
     }
 
     private static int precedence(char operator) {
