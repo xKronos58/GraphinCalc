@@ -40,4 +40,11 @@ public class util {
     public static boolean isOperator(char x) {
         return x == '+' || x == '-' || x == '*' || x == '/';
     }
+
+    public static int HasChar(String x, int startIndex) {
+        for(int i = startIndex; i < x.length(); i++)
+            if(Character.isLetter(x.charAt(i)))
+                return i;
+        return 0;
+    }
 }

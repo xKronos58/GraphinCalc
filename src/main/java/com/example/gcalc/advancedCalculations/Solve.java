@@ -92,7 +92,7 @@ public class Solve {
                         b = Double.parseDouble(equation.substring(util.until(c1, equation, '(') + 1, util.until(c1, equation, variable) -1)), // Grabs the coefficient to the value inside the exponent
                         c = Double.parseDouble(equation.substring(util.until(0, equation, '=') + 1)); // Grabs the final value
                 if(a > 0 && b > 0 && c >= 0) // Checks if a & b are non-zero and if c is non-negative
-                    return Math.log(c - a) * (b / a); // TODO needs to be reworked.
+                    return Math.log(c - a) * (b / a); // TODO: needs to be reworked.
                 throw new ArithmeticException("There is no solution to this equation");
             }
         },
