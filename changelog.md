@@ -2,6 +2,10 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.02.A
+- ### Continued with Expand() 
+- ### Fixed physics calculator equation output rendering
+
 ## B-0.01.B
 - ### Added start to Expand Class
 - ### Added `HasChar(x, sp)` method

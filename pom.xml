@@ -43,7 +43,13 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
+    <repositories>
+        <repository>
+            <id>sandec</id>
+            <name>Md renderer</name>
+            <url>https://sandec.jfrog.io/artifactory/repo</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>

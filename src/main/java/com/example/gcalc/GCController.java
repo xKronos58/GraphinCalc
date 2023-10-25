@@ -7,9 +7,8 @@ import com.example.gcalc.advancedCalculations.Factor;
 import com.example.gcalc.advancedCalculations.Solve;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -51,11 +50,15 @@ public class GCController {
     public Boolean solve = false;
     public Boolean expand = false;
     public Boolean factor = false;
+    @FXML
+    public static int scrollHeight = 181;
+    public ScrollPane scrollViewMain;
+    public AnchorPane apScroolView;
+    public MenuItem CloseMenuItem;
 
     @FXML
     protected void changeCalc(ActionEvent actionEvent) {
         GCMain.ShowGraphingCalc();
-
     }
 
     public void changeCalcS(ActionEvent actionEvent) throws IOException {
@@ -83,8 +86,10 @@ public class GCController {
         }
     }
 
+    public static int equationNum = 0;
     public void onEnter(ActionEvent actionEvent) throws IOException {
         Text t;
+        equationNum++;
 
         // Checks the type of method being used
         if(EquationField.getText().equals("") || HandleStack.handlePredefinedEquation(EquationField.getText()))
@@ -103,8 +108,14 @@ public class GCController {
                         HandleStack.evaluate(EquationField.getText()));
 
         t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
+        t.prefHeight(20);
+        if(equationNum > 4)
+            scrollHeight += 38;
         textScreen.getChildren().add(t);
         EquationField.clear();
+        textScreen.setPrefHeight(scrollHeight);
+        scrollViewMain.setPrefHeight(scrollHeight);
+        apScroolView.setPrefHeight(scrollHeight);
     }
 
     public void addPi(ActionEvent actionEvent) {
@@ -192,5 +203,21 @@ public class GCController {
 
     public void arthsymb(ActionEvent actionEvent) {
         //TODO handle this
+    }
+
+    public void close(ActionEvent actionEvent) {
+        GCMain._stage.close();
+    }
+
+    public void openReadme(ActionEvent actionEvent) {
+
+    }
+
+    public void openEqHelp(ActionEvent actionEvent) {
+
+    }
+
+    public void openAbout(ActionEvent actionEvent) {
+
     }
 }
