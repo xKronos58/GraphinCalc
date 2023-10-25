@@ -1,6 +1,5 @@
 package com.example.gcalc;
 
-import com.example.gcalc.Calculator.EvalEquation;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.advancedCalculations.Expand;
 import com.example.gcalc.advancedCalculations.Factor;
@@ -210,14 +209,23 @@ public class GCController {
     }
 
     public void openReadme(ActionEvent actionEvent) {
-
+        openMd wbe = new openMd();
+        Stage test = new Stage();
+        wbe.inpType = "readme";
+        wbe.start(test);
     }
 
     public void openEqHelp(ActionEvent actionEvent) {
-
+        openMd wbe = new openMd();
+        Stage test = new Stage();
+        wbe.inpType = "eqhelp";
+        wbe.start(test);
     }
 
-    public void openAbout(ActionEvent actionEvent) {
-
+    public void openAbout(ActionEvent actionEvent) throws Exception {
+        openMd wbe = new openMd();
+        Stage test = new Stage();
+        wbe.inpType = "about";
+        wbe.start(test);
     }
 }

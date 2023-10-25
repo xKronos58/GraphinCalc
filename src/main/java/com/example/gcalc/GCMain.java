@@ -76,63 +76,6 @@ public class GCMain extends Application {
         launch(args);
     }
 
-/*    public static Line[] evalGraph(String tfText) {
-        System.out.println(tfText);
-
-        // Theory :
-        // Draw 10 points on the line of the graph
-        // Then draw points between to save on
-        // calculation time
-        // then draw a line between the dots
-
-        // Though, using y i can go through and plot a point at the position of the graph
-        // This will require going through the stack and evaluating the equation with x being substituted
-
-        Line[] positive = new Line[150];
-        Line[] negative = new Line[150];
-
-        for(int i = 0; i < 150; i++){
-            initialPoints[i] = ConvertCoPx.convertX(HandleStack.evaluateGraph(tfText, i) - 15);
-            points[i] = new Line(initialPoints[i], (i * 60) - 150 , initialPoints[i] + 2, (i * 60) - 150 ); // - This is the points
-            points[i] = new Line(initialPoints[i - 1 == -1 ? 0 : i - 1], ConvertCoPx.convertY(i - 1), initialPoints[i], ConvertCoPx.convertY(i));
-            System.out.println("(" + initialPoints[i] + ", " + i + ")");
-            points[i].setStrokeWidth(2);
-            points[i].setStroke(Color.RED);
-
-
-            // Spawn the zero point
-            // Spawn the next 2 points in 2 diff arrays one for pos 1 for neg
-
-            double yp = f(x (i)) = eq HandleStack.evaluateGraph(tfText, i), yp2 = HandleStack.evaluateGraph(tfText, i + 1); //TODO cache for better performance
-            double yn = f(x (i)) = eq HandleStack.evaluateGraph(tfText, i + -1), yn2 = HandleStack.evaluateGraph(tfText, (i * -1) + 1);
-
-            if(i == 0) {
-                positive[i] = new Line(300, 150, 320, yp2);
-                negative[i] = new Line(300, 150, 280, yn2);
-            } else {
-                positive[i] = new Line((300 - i * 2), yp, (300 - (i+1) * 2), yp2);
-                positive[i] = new Line((300 - (i * 2) * -1), yn, (300 - ((i+1) * 2) * -1), yn2);
-            }
-
-
-
-            //Reworking required with co-ordinates and graph evaluation
-
-            // 1 : Add handling for negative numbers and multiplication without the need for '*'
-            // 2 : Calculate the position in the graph with the fixed eval
-            // 3 : change those values to correspond to the pixel values where they can be used to draw the graph
-        }
-
-        Line[] combined = new Line[positive.length + negative.length];
-
-        System.arraycopy(positive, 0, combined, 0, positive.length);
-        System.arraycopy(negative, 0, combined, positive.length, negative.length);
-
-        return combined;
-
-    }*/
-
-
     public static Line[] positive(String equation) {
 
         Line[] out = new Line[150];

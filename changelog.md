@@ -2,6 +2,11 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.03.A 
+- ### Added help menus inside the physics calculations
+- ### Added ability to render MD and Html code inside application
+- ### Fixed missing java fx libs
+
 ## B-0.02.A
 - ### Continued with Expand() 
 - ### Fixed physics calculator equation output rendering

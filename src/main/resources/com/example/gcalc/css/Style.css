@@ -1,0 +1,14 @@
+md-block { white-space: normal; font-family: monospace; }
+
+.main {
+    width: auto;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    padding-top: 5rem;
+    border-radius: 30px;
+    border-width: 2px;
+    border-color: darkslategray;
+}
+body {
+    background-color: rgb(29 30 31);
+}

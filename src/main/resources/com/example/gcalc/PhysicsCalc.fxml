@@ -83,7 +83,7 @@
                <MenuItem mnemonicParsing="false" text="-"/>
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
-               <MenuItem mnemonicParsing="false" text="About" onAction="#openAbout"/>
+               <MenuItem mnemonicParsing="false" text="Help" onAction="#openAbout"/>
                <MenuItem mnemonicParsing="false" text="Equation Help" onAction="#openEqHelp"/>
                <MenuItem mnemonicParsing="false" text="Readme" onAction="#openReadme"/>
            </Menu>
