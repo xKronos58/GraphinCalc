@@ -19,6 +19,9 @@ public class openMd extends Application
             case "readme" -> getClass().getResource("/com/example/gcalc/html/readme.html");
             case "eqhelp" -> getClass().getResource("/com/example/gcalc/html/eqhelp.html");
             case "about" -> getClass().getResource("/com/example/gcalc/html/about.html");
+            case "solveSupported" -> getClass().getResource("/com/example/gcalc/html/solveSupported.html");
+            case "constantsSupported" -> getClass().getResource("/com/example/gcalc/html/constantsSupported.html");
+            case "functionsSupported" -> getClass().getResource("/com/example/gcalc/html/functionsSupported.html");
             default -> null;
         };
     }

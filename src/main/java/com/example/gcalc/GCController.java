@@ -230,4 +230,25 @@ public class GCController {
         wbe.inpType = "about";
         wbe.start(test);
     }
+
+    public void openSolveSupported(ActionEvent actionEvent) {
+        openMd wbe = new openMd();
+        Stage test = new Stage();
+        wbe.inpType = "solveSupported";
+        wbe.start(test);
+    }
+
+    public void openFunctionsSupported(ActionEvent actionEvent) {
+        openMd wbe = new openMd();
+        Stage test = new Stage();
+        wbe.inpType = "functionsSupported";
+        wbe.start(test);
+    }
+
+    public void openConstantsSupported(ActionEvent actionEvent) {
+        openMd wbe = new openMd();
+        Stage test = new Stage();
+        wbe.inpType = "constantsSupported";
+        wbe.start(test);
+    }
 }

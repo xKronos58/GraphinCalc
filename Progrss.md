@@ -9,6 +9,8 @@
 - Tan graphs are inaccurate when the y value approaches +/- ∞
 - The -x of parabolas are inverted and approach -∞ instead of ∞ making the x domain (-∞, ∞) instead of [y.intercept, +/-∞)
 - Position of answer inside the Physics calculator is in the wrong spot and thus not immediately visible, should be move to the top of the screen and some padding should be added for better readability.
+- Constants and other features like r() or log() are not currently available within the solve() function is is currently not being evaluated prior to being checked.
+- When writing simultaneous equations if you have a value like 'x' you need to write 1x as it will not work otherwise - this is due to evaluation by determinants
 ## Features In Progress
 
 - Basic Calculator 

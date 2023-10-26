@@ -86,6 +86,11 @@
            <Menu mnemonicParsing="false" text="Settings">
                <MenuItem mnemonicParsing="false" text="Physics Settings" />
            </Menu>
+           <Menu mnemonicParsing="false" text="Supported">
+               <MenuItem mnemonicParsing="false" text="Supported Solve Eqs" onAction="#openSolveSupported"/>
+               <MenuItem mnemonicParsing="false" text="Supported Constants" onAction="#openConstantsSupported"/>
+               <MenuItem mnemonicParsing="false" text="Supported Functions" onAction="#openFunctionsSupported"/>
+           </Menu>
        </MenuBar>
    </top>
 </BorderPane>

@@ -14,7 +14,7 @@ Example: `2 * e^x = 8`
 Equations with logarithmic terms, like `log_a(x) = b`.
 Example: `log_2(x) = 3`
 ### Trigonometric Equations:
-Equations involving trigonometric functions, such as sin(x) = 0 or cos(x) = 1.
+Equations involving trigonometric functions, such as `sin(x) = 0` or `cos(x) = 1`.
 Example: `sin(x) = 0`
 ### Simultaneous Equations:
 Sets of equations with multiple variables.
@@ -23,6 +23,8 @@ Example:
 2x + 3y = 8
 4x - 2y = 6
 ```
+#### Note :
+When writing simultaneous equations rather that writing just `x` or `y` write `1x` or `1y`
 ### Other Special Functions:
 Equations involving special functions like square roots, absolute values, etc.
 Example: `sqrt(x) - 3 = 0`
