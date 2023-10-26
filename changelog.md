@@ -2,6 +2,10 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.03.B
+- ### Added support for simultaneous equation solving through the `solve()` function. 
+  - Form = `solve(a1x + b1y = c1; a2x + b2y = c2, x)`
+
 ## B-0.03.A 
 - ### Added help menus inside the physics calculations
 - ### Added ability to render MD and Html code inside application

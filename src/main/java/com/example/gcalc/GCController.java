@@ -91,11 +91,13 @@ public class GCController {
         equationNum++;
 
         // Checks the type of method being used
-        if(EquationField.getText().equals("") || HandleStack.handlePredefinedEquation(EquationField.getText()))
+        if(EquationField.getText().isEmpty() || HandleStack.handlePredefinedEquation(EquationField.getText()))
             return;
-        else if (solve)
+        else if (solve) {
+            double sol = Solve.solve(EquationField.getText());
             t = new Text(EquationField.getText() + "\n    = " +
-                        Solve.solve(EquationField.getText()) );
+                    (Solve.has2Sol ? Solve.sol2 : sol ));
+        }
         else if (expand)
             t = new Text(EquationField.getText() + "\n    = " +
                         Expand.expand(EquationField.getText()));

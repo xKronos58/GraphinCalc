@@ -3,9 +3,14 @@ package com.example.gcalc.advancedCalculations;
 import com.example.gcalc.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Solve {
+
+    public static boolean has2Sol = false;
+
+    public static String sol2 = "";
     public static double solve(String rawEquation) {
         // Types of equations that are supported view solveSupported.md
 
@@ -58,6 +63,7 @@ public class Solve {
         QUADRATIC {
             @Override
             public Double solve(String equation, char variable) {
+                has2Sol = true;
                 // Split the equation into variables that can be put into the quadratic formula
                 int x1 = util.until(0, equation, 'x'), x2 = util.until(x1, equation, 'x');
                 double a, b, c;
@@ -69,8 +75,8 @@ public class Solve {
                 if (discriminant > 0) {
                     double root1 = (-b + Math.sqrt(discriminant)) / (2 * a);
                     double root2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+                    sol2 = " " + root1 + ", " + root2;
                     return root1;
-                    //TODO handle second root
                 } else if (discriminant == 0) {
                     return (-b / (2 * a));
                 } else {
@@ -112,17 +118,69 @@ public class Solve {
         SIMULTANEOUS {
             @Override
             public Double solve(String equation, char variable) {
+                has2Sol = true;
                 // Splits the equitation into a string array to be compared
                 int splitPoint = util.until(0, equation, ';');
-                String[] sim = {equation.substring(0, splitPoint - 1), equation.substring(splitPoint + 1)};
+                String[] sim = {equation.substring(0, splitPoint), equation.substring(splitPoint + 1)};
 
                 // Equation cleaning
                 if(sim[0].isEmpty() || sim[1].isEmpty())
                     throw new IllegalArgumentException("The equation was not recognised");
 
+                /*
+                * Plan :
+                * Split equations into a_1 b_1 c_1 a_2 b_2 c_2
+                * Then use determinant multiplication to evaluate them
+                *
+                * a1x |+-| b1y = c1
+                * a2x |+-| b2y = c2
+                *
+                *
+                *    |c1 b1|
+                *    |c2 b2|    c1*b2 - c2*b2
+                * x = ------ = ---------------
+                *    |a1 b1|    a1*b2 - a2*b1
+                *    |a2 b2|
+                *
+                *    |a1 c1|
+                *    |a2 c2|    a1*c2 - a2*c1
+                * y = ------ = ---------------
+                *    |a1 b1|    a1*b2 - a2*b1
+                *    |a2 b2|
+                *
+                * */
 
+                double[] elements = new double[6];
+                Arrays.fill(elements, 1.0);
+                int element = 0;
+                boolean isNegative = false;
+                for (String s : sim) {
+                    for (int i = 0; i < s.length(); i++) {
+                        if (Character.isDigit(s.charAt(i))) {
+                            if(i - 1 >= 0)
+                                isNegative = s.charAt(i-1) == '-';
+                            StringBuilder temp = new StringBuilder();
 
-                return 0.0;
+                            while (Character.isDigit(s.charAt(i)) || s.charAt(i) == '.') {
+                                temp.append(s.charAt(i));
+                                i++;
+                                if(i >= s.length())
+                                    break;
+                            }
+                            elements[element] = Double.parseDouble(temp.toString()) * (isNegative ? -1 : 1);
+                            element++;
+                            isNegative = false;
+                        }
+                        if(element == 0 && Character.isLetter(s.charAt(i)))
+                            element++;
+                    }
+                }
+                double divisor = (elements[0] * elements[4] - elements[3] * elements[1]),
+                        x = (elements[2] * elements[4] - elements[5] * elements[1]) / divisor,
+                        y = (elements[0] * elements[5] - elements[3] * elements[2]) / divisor;
+
+                sol2 = "(x = " + x + "; y = " + y + ")";
+                return x;
 
             }
         },
