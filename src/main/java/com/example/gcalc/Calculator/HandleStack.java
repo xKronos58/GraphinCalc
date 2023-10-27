@@ -1,5 +1,11 @@
 package com.example.gcalc.Calculator;
 
+import com.example.gcalc.GCController;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+
 import java.io.IOException;
 import java.util.Stack;
 
@@ -158,21 +164,21 @@ public class HandleStack {
         if (operandStack.size() == 1) {
             return operandStack.pop();
         } else {
-            throw new IllegalArgumentException("Invalid expression");
+            GCController.invalidEquation = true;
+            return -0.0;
         }
     }
 
 
     public static double evaluateGraph(String equation, double point) {
         StringBuilder finalEquation = new StringBuilder();
-        int i = 0, o = 0, j = 0;
+        int i = 0, j = 0;
         while(i < equation.length()) {
             if(equation.charAt(i) == 'x')
             {
                 finalEquation.append(equation, j, i);
                 finalEquation.append(point);
                 j = i + 1;
-                o++;
             }
             i++;
         }

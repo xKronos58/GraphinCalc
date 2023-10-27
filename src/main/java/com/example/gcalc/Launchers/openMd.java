@@ -1,4 +1,4 @@
-package com.example.gcalc;
+package com.example.gcalc.Launchers;
 
 import java.net.URL;
 
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class openMd extends Application
 {
-    String inpType = "";
+    public String inpType = "";
 
     private URL changeHtmlPage(String type) {
         return switch (type){

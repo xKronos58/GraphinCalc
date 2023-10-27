@@ -1,4 +1,7 @@
-md-block { white-space: normal; font-family: monospace; }
+md-block { white-space: normal; font-family: monospace;
+    padding: 5rem;
+    border-radius: 30px;
+    border-width: 2px;}
 
 .main {
     width: auto;
@@ -8,5 +11,42 @@ md-block { white-space: normal; font-family: monospace; }
     border-color: darkslategray;
 }
 body {
-    background-color: rgb(29 30 31);
+    background-color: #1D1E1FFF;
+}
+
+.settingsMenuButton {
+    -fx-padding-top: 10;
+    -fx-padding-bottom: 10;
+    -fx-border-width: 0;
+    -fx-background-color: #0c0c0c;
+    -fx-text-fill: white;
+    -fx-text-alignment: left;
+}
+
+.scrollMenuView {
+    -fx-background-color: #0c0c0c;
+}
+
+.SettingsPage {
+    -fx-background-color: #1D1E1FFF;
+}
+
+.SettingsText {
+    -fx-text-fill: white;
+}
+
+.languageInputBox {
+    -fx-text-fill: white;
+    -fx-background-color: #1D1E1FFF;
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+.CheckBoxSettings {
+    -fx-text-fill: white;
+    -fx-background-color: #1D1E1FFF;
+}
+
+.Seperator {
+    -fx-background-color: #313131;
 }

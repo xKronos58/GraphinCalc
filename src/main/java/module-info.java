@@ -7,4 +7,6 @@ module com.example.gcalc {
 
     opens com.example.gcalc to javafx.fxml;
     exports com.example.gcalc;
+    exports com.example.gcalc.Launchers;
+    opens com.example.gcalc.Launchers to javafx.fxml;
 }

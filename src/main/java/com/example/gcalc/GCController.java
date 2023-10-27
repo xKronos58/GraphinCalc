@@ -3,11 +3,21 @@ package com.example.gcalc;
 import com.example.gcalc.Calculator.EquationList;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.Calculator.SimpleArithmetic;
+import com.example.gcalc.Launchers.openMd;
+import com.example.gcalc.Launchers.openPopup;
+import com.example.gcalc.Launchers.openSettingsMenu;
 import com.example.gcalc.advancedCalculations.Expand;
 import com.example.gcalc.advancedCalculations.Factor;
 import com.example.gcalc.advancedCalculations.Solve;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -18,8 +28,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class GCController {
+public class GCController implements Initializable {
     public Button BCalcBtn;
     public Button SCalcBtn;
     public Button gCalcBtn;
@@ -57,12 +71,19 @@ public class GCController {
     public ScrollPane scrollViewMain;
     public AnchorPane apScroolView;
     public MenuItem CloseMenuItem;
+    public ScrollPane scrollViewMenu;
+    public Group generalSceneMid;
+    public SubScene _generalSceneMid;
+    public static boolean invalidEquation = false;
+    public ChoiceBox<String> langBox;
 
+    public List<String> SupportedLang = List.of(new String[]{"English", "Finnish", "Italian"});
 
     @FXML
     protected void changeCalc(ActionEvent actionEvent) {
         GCMain.ShowGraphingCalc();
     }
+
 
     public void changeCalcS(ActionEvent actionEvent) throws IOException {
         GCMain.ShowScientificCalc();
@@ -115,15 +136,25 @@ public class GCController {
                     HandleStack.evaluate(EquationField.getText()));
         }
 
+        if(invalidEquation){
+            t = new Text("Invalid expression");
+            t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
+            t.prefHeight(20);
+            if(equationNum > 4)
+                scrollHeight += 20;
+        }
+
         t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
         t.prefHeight(20);
-        if(equationNum > 4)
+        if(equationNum > 4 && !invalidEquation)
             scrollHeight += 38;
         textScreen.getChildren().add(t);
         EquationField.clear();
         textScreen.setPrefHeight(scrollHeight);
         scrollViewMain.setPrefHeight(scrollHeight);
         apScroolView.setPrefHeight(scrollHeight);
+
+        invalidEquation = false;
     }
 
     public void addPi(ActionEvent actionEvent) {
@@ -268,16 +299,25 @@ public class GCController {
         wbe.start(test);
     }
 
-    public void openPhysicsSettings(ActionEvent actionEvent) {
-
+    public void openPhysicsSettings(ActionEvent actionEvent) throws Exception {
+        openSettingsMenu opsm = new openSettingsMenu();
+        Stage s = new Stage();
+        opsm.menuType = "physics";
+        opsm.start(s);
     }
 
-    public void openGeneralSettings(ActionEvent actionEvent) {
-
+    public void openGeneralSettings(ActionEvent actionEvent) throws Exception {
+        openSettingsMenu opsm = new openSettingsMenu();
+        Stage s = new Stage();
+        opsm.menuType = "general";
+        opsm.start(s);
     }
 
-    public void openGraphingSettings(ActionEvent actionEvent) {
-
+    public void openGraphingSettings(ActionEvent actionEvent) throws Exception {
+        openSettingsMenu opsm = new openSettingsMenu();
+        Stage s = new Stage();
+        opsm.menuType = "graphing";
+        opsm.start(s);
     }
 
     public void addPlus(ActionEvent actionEvent) {
@@ -306,5 +346,59 @@ public class GCController {
 
     public void addEquals(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "=");
+    }
+
+    public static Parent LoadScene(String type) throws IOException {
+        FXMLLoader x = switch (type) {
+            case "general" -> new FXMLLoader(GCMain.class.getResource("Settings/SettingsSubPanes/general.fxml"));
+            case "style" -> new FXMLLoader(GCMain.class.getResource("Settings/SettingsSubPanes/style.fxml"));
+            case "performance" -> new FXMLLoader(GCMain.class.getResource("Settings/SettingsSubPanes/performance.fxml"));
+            case "units" -> new FXMLLoader(GCMain.class.getResource("Settings/SettingsSubPanes/units.fxml"));
+            case "import" -> new FXMLLoader(GCMain.class.getResource("Settings/SettingsSubPanes/import.fxml"));
+            default -> throw new IllegalArgumentException("Settings-Sub-Class does not exist");
+        };
+
+        return x.load();
+    }
+
+    public void openGeneralSettingsMenu(ActionEvent actionEvent) throws IOException {
+        Parent general = LoadScene("general");
+        generalSceneMid.getChildren().setAll(general);
+    }
+
+    public void openStyleSettingsMenu(ActionEvent actionEvent) throws IOException {
+        Parent style = LoadScene("style");
+        generalSceneMid.getChildren().setAll(style);
+    }
+
+    public void openPerformanceSettingsMenu(ActionEvent actionEvent) throws IOException {
+        Parent performance = LoadScene("performance");
+        generalSceneMid.getChildren().setAll(performance);
+    }
+
+    public void openUnitsSettingsMenu(ActionEvent actionEvent) throws IOException {
+        Parent units = LoadScene("units");
+        generalSceneMid.getChildren().setAll(units);
+    }
+
+    public void openImportSettingsMenu(ActionEvent actionEvent) throws IOException {
+        Parent _import = LoadScene("import");
+        generalSceneMid.getChildren().setAll(_import);
+    }
+
+    public void AutoUpdate(ActionEvent actionEvent) {
+
+    }
+
+    private void initializeLangChoices() {
+        ObservableList<String> list = FXCollections.observableArrayList();
+        list.addAll(SupportedLang);
+        langBox.getItems().addAll(list);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if(String.valueOf(url).contains("general.fxml"))
+            initializeLangChoices();
     }
 }

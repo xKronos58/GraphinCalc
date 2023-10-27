@@ -1,5 +1,6 @@
-package com.example.gcalc;
+package com.example.gcalc.Launchers;
 
+import com.example.gcalc.GCMain;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

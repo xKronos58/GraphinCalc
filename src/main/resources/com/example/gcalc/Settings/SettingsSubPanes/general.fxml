@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="250.0" prefWidth="390.0" styleClass="SettingsPage" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gcalc.GCController">
+    <CheckBox layoutX="358.0" layoutY="19.0" mnemonicParsing="false" onAction="#AutoUpdate" prefHeight="17.0" prefWidth="17.0" styleClass="CheckBoxSettings" />
+    <Text fill="WHITE" layoutX="14.0" layoutY="69.0" styleClass="SettingsText" text="Language" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="56.431640625" />
+    <ChoiceBox fx:id="langBox" layoutX="172.0" layoutY="50.0" minHeight="0.0" prefHeight="27.0" prefWidth="204.0" styleClass="languageInputBox" />
+   <Separator layoutY="25.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <Text fill="WHITE" layoutX="14.0" layoutY="32.0" styleClass="SettingsText" text="Auto Update" />
+   <Text fill="WHITE" layoutX="12.0" layoutY="105.0" styleClass="SettingsText" text="Auto Save" />
+   <Separator layoutX="4.0" layoutY="41.0" prefWidth="200.0" styleClass="Seperator" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="0.0" />
+   <Separator layoutY="84.0" prefWidth="200.0" styleClass="Seperator" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   <CheckBox layoutX="358.0" layoutY="92.0" mnemonicParsing="false" onAction="#AutoUpdate" prefHeight="17.0" prefWidth="17.0" styleClass="CheckBoxSettings">
+      <cursor>
+         <Cursor fx:constant="OPEN_HAND" />
+      </cursor>
+   </CheckBox>
+</AnchorPane>
