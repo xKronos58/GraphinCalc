@@ -1,7 +1,6 @@
 package com.example.gcalc;
 
 import com.example.gcalc.Calculator.ConvertCoPx;
-import com.example.gcalc.Calculator.EvalEquation;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.Calculator.Main;
 import javafx.application.Application;

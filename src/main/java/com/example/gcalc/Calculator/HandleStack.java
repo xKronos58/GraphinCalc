@@ -6,7 +6,7 @@ import java.util.Stack;
 public class HandleStack {
     public static boolean handlePredefinedEquation(String equation) throws IOException {
 
-        switch (equation) {
+        /*switch (equation) {
             case "mfd0", "mfd1", "mfd2" -> {
                 System.out.printf("The magnetic flux density is "
                         + EquationList.LoadMFD(equation.charAt(equation.length() - 1))
@@ -33,7 +33,8 @@ public class HandleStack {
             default -> {
                 return false;
             }
-        }
+        }*/
+        return false;
     }
 
     public static double evaluate(String _expression) {

@@ -16,7 +16,6 @@ public class Main {
      */
     public HandleStack handleStack;
     public EquationList equationList;
-    public EvalEquation evalEquation;
     public SimpleArithmetic simpleArithmetic;
     public Constants constants;
 

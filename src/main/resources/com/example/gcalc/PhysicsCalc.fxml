@@ -42,13 +42,13 @@
             <Button fx:id="sqrtBtn" onAction="#sqrd" prefHeight="20" prefWidth="Infinity" text="x²" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Button fx:id="poeBtn" onAction="#poe" prefHeight="20" prefWidth="Infinity" text="x^e" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
-            <Button fx:id="mfdBtn" onAction="#mfd" prefHeight="20" prefWidth="Infinity" text="mfd0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Button fx:id="spdBtn" onAction="#spd" prefHeight="20" prefWidth="Infinity" text="spd0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Button fx:id="masBtn" onAction="#mas" prefHeight="20" prefWidth="Infinity" text="mas0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="mfdBtn" onAction="#mfd" prefHeight="20" prefWidth="Infinity" text="mfd" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="spdBtn" onAction="#spd" prefHeight="20" prefWidth="Infinity" text="spd" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button fx:id="masBtn" onAction="#mas" prefHeight="20" prefWidth="Infinity" text="mas" GridPane.columnIndex="3" GridPane.rowIndex="3" />
 
-            <Button fx:id="sopBtn" onAction="#sop" prefHeight="20" prefWidth="Infinity" text="sop0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+            <Button fx:id="sopBtn" onAction="#sop" prefHeight="20" prefWidth="Infinity" text="sop" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <Button fx:id="convBtn" onAction="#conv" prefHeight="20" prefWidth="Infinity" text="conv" GridPane.columnIndex="4" GridPane.rowIndex="2" />
-            <Button fx:id="tevBtn" onAction="#tev" prefHeight="20" prefWidth="Infinity" text="tev0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+            <Button fx:id="tevBtn" onAction="#tev" prefHeight="20" prefWidth="Infinity" text="tev" GridPane.columnIndex="4" GridPane.rowIndex="3" />
 
             <Button fx:id="solveBtn" onAction="#solve" prefHeight="20" prefWidth="Infinity" text="Solve()" GridPane.columnIndex="5" GridPane.rowIndex="1" />
             <Button fx:id="expandBtn" onAction="#expand" prefHeight="20" prefWidth="Infinity" text="Expand()" GridPane.columnIndex="5" GridPane.rowIndex="2" />
@@ -84,7 +84,9 @@
                <MenuItem mnemonicParsing="false" onAction="#openReadme" text="Readme" />
            </Menu>
            <Menu mnemonicParsing="false" text="Settings">
-               <MenuItem mnemonicParsing="false" text="Physics Settings" />
+               <MenuItem mnemonicParsing="false" text="Physics Settings" onAction="#openPhysicsSettings"/>
+               <MenuItem mnemonicParsing="false" text="General Settings" onAction="#openGeneralSettings"/>
+               <MenuItem mnemonicParsing="false" text="Graphing Settings" onAction="#openGraphingSettings"/>
            </Menu>
            <Menu mnemonicParsing="false" text="Supported">
                <MenuItem mnemonicParsing="false" text="Supported Solve Eqs" onAction="#openSolveSupported"/>

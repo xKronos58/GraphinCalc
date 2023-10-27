@@ -28,7 +28,7 @@ public class SimpleArithmetic /*This class name is a lie lol, it is the most com
     private static final Set<String> _validUnitsLight = new HashSet<>(Arrays.asList("", "")); // 1 = cd
 
 
-    public static double Convert() throws IOException {
+    public static double Convert(String text) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.print("please a value followed by type 2 units to be converted,\n seperated by a space (in for of cm m, etc) or a type (micro giga): ");
         String unitsJoined = reader.readLine();

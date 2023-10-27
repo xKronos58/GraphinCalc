@@ -1,6 +1,8 @@
 package com.example.gcalc;
 
+import com.example.gcalc.Calculator.EquationList;
 import com.example.gcalc.Calculator.HandleStack;
+import com.example.gcalc.Calculator.SimpleArithmetic;
 import com.example.gcalc.advancedCalculations.Expand;
 import com.example.gcalc.advancedCalculations.Factor;
 import com.example.gcalc.advancedCalculations.Solve;
@@ -49,11 +51,13 @@ public class GCController {
     public Boolean solve = false;
     public Boolean expand = false;
     public Boolean factor = false;
+    public String type = "equation";
     @FXML
     public static int scrollHeight = 181;
     public ScrollPane scrollViewMain;
     public AnchorPane apScroolView;
     public MenuItem CloseMenuItem;
+
 
     @FXML
     protected void changeCalc(ActionEvent actionEvent) {
@@ -91,22 +95,25 @@ public class GCController {
         equationNum++;
 
         // Checks the type of method being used
-        if(EquationField.getText().isEmpty() || HandleStack.handlePredefinedEquation(EquationField.getText()))
+        if(EquationField.getText().isEmpty())
             return;
-        else if (solve) {
-            double sol = Solve.solve(EquationField.getText());
-            t = new Text(EquationField.getText() + "\n    = " +
-                    (Solve.has2Sol ? Solve.sol2 : sol ));
+
+        switch (type) {
+            case "solve" -> {
+                double sol = Solve.solve(EquationField.getText());
+                t = new Text(EquationField.getText() + "\n    = " +
+                        (Solve.has2Sol ? Solve.sol2 : sol ));
+            } case "expand" -> t = new Text(EquationField.getText() + "\n    = " +
+                    Expand.expand(EquationField.getText()));
+            case "factor" -> t = new Text(EquationField.getText() + "\n    = " +
+                    Factor.factor(EquationField.getText()));
+            case "mfd", "spd", "mas", "sop", "tev" -> t = new Text(EquationField.getText() + "\n    = " +
+                    EquationList.predefinedEquation(EquationField.getText(), type));
+            case "conv" -> t = new Text(EquationField.getText() + "\n    = " +
+                    SimpleArithmetic.Convert(EquationField.getText()));
+            default -> t = new Text(EquationField.getText() + "\n    = " +
+                    HandleStack.evaluate(EquationField.getText()));
         }
-        else if (expand)
-            t = new Text(EquationField.getText() + "\n    = " +
-                        Expand.expand(EquationField.getText()));
-        else if (factor)
-            t = new Text(EquationField.getText() + "\n    = " +
-                        Factor.factor(EquationField.getText()));
-        else
-            t = new Text(EquationField.getText() + "\n    = " +
-                        HandleStack.evaluate(EquationField.getText()));
 
         t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
         t.prefHeight(20);
@@ -156,42 +163,48 @@ public class GCController {
     }
 
     public void mfd(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "mfd0(");
+        EquationField.setText(EquationField.getText() + "mfd(");
+        type = "mfd";
     }
 
     public void spd(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "spd0(");
+        EquationField.setText(EquationField.getText() + "spd(");
+        type = "spd";
     }
 
     public void mas(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "mas0(");
+        EquationField.setText(EquationField.getText() + "mas(");
+        type = "mas";
     }
 
     public void sop(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "sop0(");
+        EquationField.setText(EquationField.getText() + "sop(");
+        type = "sop";
     }
 
     public void conv(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "conv(");
+        type = "conv";
     }
 
     public void tev(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "tev(");
+        type = "tev";
     }
 
     public void solve(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "solve(");
-        solve = true;
+        type = "solve";
     }
 
     public void expand(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "expand(");
-        expand = true;
+        type = "expand";
     }
 
     public void factor(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "factor(");
-        factor = true;
+        type = "factor";
     }
 
     public void openBrace(ActionEvent actionEvent) {
@@ -202,8 +215,11 @@ public class GCController {
         EquationField.setText(EquationField.getText() + ")");
     }
 
-    public void arthsymb(ActionEvent actionEvent) {
-        //TODO handle this
+    public void arthsymb(ActionEvent actionEvent) throws Exception {
+        openPopup op = new openPopup();
+        Stage s = new Stage();
+        op.popupType = "operator";
+        op.start(s);
     }
 
     public void close(ActionEvent actionEvent) {
@@ -250,5 +266,45 @@ public class GCController {
         Stage test = new Stage();
         wbe.inpType = "constantsSupported";
         wbe.start(test);
+    }
+
+    public void openPhysicsSettings(ActionEvent actionEvent) {
+
+    }
+
+    public void openGeneralSettings(ActionEvent actionEvent) {
+
+    }
+
+    public void openGraphingSettings(ActionEvent actionEvent) {
+
+    }
+
+    public void addPlus(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "+");
+    }
+
+    public void addMinus(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "-");
+    }
+
+    public void addDivide(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "/");
+    }
+
+    public void addMult(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "*");
+    }
+
+    public void addAbsol(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "|");
+    }
+
+    public void addPower(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "^");
+    }
+
+    public void addEquals(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "=");
     }
 }

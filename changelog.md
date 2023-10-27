@@ -2,6 +2,12 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.04.A
+- ### Did some general cleanup of code 
+- ### Removed unused classes
+- ### Added Base for menus and button popup screens 
+- ### Added support for equations inside the physics calculator
+
 ## B-0.03.C
 - ### Added inbuilt supported actions for user reference
 
