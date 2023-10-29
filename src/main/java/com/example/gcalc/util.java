@@ -13,7 +13,7 @@ public class util {
         throw new IllegalArgumentException("Char not found inside string");
     }
 
-    public static int untilSymbol(int startIndex, String x) {
+    public static int untilOperator(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
             if(isOperator(x.charAt(i)))
                 return i;
@@ -41,11 +41,20 @@ public class util {
         return x == '+' || x == '-' || x == '*' || x == '/';
     }
 
-    public static int HasChar(String x, int startIndex) {
+    public static int countChar(int startIndex, String x, char c) {
+        int o = 0;
         for(int i = startIndex; i < x.length(); i++)
-            if(Character.isLetter(x.charAt(i)))
-                return i;
-        return 0;
+            if(x.charAt(i) == c)
+                o++;
+        return o;
+    }
+
+    public static int countOperator(int startIndex, String x) {
+        int o = 0;
+        for(int i = startIndex; i < x.length(); i++)
+            if(isOperator(x.charAt(i)))
+                o++;
+        return o;
     }
 
 

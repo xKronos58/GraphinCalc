@@ -2,6 +2,9 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.04.C
+- ### Started expand rework
+
 ## B-0.04.B 
 - ### Started work on settings
 - ### General code cleanup

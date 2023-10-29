@@ -2,9 +2,7 @@ package com.example.gcalc.advancedCalculations;
 
 import com.example.gcalc.util;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class Solve {
 
@@ -94,7 +92,7 @@ public class Solve {
             @Override
             public Double solve(String equation, char variable) {
                 // Equation type a + e^(bx) = c
-                int c1 = util.untilSymbol(1, equation);
+                int c1 = util.untilOperator(1, equation);
                 double a = Double.parseDouble(equation.substring(0, c1)), // Grabs the first value
                         b = Double.parseDouble(equation.substring(util.until(c1, equation, '(') + 1, util.until(c1, equation, variable) -1)), // Grabs the coefficient to the value inside the exponent
                         c = Double.parseDouble(equation.substring(util.until(0, equation, '=') + 1)); // Grabs the final value
