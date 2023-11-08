@@ -9,39 +9,58 @@ public class Solve {
     public static boolean has2Sol = false;
 
     public static String sol2 = "";
+    public static char Var2 = 'y';
     public static double solve(String rawEquation) {
         // Types of equations that are supported view solveSupported.md
 
         String equation = rawEquation.substring(util.until(0, rawEquation, '(') + 1, rawEquation.length() - 3);
-        char variable = rawEquation.charAt(rawEquation.length() - 2);
-        char var2 = rawEquation.charAt(rawEquation.length() - 3);
-        Equation eqType = findEquationType(equation);
-        System.out.println(eqType.toString());
-        return eqType.solve(equation, variable);
+        char[] vars = util.pullVars(equation, rawEquation); // vars[0] will always be the first variable.
+        if(vars.length == 2) Var2 = vars[1];
+
+        return findEquationType(equation, (equation.charAt(0) == 't')).solve((equation.charAt(0) == 't') ?
+                equation.substring(util.until(0, equation, '(')+1, equation.length() - 1) : equation, vars[0]);
     }
 
-    public static Equation findEquationType(String equation) {
-        if (equation.matches("[-+]?[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*[-+]?\\s*[0-9]+\n")) {
-            return Equation.LINEAR;
-        } else if (equation.matches("[-+]?[0-9]*x\\^2\\s*[-+]?\\s*[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*0")) {
-            return Equation.QUADRATIC;
-        } else if (equation.matches("ALKSDJSANKLD" /* TODO: Figure out how to determine polynomial*/)) {
-            return Equation.POLYNOMIAL;
-        } else if (equation.contains("e^")) {
-            return Equation.EXPONENTIAL;
-        } else if (equation.contains("log(")) {
-            return Equation.LOGARITHMIC;
-        } else if (equation.contains("sin(") || equation.contains("cos(") || equation.contains("tan(")){
-            return Equation.TRIGONOMETRIC;
-        } else if (equation.contains(";")) {
-            return Equation.SIMULTANEOUS;
-        } else if (equation.contains("<") || equation.contains(">") || equation.contains("<=") || equation.contains(">=")) {
-            return Equation.INEQUALITY;
-        } else if (equation.matches("[xy]=.*")) {
-            return Equation.PARAMETRIC;
-        } else {
-            return Equation.OTHER;
+    public static Equation findEquationType(String equation, boolean predefined) {
+
+        if(predefined) {
+            String type = equation.substring(0, util.until(0, equation, '('));
+            return switch (type.toLowerCase()) {
+                case "t=linear" -> Equation.LINEAR;
+                case "t=quadratic" -> Equation.QUADRATIC;
+                case "t=polynomial" -> Equation.POLYNOMIAL;
+                case "t=exponential" -> Equation.EXPONENTIAL;
+                case "t=logarithmic" -> Equation.LOGARITHMIC;
+                case "t=trigonometric" -> Equation.TRIGONOMETRIC;
+                case "t=simultaneous", "t=system" -> Equation.SIMULTANEOUS;
+                case "t=inequality" -> Equation.INEQUALITY;
+                case "t=parametric" -> Equation.PARAMETRIC;
+                default -> throw new IllegalArgumentException(type + " is not supported");
+            };
         }
+
+
+        if (equation.matches("[-+]?[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*[-+]?\\s*[0-9]+\n"))
+            return Equation.LINEAR;
+         else if (equation.matches("[-+]?[0-9]*x\\^2\\s*[-+]?\\s*[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*0"))
+            return Equation.QUADRATIC;
+//         else if (equation.matches("" /* NOTE: POLYNOMIAL can not be defined in this context and thus */))
+//            return Equation.POLYNOMIAL;        Must be specified with the t= function
+         else if (equation.contains("e^"))
+            return Equation.EXPONENTIAL;
+         else if (equation.contains("log("))
+            return Equation.LOGARITHMIC;
+         else if (equation.contains("sin(") || equation.contains("cos(") || equation.contains("tan("))
+            return Equation.TRIGONOMETRIC;
+         else if (equation.contains(";"))
+            return Equation.SIMULTANEOUS;
+         else if (equation.contains("<") || equation.contains(">") || equation.contains("<=") || equation.contains(">="))
+            return Equation.INEQUALITY;
+         else if (equation.matches("[xy]=.*"))
+            return Equation.PARAMETRIC;
+         else
+            return Equation.OTHER;
+
     }
 
     public enum Equation {
@@ -51,7 +70,7 @@ public class Solve {
                 int x1 = util.until(0, equation, variable);
                 double a, b;
                 a = Double.parseDouble(equation.substring(0, x1));
-                b = Double.parseDouble(equation.substring(x1, equation.length() - 1));
+                b = Double.parseDouble(equation.substring(util.untilNum(x1, equation)));
                 if(a != 0)
                     return -b/a;
                 else
@@ -63,11 +82,8 @@ public class Solve {
             public Double solve(String equation, char variable) {
                 has2Sol = true;
                 // Split the equation into variables that can be put into the quadratic formula
-                int x1 = util.until(0, equation, 'x'), x2 = util.until(x1, equation, 'x');
-                double a, b, c;
-                a = Double.parseDouble(equation.substring(0, x1));
-                b = Double.parseDouble(equation.substring(x1+1, x2));
-                c = Double.parseDouble(equation.substring(x2 + 1, equation.length() - 1));
+                double[] coefficients = getCoefficients(equation);
+                double a = coefficients[0], b = coefficients[1], c = coefficients[2];
 
                 double discriminant = b * b - 4 * a * c;
                 if (discriminant > 0) {
@@ -78,7 +94,8 @@ public class Solve {
                 } else if (discriminant == 0) {
                     return (-b / (2 * a));
                 } else {
-                    throw new ArithmeticException("No real solutions for this quadratic equation.");
+                    sol2 = "NO REAL SOLUTIONS";
+                    return -0.0;
                 }
             }
         },
@@ -177,7 +194,7 @@ public class Solve {
                         x = (elements[2] * elements[4] - elements[5] * elements[1]) / divisor,
                         y = (elements[0] * elements[5] - elements[3] * elements[2]) / divisor;
 
-                sol2 = "(x = " + x + "; y = " + y + ")";
+                sol2 = String.format("(%s = %s); (%s = %s);",variable,x,Var2,x);
                 return x;
 
             }
@@ -203,7 +220,41 @@ public class Solve {
 
         public abstract Double solve(String equation, char variable);
     }
-}
 
-record varType(char type, int power, int posEq, int posIn) {
+    public static double[] getCoefficients(String equation) {
+        equation = equation.replaceAll(" ", ""); // Remove spaces
+
+        String[] parts = equation.split("(?=[-+])"); // Split at + or - signs
+
+        double a = 0, b = 0, c = 0;
+
+        for (String part : parts) {
+            if (part.endsWith("x^2")) {
+                a += parseCoefficient(part);
+            } else if (part.endsWith("x")) {
+                b += parseCoefficient(part);
+            } else {
+                c += parseCoefficient(part);
+            }
+        }
+
+        return new double[]{a, b, c};
+    }
+
+    public static double parseCoefficient(String term) {
+        if(term.contains("^2"))
+            term = term.replace("^2", "");
+
+        if (term.contains("x")) {
+            if (term.equals("x")) {
+                return 1;
+            } else if (term.equals("-x")) {
+                return -1;
+            } else {
+                return Double.parseDouble(term.replace("x", ""));
+            }
+        }
+        return Double.parseDouble(term);
+    }
+
 }

@@ -57,5 +57,22 @@ public class util {
         return o;
     }
 
+    public static char[] pullVars(String equation, String rawEquation) {
+        boolean isTerm = equation.charAt(0) == 't' && equation.charAt(1) == '=', c2 = has2Chars(rawEquation, isTerm);
+        char[] temp = new char[c2 ? 2 : 1];
+        for(int i = 0; i < temp.length; i++)
+            temp[i] = rawEquation.charAt(rawEquation.length() - (isTerm ? 3 + (c2 ? i : i - 1) : 2 + (c2 ? i : i - 1))); // Need to swap positions inside the array
+        // if there are 2 terms it should set number 1 to length - isTerm ? 3 : 2 and then number 2 in the array to length - isTErm ? 4 : 3
 
+        return temp;
+    }
+
+    // Sample raw term = solve(t=quadratic(x^2+2x-4,x)) || solve(x^2+2x-4,x)
+    // Sample with 2 t = solve(t=system(6x+3y=8;8x+1y=3,xy)) || solve(6x+3y=8;8x+1y=3,xy)
+    public static boolean has2Chars(String rawEquation, boolean isTerm) {
+        return (Character.isLetter(rawEquation.charAt(
+                    isTerm ? rawEquation.length() - 3 : rawEquation.length() - 2)) &&
+                Character.isLetter(rawEquation.charAt(
+                    isTerm ? rawEquation.length() - 4 : rawEquation.length() - 3)));
+    }
 }

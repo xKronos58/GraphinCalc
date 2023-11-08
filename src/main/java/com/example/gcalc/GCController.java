@@ -146,8 +146,10 @@ public class GCController implements Initializable {
 
         t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
         t.prefHeight(20);
+        t.prefWidth(600);
         if(equationNum > 4 && !invalidEquation)
             scrollHeight += 38;
+        t.prefWidth(600);
         textScreen.getChildren().add(t);
         EquationField.clear();
         textScreen.setPrefHeight(scrollHeight);

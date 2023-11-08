@@ -1,6 +1,5 @@
 package com.example.gcalc;
 
-import com.example.gcalc.Calculator.ConvertCoPx;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.Calculator.Main;
 import javafx.application.Application;
@@ -10,16 +9,12 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -38,6 +33,7 @@ public class GCMain extends Application {
 
         //Setting title to the Stage
         stage.setTitle("Graphing Calculator");
+        stage.getIcons().add(new Image(String.valueOf(GCMain.class.getResource("Images/Icon.png"))));
 
         //Adding scene to the stage
         stage.setScene(main);

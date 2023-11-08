@@ -2,6 +2,14 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.05.A
+- ### Added type definition for solve function
+- ### Added functioning quadratic solving when `solve(t=quadratic(equation=0))`
+- ### Did work on `Expand.java`
+- ### Added application icon
+<img src="src/main/resources/com/example/gcalc/Images/Icon.png" width="100px">
+ -
+
 ## B-0.04.C
 - ### Started expand rework
 
