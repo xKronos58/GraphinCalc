@@ -2,6 +2,12 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.06.A
+- ### Added `HCF()` & `LCM()` & `SimplifyQuadratic()`
+- ### Re-did physics calc button layout.
+- ### - NOTE functions and constants menus have not been worked on 
+- ### Added alerts for invalid equations and `errorMessage()` for a predefined error 
+
 ## B-0.05.A
 - ### Added type definition for solve function
 - ### Added functioning quadratic solving when `solve(t=quadratic(equation=0))`

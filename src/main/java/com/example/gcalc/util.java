@@ -1,5 +1,7 @@
 package com.example.gcalc;
 
+import javafx.scene.control.Alert;
+
 public class util {
 
     /**
@@ -7,32 +9,28 @@ public class util {
      * */
     public static int until(int startIndex, String x, char until) {
         for(int i = startIndex; i < x.length(); i++)
-            if(x.charAt(i) == until)
-                return i;
+            if(x.charAt(i) == until) return i;
 
         throw new IllegalArgumentException("Char not found inside string");
     }
 
     public static int untilOperator(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
-            if(isOperator(x.charAt(i)))
-                return i;
+            if(isOperator(x.charAt(i))) return i;
 
         throw new IllegalArgumentException("Char not found inside string");
     }
 
     public static int untilNum(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
-            if(Character.isDigit(x.charAt(i)))
-                return i;
+            if(Character.isDigit(x.charAt(i))) return i;
 
         throw new IllegalArgumentException("Char not found inside string");
     }
 
     public static int untilLetter(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
-            if(Character.isLetter(x.charAt(i)))
-                return i;
+            if(Character.isLetter(x.charAt(i))) return i;
 
         throw new IllegalArgumentException("Char not found inside string");
     }
@@ -44,16 +42,14 @@ public class util {
     public static int countChar(int startIndex, String x, char c) {
         int o = 0;
         for(int i = startIndex; i < x.length(); i++)
-            if(x.charAt(i) == c)
-                o++;
+            if(x.charAt(i) == c) o++;
         return o;
     }
 
     public static int countOperator(int startIndex, String x) {
         int o = 0;
         for(int i = startIndex; i < x.length(); i++)
-            if(isOperator(x.charAt(i)))
-                o++;
+            if(isOperator(x.charAt(i))) o++;
         return o;
     }
 
@@ -74,5 +70,19 @@ public class util {
                     isTerm ? rawEquation.length() - 3 : rawEquation.length() - 2)) &&
                 Character.isLetter(rawEquation.charAt(
                     isTerm ? rawEquation.length() - 4 : rawEquation.length() - 3)));
+    }
+
+    public static boolean hasPower(int startIndex, String x) {
+        for(int i = 0; i < x.length(); i++)
+            if(x.charAt(i) == '^') return true;
+
+        return false;
+    }
+
+    public static void errorMessage(String message, String title) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.show();
     }
 }

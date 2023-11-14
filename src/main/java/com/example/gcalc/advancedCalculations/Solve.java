@@ -1,6 +1,7 @@
 package com.example.gcalc.advancedCalculations;
 
 import com.example.gcalc.util;
+import javafx.scene.control.Alert;
 
 import java.util.Arrays;
 
@@ -35,10 +36,9 @@ public class Solve {
                 case "t=simultaneous", "t=system" -> Equation.SIMULTANEOUS;
                 case "t=inequality" -> Equation.INEQUALITY;
                 case "t=parametric" -> Equation.PARAMETRIC;
-                default -> throw new IllegalArgumentException(type + " is not supported");
+                default -> throw new IllegalArgumentException(type + " is not supported" + unsupportedEquation(type));
             };
         }
-
 
         if (equation.matches("[-+]?[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*[-+]?\\s*[0-9]+\n"))
             return Equation.LINEAR;
@@ -63,6 +63,11 @@ public class Solve {
 
     }
 
+    public static String unsupportedEquation(String eqType) {
+        util.errorMessage(eqType + " is not supported, please view the docs for supported equation types", "Unsupported equation");
+        return "";
+    }
+
     public enum Equation {
         LINEAR {
             @Override
@@ -81,6 +86,14 @@ public class Solve {
             @Override
             public Double solve(String equation, char variable) {
                 has2Sol = true;
+
+                if(!equation.substring(util.until(0, equation, '=')).equals("=0"))
+                    equation = Simplify.equationToString(Simplify.simplifyToQuadratic(equation));
+                // NOTE still no unexpanded recognition yet.
+
+                System.out.println(equation);
+
+                equation = equation.substring(0, equation.length() - 2); // removes "=0" as that is assumed later in the code
                 // Split the equation into variables that can be put into the quadratic formula
                 double[] coefficients = getCoefficients(equation);
                 double a = coefficients[0], b = coefficients[1], c = coefficients[2];

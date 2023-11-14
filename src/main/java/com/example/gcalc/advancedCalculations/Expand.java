@@ -16,26 +16,6 @@ public class Expand {
         return opRawList(multiply(storeElements(equation)));
     }
 
-    private static String simplify(List<term> terms) {
-        StringBuilder sb = new StringBuilder();
-        for(int t1 = 0; t1 < terms.size(); t1++) {
-            for(int t2 = 0; t2 < terms.size(); t2++) {
-                if(t1 == t2) break;
-                if((terms.get(t1).hasProNumeral() && terms.get(t2).hasProNumeral())
-                        && (terms.get(t1).proNumeral.equals(terms.get(t2).proNumeral))
-                        && (terms.get(t1).power == terms.get(t2).power)) {
-                    sb.append(terms.get(t1).coefficient + terms.get(t2).coefficient)
-                            .append(terms.get(t1).proNumeral)
-                            .append(terms.get(t1).hasPower() ? "^" + terms.get(t1).power : "")
-                            .append("+ ");
-                }
-            }
-        }
-
-
-        return sb.toString();
-    }
-
     private static String opRawList(List<term> terms) {
         StringBuilder sb = new StringBuilder();
         for(term t : terms)
@@ -135,7 +115,7 @@ public class Expand {
         }
     };
 
-    public record term(double coefficient, String proNumeral, double power) {
+    private record term(double coefficient, String proNumeral, double power) {
         //Default is 1
         boolean hasCoefficient() {return coefficient != 1;}
         //Default is _

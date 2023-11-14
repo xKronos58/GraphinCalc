@@ -142,7 +142,7 @@ public class GCMain extends Application {
         FXMLLoader loader = new FXMLLoader(GCMain.class.getResource("PhysicsCalc.fxml"));
         Parent PhysicsCalc = loader.load();
         _stage.setTitle("Physics Calculator");
-        Scene mainCallWindow = new Scene (PhysicsCalc, 750, 300);
+        Scene mainCallWindow = new Scene (PhysicsCalc, 770, 406);
         _stage.setScene(mainCallWindow);
     }
 

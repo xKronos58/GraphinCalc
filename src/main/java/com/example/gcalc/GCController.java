@@ -6,6 +6,7 @@ import com.example.gcalc.Calculator.SimpleArithmetic;
 import com.example.gcalc.Launchers.openMd;
 import com.example.gcalc.Launchers.openPopup;
 import com.example.gcalc.Launchers.openSettingsMenu;
+import com.example.gcalc.advancedCalculations.CommonFactor;
 import com.example.gcalc.advancedCalculations.Expand;
 import com.example.gcalc.advancedCalculations.Factor;
 import com.example.gcalc.advancedCalculations.Solve;
@@ -71,13 +72,32 @@ public class GCController implements Initializable {
     public ScrollPane scrollViewMain;
     public AnchorPane apScroolView;
     public MenuItem CloseMenuItem;
-    public ScrollPane scrollViewMenu;
     public Group generalSceneMid;
     public SubScene _generalSceneMid;
     public static boolean invalidEquation = false;
     public ChoiceBox<String> langBox;
 
     public List<String> SupportedLang = List.of(new String[]{"English", "Finnish", "Italian"});
+    public Button power;
+    public Button logNBtn;
+    public Button functionsBtn;
+    public Button ConstantsBtn;
+    public Button MatrixBtn;
+    public Button ArrayBtn;
+    public Button AbsoluteBtn;
+    public Button FractionBtn;
+    public Button PercentBtn;
+    public Button InequalityBtn;
+    public Button SimplifyBtn;
+    public Button HCFBtn;
+    public Button LCFBtn;
+    public Button power10;
+    public Button cubeRoot;
+    public Button plus;
+    public Button minus;
+    public Button multi;
+    public Button div;
+    public Button InfinityBtn;
 
     @FXML
     protected void changeCalc(ActionEvent actionEvent) {
@@ -132,17 +152,17 @@ public class GCController implements Initializable {
                     EquationList.predefinedEquation(EquationField.getText(), type));
             case "conv" -> t = new Text(EquationField.getText() + "\n    = " +
                     SimpleArithmetic.Convert(EquationField.getText()));
+            case "hcf" -> t = new Text(EquationField.getText() + "\n    = " +
+                    CommonFactor.HCF(EquationField.getText()));
+            case "lcf" -> t = new Text(EquationField.getText() + "\n    = " +
+                    CommonFactor.LCM(EquationField.getText()));
             default -> t = new Text(EquationField.getText() + "\n    = " +
                     HandleStack.evaluate(EquationField.getText()));
         }
 
-        if(invalidEquation){
-            t = new Text("Invalid expression");
-            t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
-            t.prefHeight(20);
-            if(equationNum > 4)
-                scrollHeight += 20;
-        }
+        if(invalidEquation)
+            util.errorMessage("Invalid expression", "Invalid Expression");
+
 
         t.setFont(Font.font("verdana", FontWeight.NORMAL, FontPosture.REGULAR, 16));
         t.prefHeight(20);
@@ -226,17 +246,17 @@ public class GCController implements Initializable {
     }
 
     public void solve(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "solve(");
+        EquationField.setText("solve(");
         type = "solve";
     }
 
     public void expand(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "expand(");
+        EquationField.setText("expand(");
         type = "expand";
     }
 
     public void factor(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "factor(");
+        EquationField.setText("factor(");
         type = "factor";
     }
 
@@ -402,5 +422,80 @@ public class GCController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         if(String.valueOf(url).contains("general.fxml"))
             initializeLangChoices();
+    }
+
+    public void showFunctionsMenu(ActionEvent actionEvent) {
+        //TODO
+    }
+
+    public void showConstantsMenu(ActionEvent actionEvent) {
+        //TODO
+    }
+
+    public void matrix(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "|[][]|;|[][]|");
+    }
+
+    public void array(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "[{},{}]");
+    }
+
+    public void absoltue(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "|0|");
+    }
+
+    public void fraction(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "/");
+    }
+
+    public void percent(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "%");
+    }
+
+    public void Inequality(ActionEvent actionEvent) {
+        //TODO (MENU NEEDED)
+    }
+
+    public void simplify(ActionEvent actionEvent) {
+        EquationField.setText("simplify(");
+        type = "simplify";
+    }
+
+    public void HCF(ActionEvent actionEvent) {
+        EquationField.setText("HCF(");
+        type = "hcf";
+    }
+
+    public void LCF(ActionEvent actionEvent) {
+        EquationField.setText("LCF(");
+        type = "lcf";
+    }
+
+    public void power10(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "*10^");
+    }
+
+    public void cubeRoot(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "cqrt[](");
+    }
+
+    public void add(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "+");
+    }
+
+    public void minus(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "-");
+    }
+
+    public void mult(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "*");
+    }
+
+    public void div(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "/");
+    }
+
+    public void infinity(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "inf");
     }
 }
