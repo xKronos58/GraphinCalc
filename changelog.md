@@ -2,6 +2,10 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.07.B 
+- Cleaned up and updated `READNE.md`
+- Provided new screenshots for application after reworks 
+- Fixed minor bug that was not caught with last commit inside the `cqrt[]{}` method as the `()` were changed to `{}` and the application was still searching for `()` to finish the equation.
 ## B-0.07.A
 -  Reworked graph plotting, graphs are now added accurately.
   - NOTE: Graphs that have r() or ^2 are not evaluated correctly in the negatives. Due to an unknown cause 
@@ -60,7 +64,7 @@ See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A =
 
 ## B-0.01.A
 -  Added change log
--  Extended Constants Lib
+- ### Extended Constants Lib
     Added Constants.md (List of supported / planned lib constants)
 
     Added Constants: 

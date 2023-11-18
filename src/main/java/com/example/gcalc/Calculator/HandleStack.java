@@ -145,7 +145,7 @@ public class HandleStack {
             } else if (expression.length() > i + 5 && (expression.charAt(i) == 'c' && expression.charAt(i + 1) == 'q')) {
                 operandStack.push(Math.pow(HandleStack.evaluate(expression.substring(util.until(i + 5, expression, ']') + 2, util.until(i + 5, expression, '}'))),
                         1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']')))));
-                i = util.until(i+5, expression, ')');
+                i = util.until(i+5, expression, '}');
             }
             else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
                 final boolean c = expression.length() > i + 1 && expression.charAt(i + 1) == 'c';
