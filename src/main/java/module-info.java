@@ -9,4 +9,6 @@ module com.example.gcalc {
     exports com.example.gcalc;
     exports com.example.gcalc.Launchers;
     opens com.example.gcalc.Launchers to javafx.fxml;
+    exports com.example.gcalc.SettingsControllers;
+    opens com.example.gcalc.SettingsControllers to javafx.fxml;
 }

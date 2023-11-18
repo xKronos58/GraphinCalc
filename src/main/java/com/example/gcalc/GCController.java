@@ -3,13 +3,11 @@ package com.example.gcalc;
 import com.example.gcalc.Calculator.EquationList;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.Calculator.SimpleArithmetic;
+import com.example.gcalc.SettingsControllers.Menu;
 import com.example.gcalc.Launchers.openMd;
 import com.example.gcalc.Launchers.openPopup;
 import com.example.gcalc.Launchers.openSettingsMenu;
-import com.example.gcalc.advancedCalculations.CommonFactor;
-import com.example.gcalc.advancedCalculations.Expand;
-import com.example.gcalc.advancedCalculations.Factor;
-import com.example.gcalc.advancedCalculations.Solve;
+import com.example.gcalc.advancedCalculations.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,7 +28,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -50,22 +47,12 @@ public class GCController implements Initializable {
     public Button tanBtn;
     public Button rootBtn;
     public Button sqrtBtn;
-    public Button poeBtn;
-    public Button mfdBtn;
-    public Button spdBtn;
-    public Button masBtn;
-    public Button sopBtn;
     public Button convBtn;
-    public Button tevBtn;
     public Button solveBtn;
     public Button expandBtn;
     public Button factorBtn;
     public Button braoBtn;
     public Button bracBtn;
-    public Button arthBtn;
-    public Boolean solve = false;
-    public Boolean expand = false;
-    public Boolean factor = false;
     public String type = "equation";
     @FXML
     public static int scrollHeight = 181;
@@ -148,6 +135,8 @@ public class GCController implements Initializable {
                     Expand.expand(EquationField.getText()));
             case "factor" -> t = new Text(EquationField.getText() + "\n    = " +
                     Factor.factor(EquationField.getText()));
+            case "simplify" -> t= new Text(EquationField.getText() + "\n    = " +
+                    Simplify.simplifyRaw(EquationField.getText()));
             case "mfd", "spd", "mas", "sop", "tev" -> t = new Text(EquationField.getText() + "\n    = " +
                     EquationList.predefinedEquation(EquationField.getText(), type));
             case "conv" -> t = new Text(EquationField.getText() + "\n    = " +
@@ -236,8 +225,8 @@ public class GCController implements Initializable {
     }
 
     public void conv(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "conv(");
-        type = "conv";
+//        EquationField.setText(EquationField.getText() + "conv(");
+//        type = "conv";
     }
 
     public void tev(ActionEvent actionEvent) {
@@ -428,8 +417,10 @@ public class GCController implements Initializable {
         //TODO
     }
 
-    public void showConstantsMenu(ActionEvent actionEvent) {
-        //TODO
+    public void showConstantsMenu(ActionEvent actionEvent) throws Exception {
+        Menu m = new Menu();
+        Menu.type = 0;
+        m.start(new Stage());
     }
 
     public void matrix(ActionEvent actionEvent) {
@@ -476,7 +467,7 @@ public class GCController implements Initializable {
     }
 
     public void cubeRoot(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "cqrt[](");
+        EquationField.setText(EquationField.getText() + "cqrt[]{");
     }
 
     public void add(ActionEvent actionEvent) {
@@ -497,5 +488,13 @@ public class GCController implements Initializable {
 
     public void infinity(ActionEvent actionEvent) {
         EquationField.setText(EquationField.getText() + "inf");
+    }
+
+    public void pow(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "^");
+    }
+
+    public void logn(ActionEvent actionEvent) {
+        EquationField.setText(EquationField.getText() + "_ln(");
     }
 }

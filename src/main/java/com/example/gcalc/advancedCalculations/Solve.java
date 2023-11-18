@@ -216,7 +216,7 @@ public class Solve {
             @Override
             public Double solve(String equation, char variable) {
                 return 0.0;
-            }
+            } //TODO implement brute force method
         },
         INEQUALITY {
             @Override

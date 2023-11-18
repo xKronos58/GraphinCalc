@@ -9,8 +9,7 @@ import java.util.Objects;
 public class Simplify {
 
     public static equation simplifyRaw(String rawEquation) {
-
-
+        equationTerms equation = stringEquationToTerm(rawEquation);
 
         return new equation("k");
     }
@@ -113,9 +112,67 @@ public class Simplify {
         boolean hasPower() {return power != 1;}
     }
 
+    // Redone version of parseStringToTerm() as this handles more information
+    public static equationTerms stringEquationToTerm(String equation) {
+        int lastOp = util.untilNum(0, equation), eqPos = util.until(0, equation, '=');
+        List<term> left = new ArrayList<>(), right = new ArrayList<>();
+        for(int i = 0; i < equation.length(); i++){
+            String temp;
+            if(util.isOperator(equation.charAt(i))) {
+                temp = equation.substring(lastOp, i);
+            } else continue;
+
+            if(i > eqPos)
+                right.add(stringTermToTerm(temp));
+            else
+                left.add(stringTermToTerm(temp));
+        }
+
+        return new equationTerms(left, right);
+    }
+    private static term stringTermToTerm(String term) {
+        StringBuilder coefficient = new StringBuilder(), power = new StringBuilder();
+        char operator = '_';
+        StringBuilder proNumeral = new StringBuilder();
+        for(int i = 0; i < term.length(); i++){
+            if(util.isOperator(term.charAt(i)))
+                operator = term.charAt(i);
+            else if(Character.isLetter(term.charAt(i))) {
+                while (Character.isLetter(term.charAt(i))) {
+                    proNumeral.append(term.charAt(i));
+                    if(i++ == term.length()) break;
+                }
+                i--;
+            } else if (Character.isDigit(term.charAt(i))) {
+                if(i == 0 || term.charAt(i - 1) != '^'){ // coefficient
+                    while(Character.isDigit(term.charAt(i))){
+                        coefficient.append(term.charAt(i));
+                        if(i++ == term.length()) break;
+                    }
+                    i--;
+                } else { // Power
+                    while(i < term.length() && Character.isDigit(term.charAt(i))) {
+                        power.append(term.charAt(i));
+                        if(i++ == term.length()) break;
+                    }
+                }
+            }
+        }
+        if(coefficient.toString().isEmpty())
+            coefficient.append("1");
+        else if (power.toString().isEmpty())
+            power.append("1");
+        else if (proNumeral.toString().isEmpty())
+            proNumeral.append("_");
+
+
+        return new term(Double.parseDouble(coefficient.toString()), proNumeral.toString(), Double.parseDouble(power.toString()), operator);
+    }
+
     public record equation(String equation) {}
     public record equationSplit(String left, String right) {
     }
+    public record equationTerms(List<term> left, List<term> right) {};
 
 
 }

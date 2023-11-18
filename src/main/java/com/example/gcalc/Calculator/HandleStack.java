@@ -1,6 +1,7 @@
 package com.example.gcalc.Calculator;
 
 import com.example.gcalc.GCController;
+import com.example.gcalc.util;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -61,7 +62,7 @@ public class HandleStack {
                 }
                 i--; // Move back one step to account for the loop increment
                 double number = Double.parseDouble(operand.toString());
-                if(negative) {
+                if (negative) {
                     operandStack.push(number * -1);
                     break;
                 }
@@ -93,6 +94,16 @@ public class HandleStack {
                 }
                 operatorStack.pop(); // Pop the '('
                 lastTokenWasOperator = false;
+            } else if (currentChar == '|') {
+                if(expression.charAt(i + 1) == '[') { // matrix
+
+                } else {
+                    int end = util.until(i += 1, expression, '|');
+                    operandStack.push(Math.abs(evaluate(expression.substring(i, end))));
+                    i = end;
+                }
+            } else if (expression.length() > i + 2 && (currentChar == 'i' && expression.charAt(i + 1) == 'n' && expression.charAt(i + 2) == 'f')) {
+                operandStack.push(Double.POSITIVE_INFINITY);
             } else if (currentChar == 'r' && (i + 1) < expression.length() && expression.charAt(i + 1) == '(') {
                 i += 2; // Skip "r("
                 StringBuilder operand = new StringBuilder();
@@ -102,6 +113,13 @@ public class HandleStack {
                 }
                 operandStack.push(Math.sqrt(evaluate(operand.toString())));
                 lastTokenWasOperator = false;
+            } else if (expression.length() > i+8 && (currentChar == 'c' && expression.charAt(i + 1) == 'b' && expression.charAt(i + 2) == 'r')) { //cbrt[]() (len = 8)
+                // First grab contents of [x]
+                int expEnd = util.until(i, expression, '}');
+                String rootPow = expression.substring(util.until(i, expression, '[') + 1, util.until(i, expression, ']') - 1);
+                String root = expression.substring(util.until(i, expression, '{') + 1, expEnd);
+                i += expEnd;
+                operandStack.push(Math.pow(HandleStack.evaluate(root), 1 / Double.parseDouble(rootPow)));
             } else if (i + 4 < expression.length() && (
                     (currentChar == 's' && expression.charAt(i + 1) == 'i')
                             || (currentChar == 'c' && expression.charAt(i + 1) == 'o')
@@ -124,8 +142,13 @@ public class HandleStack {
 
                 }
                 lastTokenWasOperator = false;
-            } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
-                final boolean c = expression.length() >= i + 1 && expression.charAt(i + 1) == 'c';
+            } else if (expression.length() > i + 5 && (expression.charAt(i) == 'c' && expression.charAt(i + 1) == 'q')) {
+                operandStack.push(Math.pow(HandleStack.evaluate(expression.substring(util.until(i + 5, expression, ']') + 2, util.until(i + 5, expression, '}'))),
+                        1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']')))));
+                i = util.until(i+5, expression, ')');
+            }
+            else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
+                final boolean c = expression.length() > i + 1 && expression.charAt(i + 1) == 'c';
                 switch (currentChar) {
                     case 'e' -> operandStack.push(Constants.e);
                     case 'p' -> {
@@ -170,20 +193,8 @@ public class HandleStack {
     }
 
 
-    public static double evaluateGraph(String equation, double point) {
-        StringBuilder finalEquation = new StringBuilder();
-        int i = 0, j = 0;
-        while(i < equation.length()) {
-            if(equation.charAt(i) == 'x')
-            {
-                finalEquation.append(equation, j, i);
-                finalEquation.append(point);
-                j = i + 1;
-            }
-            i++;
-        }
-
-        return evaluate(String.valueOf(finalEquation));
+    public static double evaluateGraph(String equation, double x) {
+        return evaluate(equation.replace("x", Double.toString(x)));
     }
 
     private static boolean isOperator(char c) {

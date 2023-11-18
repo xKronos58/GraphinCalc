@@ -14,6 +14,9 @@ public class util {
         throw new IllegalArgumentException("Char not found inside string");
     }
 
+    /**
+     * Takes a `Start index` and returns the position of the next operator inside the string.
+     * */
     public static int untilOperator(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
             if(isOperator(x.charAt(i))) return i;
@@ -21,6 +24,9 @@ public class util {
         throw new IllegalArgumentException("Char not found inside string");
     }
 
+    /**
+     * Takes a start index and then returns the position of the next digit inside the string.
+     * */
     public static int untilNum(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
             if(Character.isDigit(x.charAt(i))) return i;
@@ -28,6 +34,9 @@ public class util {
         throw new IllegalArgumentException("Char not found inside string");
     }
 
+    /**
+     * Takes a start index and then returns the position of the next english letter inside the string.
+     * */
     public static int untilLetter(int startIndex, String x) {
         for(int i = startIndex; i < x.length(); i++)
             if(Character.isLetter(x.charAt(i))) return i;
@@ -35,6 +44,9 @@ public class util {
         throw new IllegalArgumentException("Char not found inside string");
     }
 
+    /**
+     * checks if the char is classified as an operator (+, -, *, /)
+     * */
     public static boolean isOperator(char x) {
         return x == '+' || x == '-' || x == '*' || x == '/';
     }
@@ -46,12 +58,16 @@ public class util {
         return o;
     }
 
+    /**
+     * Takes a start index and counts all remaining operators inside the string.
+     * */
     public static int countOperator(int startIndex, String x) {
         int o = 0;
         for(int i = startIndex; i < x.length(); i++)
             if(isOperator(x.charAt(i))) o++;
         return o;
     }
+
 
     public static char[] pullVars(String equation, String rawEquation) {
         boolean isTerm = equation.charAt(0) == 't' && equation.charAt(1) == '=', c2 = has2Chars(rawEquation, isTerm);
@@ -79,6 +95,9 @@ public class util {
         return false;
     }
 
+    /**
+     * Takes a description and title and builds an alert message with some boilerplate code to minimize copy-pasting and code clutter.
+     * */
     public static void errorMessage(String message, String title) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

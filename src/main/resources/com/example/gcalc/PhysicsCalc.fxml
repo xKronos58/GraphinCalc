@@ -46,9 +46,9 @@
             <Button fx:id="eBtn" onAction="#addE" prefHeight="20" prefWidth="Infinity" text="E" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <Button fx:id="sqrtBtn" onAction="#sqrd" prefHeight="20" prefWidth="Infinity" text="x²" GridPane.columnIndex="0" GridPane.rowIndex="3" />
             <Button fx:id="poeBtn" onAction="#poe" prefHeight="20" prefWidth="Infinity" text="x^e" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <Button fx:id="power" onAction="#poe" prefHeight="20" prefWidth="Infinity" text="^x" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <Button fx:id="power" onAction="#pow" prefHeight="20" prefWidth="Infinity" text="^x" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 
-            <Button fx:id="logNBtn" onAction="#log" prefHeight="20" prefWidth="Infinity" text="_ln()" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="logNBtn" onAction="#logn" prefHeight="20" prefWidth="Infinity" text="_ln()" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="logBtn" onAction="#log" prefHeight="20" prefWidth="Infinity" text="log()" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Button fx:id="sinBtn" onAction="#sin" prefHeight="20" prefWidth="Infinity" text="Sin()" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Button fx:id="cosBtn" onAction="#cos" prefHeight="20" prefWidth="Infinity" text="Cos()" GridPane.columnIndex="1" GridPane.rowIndex="4" />
