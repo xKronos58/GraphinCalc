@@ -29,6 +29,13 @@ public class Menu extends Application {
         stage.setScene(s);
         stage.show();
         loaded = true;
+
+        FXMLLoader Main = new FXMLLoader(GCMain.class.getResource("physicsCalc.fxml"));
+        MenuController mc = new MenuController();
+        switch (type) {
+            case 0 -> mc.startConstantTunnel(Main);
+            case 1 -> mc.startFunctionsTunnel(Main);
+        }
     }
 
     public static void main(String[] args) {

@@ -2,6 +2,23 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-1.00.A
+- Added `ABSOLUTE_INEQUALLITY()` To the solve function within the `Equation` Enum
+- Re-Wrote the `Convert()` Function to start the migration from console based conversion to GUI based conversion.
+- Re-Did the `ScientificCalc.fxml` File so that it has the base (To be implemented later)
+- Changed the `BasicCalc.fxml` to `CalculusCalc.fxml` and added the base for the calculus calculator
+- Added "clear" & "clear type" buttons to the default set of buttons
+- Added start of `Let[x]=y` function for variable definition within the calculator. Note currently defining the variable works but using it does not.
+- More minor bug fixes inside `HandleStack.java`.
+- Cleaned up `GCMain.java` and added more comments
+- Added `f(y)` support for graphing to allow for y based graphs to be used like `f(y)=y^2` which creates a parabola along the x instead of the y.
+- With the addition of `f(y)` added a method to check if the dots were being rendered on the equation field as previously this was not an issue.
+- Added Menus for Constants, Functions & Inequalities using the `remapKeys()` method. 
+- Started making the use of different action evens per button obsolete as the `GCController.java` is getting quite large. This will be done through the use of the `Actionevent` being parsed into the method, allowing for the button press to be handled inside a single method. This will also improve clutter and allow for deletion of obsolete methods.
+- Started making a `Differentiate()` class to allow for the differentiation of equations. This will be used in the future for the calculus calculator.
+- Added support for Scaling the graphs (WIP)
+- Fixed the `Constatns.md` to be more up to date as it has not been changed since it was made. 
+- Added beginning for Complex Numbers so that negative `sqrt()` graphs and calculations can be done. 
 ## B-0.07.B 
 - Cleaned up and updated `READNE.md`
 - Provided new screenshots for application after reworks 

@@ -17,13 +17,15 @@ public class openPopup extends Application {
             case "operator" -> new FXMLLoader(GCMain.class.getResource("popups/operatorMenu.fxml"));
             case "constant" -> new FXMLLoader(GCMain.class.getResource("popups/constantsMenu.fxml"));
             case "equation" -> new FXMLLoader(GCMain.class.getResource("popups/prefEquationMenu.fxml"));
+            case "convert" -> new FXMLLoader(GCMain.class.getResource("menus/convert.fxml"));
             default -> throw new IllegalArgumentException("Popup does not exist");
 
         };
 
         Parent popup = loader.load();
-        Scene mainCallWindow = new Scene(popup, 100, 100);
+        Scene mainCallWindow = new Scene(popup, 600, 400);
         stage.setScene(mainCallWindow);
+        stage.setTitle(popupType + " Menu");
         stage.show();
     }
 

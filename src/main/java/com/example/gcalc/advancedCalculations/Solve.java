@@ -58,6 +58,8 @@ public class Solve {
             return Equation.INEQUALITY;
          else if (equation.matches("[xy]=.*"))
             return Equation.PARAMETRIC;
+         else if (equation.matches("|x|[><=[<=][>=]][0-9]]"))
+             return Equation.ABSOLUTE_INEQUALITY;
          else
             return Equation.OTHER;
 
@@ -227,6 +229,17 @@ public class Solve {
         PARAMETRIC {
             @Override
             public Double solve(String equation, char variable) {
+
+                // First grab elements of the equation.
+
+
+                return 0.0;
+            }
+        },
+        ABSOLUTE_INEQUALITY {
+            @Override
+            public Double solve(String equation, char variable) {
+                // First determine distance between the 2 absolute values
                 return 0.0;
             }
         };
@@ -241,15 +254,13 @@ public class Solve {
 
         double a = 0, b = 0, c = 0;
 
-        for (String part : parts) {
-            if (part.endsWith("x^2")) {
+        for (String part : parts)
+            if (part.endsWith("x^2"))
                 a += parseCoefficient(part);
-            } else if (part.endsWith("x")) {
+            else if (part.endsWith("x"))
                 b += parseCoefficient(part);
-            } else {
+            else
                 c += parseCoefficient(part);
-            }
-        }
 
         return new double[]{a, b, c};
     }

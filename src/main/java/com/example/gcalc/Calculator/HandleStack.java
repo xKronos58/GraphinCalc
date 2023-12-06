@@ -1,50 +1,19 @@
 package com.example.gcalc.Calculator;
 
 import com.example.gcalc.GCController;
+import com.example.gcalc.advancedCalculations.diffirentiate;
 import com.example.gcalc.util;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public class HandleStack {
-    public static boolean handlePredefinedEquation(String equation) throws IOException {
-
-        /*switch (equation) {
-            case "mfd0", "mfd1", "mfd2" -> {
-                System.out.printf("The magnetic flux density is "
-                        + EquationList.LoadMFD(equation.charAt(equation.length() - 1))
-                        + (equation.charAt(equation.length() - 1) == '0' ? "T\n"
-                        : (equation.charAt(equation.length() - 1) == '1' ? "m\n" : "A\n")));
-                return true; }
-            case "spd0" -> {
-                System.out.println("The speed is " + EquationList.speed(equation.charAt(equation.length() - 1)) + "m/s");
-                return true; }
-            case "mas0" -> {
-                System.out.println("The density of the object is " + EquationList.mass(equation.charAt(equation.length() - 1)) + " kg/m^3");
-                return true; }
-            case "sop0" -> {
-                System.out.println("The radius of the particle is " + EquationList.speedOfParticleInVacuum(equation.charAt(equation.length() - 1)) + " m");
-                return true; }
-            case "conv" -> {
-                System.out.println("Conversion is " + SimpleArithmetic.Convert());
-                return true;
-            }
-            case "tev0" -> {
-                System.out.println("The terminal velocity is " + EquationList.terminalVelocity());
-                return true;
-            }
-            default -> {
-                return false;
-            }
-        }*/
-        return false;
-    }
+    public static List<Variable> variables = new ArrayList<>();
 
     public static double evaluate(String _expression) {
+        if(!variables.isEmpty())
+            _expression = replaceVariables(_expression);
         Stack<Double> operandStack = new Stack<>();
         Stack<Character> operatorStack = new Stack<>();
         String expression = _expression.toLowerCase();
@@ -63,8 +32,14 @@ public class HandleStack {
                 i--; // Move back one step to account for the loop increment
                 double number = Double.parseDouble(operand.toString());
                 if (negative) {
+                    negative = false;
                     operandStack.push(number * -1);
-                    break;
+                    if (i + 1 >= expression.length()) break;
+                    else continue;
+
+                    // Take the negative number and return as such.
+                    // but when the number had more operators afterwards it would skip them.
+                    // How do i get aroUnd this error.
                 }
 
                 operandStack.push(number);
@@ -95,8 +70,8 @@ public class HandleStack {
                 operatorStack.pop(); // Pop the '('
                 lastTokenWasOperator = false;
             } else if (currentChar == '|') {
-                if(expression.charAt(i + 1) == '[') { // matrix
-
+                if (expression.charAt(i + 1) == '[') { // matrix
+                    return 0.0; /// OGGOLY BOOGOLY
                 } else {
                     int end = util.until(i += 1, expression, '|');
                     operandStack.push(Math.abs(evaluate(expression.substring(i, end))));
@@ -113,13 +88,15 @@ public class HandleStack {
                 }
                 operandStack.push(Math.sqrt(evaluate(operand.toString())));
                 lastTokenWasOperator = false;
-            } else if (expression.length() > i+8 && (currentChar == 'c' && expression.charAt(i + 1) == 'b' && expression.charAt(i + 2) == 'r')) { //cbrt[]() (len = 8)
+            } else if (expression.length() > i + 8 && (currentChar == 'c' && expression.charAt(i + 1) == 'b' && expression.charAt(i + 2) == 'r')) { //cbrt[]() (len = 8)
                 // First grab contents of [x]
                 int expEnd = util.until(i, expression, '}');
                 String rootPow = expression.substring(util.until(i, expression, '[') + 1, util.until(i, expression, ']') - 1);
                 String root = expression.substring(util.until(i, expression, '{') + 1, expEnd);
                 i += expEnd;
                 operandStack.push(Math.pow(HandleStack.evaluate(root), 1 / Double.parseDouble(rootPow)));
+            } else if (expression.startsWith("derive[")) {
+                return diffirentiate.derive(expression);
             } else if (i + 4 < expression.length() && (
                     (currentChar == 's' && expression.charAt(i + 1) == 'i')
                             || (currentChar == 'c' && expression.charAt(i + 1) == 'o')
@@ -143,11 +120,14 @@ public class HandleStack {
                 }
                 lastTokenWasOperator = false;
             } else if (expression.length() > i + 5 && (expression.charAt(i) == 'c' && expression.charAt(i + 1) == 'q')) {
+                Complex x = new Complex(); // TODO Implement
                 operandStack.push(Math.pow(HandleStack.evaluate(expression.substring(util.until(i + 5, expression, ']') + 2, util.until(i + 5, expression, '}'))),
                         1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']')))));
                 i = util.until(i+5, expression, '}');
-            }
-            else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
+            } else if (expression.length() > i + 8 && expression.startsWith("let[", i)) {
+                variables.add(new Variable(expression.substring(i + 4, util.until(i + 4, expression, ']')), Double.parseDouble(expression.substring(util.until(i, expression, '=') + 1))));
+                return Double.parseDouble(expression.substring(util.until(i, expression, '=') + 1));
+            } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
                 final boolean c = expression.length() > i + 1 && expression.charAt(i + 1) == 'c';
                 switch (currentChar) {
                     case 'e' -> operandStack.push(Constants.e);
@@ -193,8 +173,19 @@ public class HandleStack {
     }
 
 
-    public static double evaluateGraph(String equation, double x) {
+    public static double evaluateGraphX(String equation, double x) {
         return evaluate(equation.replace("x", Double.toString(x)));
+    }
+
+    public static double evaluateGraphY(String equation, double y) {
+        return evaluate(equation.replace("y", Double.toString(y)));
+    }
+
+    public static String replaceVariables(String equation) {
+        String newEquation = equation;
+        for(Variable v : HandleStack.variables)
+            newEquation = equation.replace(v.name(), String.valueOf(v.value()));
+        return newEquation;
     }
 
     private static boolean isOperator(char c) {
@@ -236,12 +227,12 @@ public class HandleStack {
             case '-' -> operandStack.push(operand1 - operand2);
             case '*' -> operandStack.push(operand1 * operand2);
             case '/' -> {
-                if (operand2 == 0) {
-                    throw new ArithmeticException("Division by zero");
-                }
+                if (operand2 == 0) throw new ArithmeticException("Division by zero");
                 operandStack.push(operand1 / operand2);
             }
             case '^' -> operandStack.push(Math.pow(operand1, operand2));
         }
     }
+
+    public record Variable(String name, double value) { };
 }

@@ -1,13 +1,10 @@
 package com.example.gcalc.Calculator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 public class SimpleArithmetic /*This class name is a lie lol, it is the most complicated so far */ {
 
-    private static final Map<String, Double> ConversionRate = Map.of(
+    private static final Map<String, Double> ConversionRateLength = Map.of(
             "tm", 1000000000000.0,
             "gm", 1000000000.0,
             "Mm", 1000000.0,
@@ -19,52 +16,59 @@ public class SimpleArithmetic /*This class name is a lie lol, it is the most com
             "pm", 0.00000000001
     );
 
-    private static final Set<String> _validUnitsLength = new HashSet<>(Arrays.asList("tm", "gm", "Mm", "km", "m", "cm", "mm", "um", "nm", "pm")); // 1 = m
-    private static final Set<String> _validUnitsWeight = new HashSet<>(Arrays.asList("pg", "ng", "ug", "mg", "g", "kg", "t", "mt", "gt")); // 1 = kg
-    private static final Set<String> _validUnitsTime = new HashSet<>(Arrays.asList("", "")); // 1 = s
-    private static final Set<String> _validUnitsCurrent = new HashSet<>(Arrays.asList("", "")); // 1 = A
-    private static final Set<String> _validUnitsTemperature = new HashSet<>(Arrays.asList("", "")); // 1 = K
-    private static final Set<String> _validUnitsSubstance = new HashSet<>(Arrays.asList("", "")); // 1 = mol
-    private static final Set<String> _validUnitsLight = new HashSet<>(Arrays.asList("", "")); // 1 = cd
+    private static final Map<String, Double> ConversionRateWeight = Map.of();
 
+    private static final Map<String, Double> ConversionRateTime = Map.of();
 
-    public static double Convert(String text) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.print("please a value followed by type 2 units to be converted,\n seperated by a space (in for of cm m, etc) or a type (micro giga): ");
-        String unitsJoined = reader.readLine();
+    private static final Map<String, Double> ConversionRateCurrent = Map.of();
 
-        int i, j = 0, l = 0;
-        for(i = 0; i < unitsJoined.length() -1; i++)
-            if(unitsJoined.charAt(i) == ' ') {
-                j++;
-                if(j == 1)
-                    l = i;
-                else
-                    break;
-            }
+    private static final Map<String, Double> ConversionRateTemperature = Map.of();
 
-        String[] units = { unitsJoined.substring(l + 1, i), unitsJoined.substring(i + 1) };
-        double value = Double.parseDouble(unitsJoined.substring(0, l)) * ConversionRate.get(units[0]);
+    private static final Map<String, Double> ConversionRateSubstance = Map.of();
 
-        System.out.println(units[0] + ", " + units[1]);
+    private static final Map<String, Double> ConversionRateLight = Map.of();
 
-        if(convertible(units)) {
-            double value2 = ConversionRate.get(units[1]);
-            System.out.println(value);
-            return value / value2;
-        }
+    public static double Convert(Object type, Object unitsOne, Object unitsTwo, String value) {
+        String _type = type.toString(), _unitsOne = unitsOne.toString(), _unitsTwo = unitsTwo.toString();
 
-        return 0;
+        return switch (_type) {
+            case "Length" -> (Double.parseDouble(value) * ConversionRateLength.get(_unitsOne)) / ConversionRateLength.get(_unitsTwo);
+            case "Weight" -> convertWeight(_unitsOne, _unitsTwo, value);
+            case "Time" -> convertTime(_unitsOne, _unitsTwo, value);
+            case "Current" -> convertCurrent(_unitsOne, _unitsTwo, value);
+            case "Temperature" -> convertTemperature(_unitsOne, _unitsTwo, value);
+            case "Substance" -> convertSubstance(_unitsOne, _unitsTwo, value);
+            case "Light" -> convertLight(_unitsOne, _unitsTwo, value);
+            default -> 0;
+        };
     }
 
-    public static boolean convertible(String[] units) {
-        return ((_validUnitsLength.contains(units[0]) && _validUnitsLength.contains(units[1])) ||
-                (_validUnitsWeight.contains(units[0]) && _validUnitsWeight.contains(units[1])) ||
-                (_validUnitsTime.contains(units[0]) && _validUnitsTime.contains(units[1])) ||
-                (_validUnitsCurrent.contains(units[0]) && _validUnitsCurrent.contains(units[1])) ||
-                (_validUnitsTemperature.contains(units[0]) && _validUnitsTemperature.contains(units[1])) ||
-                (_validUnitsSubstance.contains(units[0]) && _validUnitsSubstance.contains(units[1])) ||
-                (_validUnitsLight.contains(units[0]) && _validUnitsLight.contains(units[1]))) && !Objects.equals(units[0], units[1]);
+    private static double convertLength(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateLength.get(unitsOne)) / ConversionRateLength.get(unitsTwo);
+    }
+
+    private static double convertWeight(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateWeight.get(unitsOne)) / ConversionRateWeight.get(unitsTwo);
+    }
+
+    private static double convertTime(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateTime.get(unitsOne)) / ConversionRateTime.get(unitsTwo);
+    }
+
+    private static double convertCurrent(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateCurrent.get(unitsOne)) / ConversionRateCurrent.get(unitsTwo);
+    }
+
+    private static double convertTemperature(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateTemperature.get(unitsOne)) / ConversionRateTemperature.get(unitsTwo);
+    }
+
+    private static double convertSubstance(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateSubstance.get(unitsOne)) / ConversionRateSubstance.get(unitsTwo);
+    }
+
+    private static double convertLight(String unitsOne, String unitsTwo, String value) {
+        return (Double.parseDouble(value) * ConversionRateLight.get(unitsOne)) / ConversionRateLight.get(unitsTwo);
     }
 
     public static double findMass(String amount) {
