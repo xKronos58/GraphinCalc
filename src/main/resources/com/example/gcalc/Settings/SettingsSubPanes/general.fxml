@@ -19,4 +19,7 @@
          <Cursor fx:constant="OPEN_HAND" />
       </cursor>
    </CheckBox>
+   <Separator layoutX="3.0" layoutY="124.0" prefHeight="3.0" prefWidth="386.0" />
+   <Text fill="WHITE" layoutX="12.0" layoutY="148.0" styleClass="SettingsText" text="Clear Saved" />
+   <Button layoutX="330.0" layoutY="131.0" mnemonicParsing="false" text="Clear" onAction="#emptyEquations"/>
 </AnchorPane>

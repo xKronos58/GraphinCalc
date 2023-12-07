@@ -4,16 +4,20 @@ import com.example.gcalc.GCController;
 import com.example.gcalc.advancedCalculations.diffirentiate;
 import com.example.gcalc.util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class HandleStack {
     public static List<Variable> variables = new ArrayList<>();
+    public static double ans = 0.0;
 
     public static double evaluate(String _expression) {
         if(!variables.isEmpty())
             _expression = replaceVariables(_expression);
+        _expression = _expression.replace("ans", String.valueOf(ans));
+
         Stack<Double> operandStack = new Stack<>();
         Stack<Character> operatorStack = new Stack<>();
         String expression = _expression.toLowerCase();
@@ -132,27 +136,28 @@ public class HandleStack {
                 return evaluate(expression.substring(util.until(i, expression, '=') + 1));
             } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
                 final boolean c = expression.length() > i + 1 && expression.charAt(i + 1) == 'c';
+                boolean canPush = expressionCheck(i, expression);
                 switch (currentChar) {
                     case 'e' -> operandStack.push(Constants.e);
                     case 'p' -> {
-                        if (expression.length() >= i + 1 && expression.charAt(i + 1) == 'i')
+                        if (canPush && expression.charAt(i + 1) == 'i')
                             operandStack.push(Constants.pi);
-                        else if (expression.length() >= i + 1 && (expression.charAt(i + 1) == 'h'))
+                        else if (canPush && (expression.charAt(i + 1) == 'h'))
                             operandStack.push(Constants.phi);
                     } case '_' -> {
-                        if (expression.length() >= i + 1 && expression.charAt(i + 1) == 'm')
+                        if (canPush && expression.charAt(i + 1) == 'm')
                             operandStack.push(Constants.pico0);
                     } case 't' -> {
-                        if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'u')
+                        if(canPush && expression.charAt(i + 1) == 'u')
                             operandStack.push(Constants.tau);
                     } case 's' -> {
-                        if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'g')
+                        if(canPush && expression.charAt(i + 1) == 'g')
                             operandStack.push(Constants.superGoldenRatio);
                     } case 'm' -> {
                         if(c)
                             operandStack.push(Constants.superGoldenRatio);
                     } case 'k' -> {
-                        if(expression.length() >= i + 1 && expression.charAt(i + 1) == 'b')
+                        if(canPush && expression.charAt(i + 1) == 'b')
                             operandStack.push(Constants.KBC);
                     } case 'w' -> {
                         if(c)
@@ -168,11 +173,16 @@ public class HandleStack {
         }
 
         if (operandStack.size() == 1) {
-            return operandStack.pop();
+            ans = operandStack.pop();
+            return ans;
         } else {
             GCController.invalidEquation = true;
             return -0.0;
         }
+    }
+
+    public static boolean expressionCheck(int i, String expression) {
+        return expression.length() >= i + 1;
     }
 
 
@@ -242,6 +252,8 @@ public class HandleStack {
             }
         }
     }
+
+
 
     public record Variable(String name, double value) { }
 }

@@ -2,6 +2,13 @@ package com.example.gcalc;
 
 import javafx.scene.control.Alert;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
+
 public class util {
 
     /**
@@ -88,20 +95,72 @@ public class util {
                     isTerm ? rawEquation.length() - 4 : rawEquation.length() - 3)));
     }
 
+    /**
+     * checks if the provided string as the `^` operator
+     * @param startIndex index to start searching from
+     * @param x string to search
+     * @return true if the string has the `^` operator
+     * */
     public static boolean hasPower(int startIndex, String x) {
-        for(int i = 0; i < x.length(); i++)
+        for(int i = startIndex; i < x.length(); i++)
             if(x.charAt(i) == '^') return true;
 
         return false;
     }
 
     /**
-     * Takes a description and title and builds an alert message with some boilerplate code to minimize copy-pasting and code clutter.
+     * Takes a message and builds an error message with the message and title.
+     * @param message message to be displayed
+     * @param title title of the error message
      * */
     public static void errorMessage(String message, String title) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setContentText(message);
         alert.show();
+    }
+
+    public static void infoMessage(String message, String title) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.show();
+    }
+
+    /**
+     * Takes a file name and returns a list of all the lines inside the file.
+     * @param fileName name of the file to read
+     * @return List of all the lines inside the file
+     * @throws IOException if the file does not exist
+     */
+    public static List<String> readFile(String fileName) throws IOException {
+        Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", fileName);
+        System.out.println(filePath);
+        if(!filePath.toFile().exists())
+            throw new IllegalArgumentException("File does not exist");
+
+        return Files.readAllLines(filePath);
+    }
+
+
+    /**
+     * Takes a file name and a line and appends the line to the file.
+     * @param  fileName name of the file to write to
+     * @param  line String to be appended to the file
+     * @throws IOException if the file does not exist
+     * */
+    public static void writeFile(String fileName, String line) throws IOException {
+        Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", fileName);
+        Files.writeString(filePath, line + "\n", StandardOpenOption.APPEND);
+    }
+
+    /**
+     * Takes a file name and clears the file.
+     * @param  fileName name of the file to clear
+     * @throws IOException if the file does not exist
+     * */
+    public static void clearFile(String fileName) throws IOException {
+        Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", fileName);
+        Files.writeString(filePath, "", StandardOpenOption.TRUNCATE_EXISTING);
     }
 }

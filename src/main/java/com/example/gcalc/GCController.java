@@ -19,6 +19,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.SubScene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -100,6 +102,9 @@ public class GCController implements Initializable {
     public Button integralIZBtn;
     boolean menuOpen = false;
 
+    public static List<String> loadedEquations = readEqs();
+
+
     @FXML
     protected void changeCalc(ActionEvent actionEvent) throws IOException {
         GCMain.displayCalc.GRAPHING.showCalc();
@@ -139,6 +144,15 @@ public class GCController implements Initializable {
         // Checks the type of method being used
         if(EquationField.getText().isEmpty())
             return;
+
+        try {
+            util.writeFile("equations.txt", EquationField.getText());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        refreshEquationList();
+        currentEquation = loadedEquations.size();
 
         switch (type) {
             case "solve" -> {
@@ -592,12 +606,11 @@ public class GCController implements Initializable {
         var ref = new Object() {
             int temp = 0;
         };
-        for (Object object : objects) {
+        for (Object object : objects)
             if (object instanceof Button b) {
                 b.setText("");
                 b.setOnAction(actionEvent -> ref.temp = 0); // Does nothing
             }
-        }
 
     }
 
@@ -662,5 +675,42 @@ public class GCController implements Initializable {
 
     private void addText(TextField field, String text) {
         field.setText(field.getText() + text);
+    }
+
+    public void emptyEquations(ActionEvent actionEvent) {
+        try {
+            util.clearFile("equations.txt");
+            util.infoMessage("File Cleared Successfully", "Success");
+        } catch (IOException e) {
+            util.errorMessage("File could not be cleared", "Error");
+        }
+    }
+
+    int currentEquation = loadedEquations.size();
+    public void loadEquation(KeyEvent keyEvent) {
+        if(!keyEvent.getCode().isArrowKey()) return;
+        if(loadedEquations.isEmpty()) return;
+
+        if(keyEvent.getCode() == KeyCode.UP) {
+            if(currentEquation == 0) return;
+            currentEquation--;
+            EquationField.setText(loadedEquations.get(currentEquation));
+        } else if(keyEvent.getCode() == KeyCode.DOWN) {
+            if(currentEquation == loadedEquations.size() - 1) return;
+            currentEquation++;
+            EquationField.setText(loadedEquations.get(currentEquation));
+        }
+    }
+
+    public static List<String> readEqs() {
+        try {
+            return util.readFile("equations.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void refreshEquationList() {
+        loadedEquations = readEqs();
     }
 }

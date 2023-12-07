@@ -2,6 +2,12 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.03.A
+- Added Saved equations, allowing you to use the `Up-Arrow` or `Down-Arrow` keys to scroll through previous equations, saving equations from previous sessions.
+  - Note it will constantly save equations unless changed in settings (Under general), A new button has been added in the grneral settings to clear the history.
+- New File handling methods have been added to `Utils.java` to allow for easier file handling.
+  - Including `WriteFile()` & `ReadFile()` & `ClearFile()`
+
 ## B-1.02.A
 - Added `let[x]=y` function for variable definition. 
   - Usages: `let[a]=12`, `let[b]=a^2`, `b=144`, `9/(pi*b)` will return `0.00198...`

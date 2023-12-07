@@ -16,6 +16,8 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Random;
 
 public class GCMain extends Application {
@@ -41,13 +43,22 @@ public class GCMain extends Application {
 
         // Setting title & icon of the Stage
         stage.setTitle("Graphing Calculator");
-        try {stage.getIcons().add(new Image(String.valueOf(GCMain.class.getResource("Images/Icon.png"))));} catch (NullPointerException e) {System.out.println("Icon not found");}
+        try { stage.getIcons().add(new Image(String.valueOf(GCMain.class.getResource("Images/Icon.png")))); } catch (NullPointerException e) {System.out.println("Icon not found");}
 
         // Adds the scene to the stage
         stage.setScene(main);
 
         // Displaying the contents of the stage
         stage.show();
+
+        //Checks if the save file is there
+        Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", "equations.txt");
+        if(!Files.exists(filePath))
+            try {
+                Files.createFile(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
 
         // Default accuracy is 0.01; once settings menus are
         // implemented it will be pulled from the performance
