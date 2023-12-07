@@ -2,6 +2,10 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.03.A-1
+Preview of previous changes
+![Test.gif](src/images/Test.gif)
+
 ## B-0.03.A
 - Added Saved equations, allowing you to use the `Up-Arrow` or `Down-Arrow` keys to scroll through previous equations, saving equations from previous sessions.
   - Note it will constantly save equations unless changed in settings (Under general), A new button has been added in the grneral settings to clear the history.
