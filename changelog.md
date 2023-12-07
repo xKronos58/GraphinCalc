@@ -2,6 +2,9 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-1.01.A
+- Fixed Complex numbers so `sqrt(-1)` now renders on the graphing plane. `Complex.java` is still to be implemented inside the calculators to allow for `i` to be used inside calculations. 
+
 ## B-1.00.A
 - Added `ABSOLUTE_INEQUALLITY()` To the solve function within the `Equation` Enum
 - Re-Wrote the `Convert()` Function to start the migration from console based conversion to GUI based conversion.

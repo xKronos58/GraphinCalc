@@ -120,9 +120,16 @@ public class HandleStack {
                 }
                 lastTokenWasOperator = false;
             } else if (expression.length() > i + 5 && (expression.charAt(i) == 'c' && expression.charAt(i + 1) == 'q')) {
-                Complex x = new Complex(); // TODO Implement
-                operandStack.push(Math.pow(HandleStack.evaluate(expression.substring(util.until(i + 5, expression, ']') + 2, util.until(i + 5, expression, '}'))),
-                        1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']')))));
+                String StringValue = expression.substring(
+                        util.until(i + 5, expression, ']') + 2,
+                        util.until(i + 5, expression, '}'));
+                double value = HandleStack.evaluate(StringValue);
+                if(value > 0)
+                    operandStack.push(Math.pow(value,
+                            1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']')))));
+                else
+                    operandStack.push((Math.pow(value * -1,
+                            1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']'))))) * -1);
                 i = util.until(i+5, expression, '}');
             } else if (expression.length() > i + 8 && expression.startsWith("let[", i)) {
                 variables.add(new Variable(expression.substring(i + 4, util.until(i + 4, expression, ']')), Double.parseDouble(expression.substring(util.until(i, expression, '=') + 1))));
@@ -230,7 +237,12 @@ public class HandleStack {
                 if (operand2 == 0) throw new ArithmeticException("Division by zero");
                 operandStack.push(operand1 / operand2);
             }
-            case '^' -> operandStack.push(Math.pow(operand1, operand2));
+            case '^' -> {
+                if(operand1 < 0)
+                    operandStack.push(Math.pow(operand1 * -1, operand2) * -1);
+                else
+                    operandStack.push(Math.pow(operand1, operand2));
+            }
         }
     }
 
