@@ -2,6 +2,11 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-1.02.A
+- Added `let[x]=y` function for variable definition. 
+  - Usages: `let[a]=12`, `let[b]=a^2`, `b=144`, `9/(pi*b)` will return `0.00198...`
+  - Note: `let[x]=y` is not a function, it is a variable definition.
+
 ## B-1.01.A
 - Fixed Complex numbers so `sqrt(-1)` now renders on the graphing plane. `Complex.java` is still to be implemented inside the calculators to allow for `i` to be used inside calculations. 
 

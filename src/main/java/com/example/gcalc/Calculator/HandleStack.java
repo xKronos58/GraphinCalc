@@ -36,10 +36,6 @@ public class HandleStack {
                     operandStack.push(number * -1);
                     if (i + 1 >= expression.length()) break;
                     else continue;
-
-                    // Take the negative number and return as such.
-                    // but when the number had more operators afterwards it would skip them.
-                    // How do i get aroUnd this error.
                 }
 
                 operandStack.push(number);
@@ -67,7 +63,7 @@ public class HandleStack {
                 while (!operatorStack.isEmpty() && operatorStack.peek() != '(') {
                     performOperation(operandStack, operatorStack);
                 }
-                operatorStack.pop(); // Pop the '('
+                operatorStack.pop();
                 lastTokenWasOperator = false;
             } else if (currentChar == '|') {
                 if (expression.charAt(i + 1) == '[') { // matrix
@@ -104,7 +100,7 @@ public class HandleStack {
                             || (currentChar == 'l' && expression.charAt(i + 1) == 'o')
                             || (currentChar == '_' && expression.charAt(i + 1) == 'l'))) {
                 int o = i;
-                i += 4; // Skips over "sin(" to grab the number and return the sqrt(x) version
+                i += 4; // Skips over "sin()" to grab the number and return the sqrt(x) version
                 StringBuilder operand = new StringBuilder();
                 while (i < expression.length() && expression.charAt(i) != ')') {
                     operand.append(expression.charAt(i));
@@ -132,8 +128,8 @@ public class HandleStack {
                             1 / Double.parseDouble(expression.substring(i + 5, util.until(i + 5, expression, ']'))))) * -1);
                 i = util.until(i+5, expression, '}');
             } else if (expression.length() > i + 8 && expression.startsWith("let[", i)) {
-                variables.add(new Variable(expression.substring(i + 4, util.until(i + 4, expression, ']')), Double.parseDouble(expression.substring(util.until(i, expression, '=') + 1))));
-                return Double.parseDouble(expression.substring(util.until(i, expression, '=') + 1));
+                variables.add(new Variable(expression.substring(i + 4, util.until(i + 4, expression, ']')), evaluate(expression.substring(util.until(i, expression, '=') + 1))));
+                return evaluate(expression.substring(util.until(i, expression, '=') + 1));
             } else if (isConst(currentChar, i + 1 == expression.length() ? '0' : expression.charAt(i + 1))) {
                 final boolean c = expression.length() > i + 1 && expression.charAt(i + 1) == 'c';
                 switch (currentChar) {
@@ -191,7 +187,8 @@ public class HandleStack {
     public static String replaceVariables(String equation) {
         String newEquation = equation;
         for(Variable v : HandleStack.variables)
-            newEquation = equation.replace(v.name(), String.valueOf(v.value()));
+            newEquation = newEquation.replace(v.name(), String.valueOf(v.value()));
+        System.out.println(newEquation);
         return newEquation;
     }
 
@@ -238,7 +235,7 @@ public class HandleStack {
                 operandStack.push(operand1 / operand2);
             }
             case '^' -> {
-                if(operand1 < 0)
+                if(operand1 < 0 && operand2 < 1)
                     operandStack.push(Math.pow(operand1 * -1, operand2) * -1);
                 else
                     operandStack.push(Math.pow(operand1, operand2));
@@ -246,5 +243,5 @@ public class HandleStack {
         }
     }
 
-    public record Variable(String name, double value) { };
+    public record Variable(String name, double value) { }
 }
