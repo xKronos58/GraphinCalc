@@ -1,5 +1,6 @@
 package com.example.gcalc.advancedCalculations;
 
+import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.util;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Objects;
 public class Simplify {
 
     public static equation simplifyRaw(String rawEquation) {
+        rawEquation = rawEquation.replaceAll("ans", String.valueOf(HandleStack.ans));
         equationTerms equation = stringEquationToTerm(rawEquation);
 
         return new equation("k");

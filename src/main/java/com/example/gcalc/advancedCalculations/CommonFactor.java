@@ -1,5 +1,6 @@
 package com.example.gcalc.advancedCalculations;
 
+import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.util;
 
 import java.util.regex.Matcher;
@@ -17,12 +18,12 @@ public class CommonFactor {
     }
 
     public static Double HCF(String rawEquation) {
-
-       double[] ab = ab(rawEquation);
-       if(ab[0] == 0 || ab[1] == 0) {
-           util.errorMessage("a | b cannot be 0", "0 exception");
-           throw new IllegalArgumentException("0");
-       }
+        rawEquation = rawEquation.replaceAll("ans", String.valueOf(HandleStack.ans));
+        double[] ab = ab(rawEquation);
+        if(ab[0] == 0 || ab[1] == 0) {
+            util.errorMessage("a | b cannot be 0", "0 exception");
+            throw new IllegalArgumentException("0");
+        }
 
         double hcf =0;
         for(int i = 1; i <= ab[0] || i <= ab[1]; i++)
@@ -33,6 +34,7 @@ public class CommonFactor {
     }
 
     public static double LCM(String rawEquation) {
+        rawEquation = rawEquation.replaceAll("ans", String.valueOf(HandleStack.ans));
         double[] ab = ab(rawEquation);
         return Math.abs(ab[0]*ab[1]) / HCF(rawEquation);
     }

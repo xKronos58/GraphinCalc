@@ -2,6 +2,14 @@
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
 
+## B-0.04.A
+- Added `ans` handling to other methods, allowing for `ans` to be used in places like `solve()` and `expand()` and functions.
+- Fixed most* bugs surrounding Functions and how they interact with the other classes.
+- Issue with `let[x]=y` If the using `ans` within let if the last answer contained `E` (e.g. `1.2E+3`) it would will throw an error as `E` is not recognised. This will be fixed but as java converts smaller numbers to scientific notation automatically it will come in a later patch.
+- Cleaned up `GCController.java` by removing different methods for each button and replacing them with a single method that handles all buttons. This will allow for easier addition of buttons and less clutter.
+  - `addText()` takes an `ActionEvent` when used outside of the fxml the even should be parsed as `(new ActionEvent(button, button))`
+- Added a visible error message to the user for the `util.untill()` when the car is not found inside the string.
+
 ## B-0.03.A-1
 Preview of previous changes
 ![Test.gif](src/images/Test.gif)

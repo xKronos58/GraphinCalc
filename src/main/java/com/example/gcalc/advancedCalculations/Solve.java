@@ -1,5 +1,6 @@
 package com.example.gcalc.advancedCalculations;
 
+import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.util;
 import javafx.scene.control.Alert;
 
@@ -15,6 +16,7 @@ public class Solve {
         // Types of equations that are supported view solveSupported.md
 
         String equation = rawEquation.substring(util.until(0, rawEquation, '(') + 1, rawEquation.length() - 3);
+        equation = equation.replaceAll("ans", String.valueOf(HandleStack.ans));
         char[] vars = util.pullVars(equation, rawEquation); // vars[0] will always be the first variable.
         if(vars.length == 2) Var2 = vars[1];
 

@@ -44,29 +44,29 @@
 
             <TextField fx:id="EquationField" onKeyPressed="#loadEquation" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" GridPane.columnIndex="0" GridPane.columnSpan="7" GridPane.rowIndex="0" />
 
-            <Button fx:id="piBtn" onAction="#addPi" prefHeight="20" prefWidth="Infinity" text="π" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <Button fx:id="eBtn" onAction="#addE" prefHeight="20" prefWidth="Infinity" text="E" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <Button fx:id="sqrtBtn" onAction="#sqrd" prefHeight="20" prefWidth="Infinity" text="x²" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-            <Button fx:id="poeBtn" onAction="#poe" prefHeight="20" prefWidth="Infinity" text="x^e" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <Button fx:id="power" onAction="#pow" prefHeight="20" prefWidth="Infinity" text="^x" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <Button fx:id="piBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="π" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Button fx:id="eBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="E" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Button fx:id="sqrdBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="x²" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Button fx:id="poeBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="x^e" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Button fx:id="power" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="^x" GridPane.columnIndex="0" GridPane.rowIndex="5" />
 
-            <Button fx:id="logNBtn" onAction="#logn" prefHeight="20" prefWidth="Infinity" text="_ln()" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button fx:id="logBtn" onAction="#log" prefHeight="20" prefWidth="Infinity" text="log()" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="sinBtn" onAction="#sin" prefHeight="20" prefWidth="Infinity" text="Sin()" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Button fx:id="cosBtn" onAction="#cos" prefHeight="20" prefWidth="Infinity" text="Cos()" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Button fx:id="tanBtn" onAction="#tan" prefHeight="20" prefWidth="Infinity" text="Tan()" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Button fx:id="logNBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="_ln()" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="logBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="log()" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="sinBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="Sin()" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Button fx:id="cosBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="Cos()" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Button fx:id="tanBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="Tan()" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
             <Button fx:id="functionsBtn" onAction="#showFunctionsMenu" prefHeight="20" prefWidth="Infinity" text="FUNCTIONS" GridPane.columnIndex="2" GridPane.rowIndex="1" />
             <Button fx:id="convBtn" onAction="#conv" prefHeight="20" prefWidth="Infinity" text="CONVERT" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Button fx:id="ConstantsBtn" onAction="#showConstantMenu" prefHeight="20" prefWidth="Infinity" text="CONSTANTS" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Button fx:id="MatrixBtn" onAction="#matrix" prefHeight="20" prefWidth="Infinity" text="MATRIX" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
-            <Button fx:id="ArrayBtn" onAction="#array" prefHeight="20" prefWidth="Infinity" text="ARRAY" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
+            <Button fx:id="MatrixBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="MATRIX" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+            <Button fx:id="ArrayBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="ARRAY" GridPane.columnIndex="2" GridPane.rowIndex="5"/>
 
-            <Button fx:id="AbsoluteBtn" onAction="#absolute" prefHeight="20" prefWidth="Infinity" text="|" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <Button fx:id="FractionBtn" onAction="#fraction" prefHeight="20" prefWidth="Infinity" text="FRAC" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <Button fx:id="PercentBtn" onAction="#percent" prefHeight="20" prefWidth="Infinity" text="\%" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <Button fx:id="AbsoluteBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="|" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <Button fx:id="FractionBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="FRAC" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <Button fx:id="PercentBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="\%" GridPane.columnIndex="3" GridPane.rowIndex="3" />
             <Button fx:id="InequalityBtn" onAction="#Inequality" prefHeight="20" prefWidth="Infinity" text="Inequality" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <Button fx:id="InfinityBtn" onAction="#infinity" prefHeight="20" prefWidth="Infinity" text="∞" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Button fx:id="InfinityBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="∞" GridPane.columnIndex="3" GridPane.rowIndex="5" />
 
             <Button fx:id="SimplifyBtn" onAction="#simplify" prefHeight="20" prefWidth="Infinity" text="Simplify()" GridPane.columnIndex="4" GridPane.rowIndex="1" />
             <Button fx:id="solveBtn" onAction="#solve" prefHeight="20" prefWidth="Infinity" text="Solve()" GridPane.columnIndex="4" GridPane.rowIndex="2" />
@@ -75,16 +75,16 @@
             <Button fx:id="HCFBtn" onAction="#HCF" prefHeight="20" prefWidth="Infinity" text="HCF()" GridPane.columnIndex="4" GridPane.rowIndex="5" />
 
             <Button fx:id="LCFBtn" onAction="#LCF" prefHeight="20" prefWidth="Infinity" text="LCF()" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Button fx:id="power10" onAction="#power10" prefHeight="20" prefWidth="Infinity" text="10^x" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-            <Button fx:id="cubeRoot" onAction="#cubeRoot" prefHeight="20" prefWidth="Infinity" text="[]√()" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-            <Button fx:id="rootBtn" onAction="#root" prefHeight="20" prefWidth="Infinity" text="√" GridPane.columnIndex="5" GridPane.rowIndex="4" />
-            <Button fx:id="braoBtn" onAction="#openBrace" prefHeight="20" prefWidth="Infinity" text="(" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+            <Button fx:id="power10" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="10^x" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+            <Button fx:id="cubeRoot" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="[]√()" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+            <Button fx:id="rootBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="√" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+            <Button fx:id="braoBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="(" GridPane.columnIndex="5" GridPane.rowIndex="5" />
 
-            <Button fx:id="plus" onAction="#add" prefHeight="20" prefWidth="Infinity" text="+" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
-            <Button fx:id="minus" onAction="#minus" prefHeight="20" prefWidth="Infinity" text="-" GridPane.columnIndex="6" GridPane.rowIndex="2"/>
-            <Button fx:id="multi" onAction="#mult" prefHeight="20" prefWidth="Infinity" text="*" GridPane.columnIndex="6" GridPane.rowIndex="3"/>
-            <Button fx:id="div" onAction="#div" prefHeight="20" prefWidth="Infinity" text="/" GridPane.columnIndex="6" GridPane.rowIndex="4"/>
-            <Button fx:id="bracBtn" onAction="#closeBrace" prefHeight="20" prefWidth="Infinity" text=")" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+            <Button fx:id="plus" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="+" GridPane.columnIndex="6" GridPane.rowIndex="1"/>
+            <Button fx:id="minus" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="-" GridPane.columnIndex="6" GridPane.rowIndex="2"/>
+            <Button fx:id="multi" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="*" GridPane.columnIndex="6" GridPane.rowIndex="3"/>
+            <Button fx:id="div" onAction="#addText" prefHeight="20" prefWidth="Infinity" text="/" GridPane.columnIndex="6" GridPane.rowIndex="4"/>
+            <Button fx:id="bracBtn" onAction="#addText" prefHeight="20" prefWidth="Infinity" text=")" GridPane.columnIndex="6" GridPane.rowIndex="5" />
         </GridPane>
     </bottom>
     <center>

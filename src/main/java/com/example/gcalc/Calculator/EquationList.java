@@ -1,5 +1,6 @@
 package com.example.gcalc.Calculator;
 
+import com.example.gcalc.GCController;
 import com.example.gcalc.util;
 
 import java.io.BufferedReader;
@@ -10,13 +11,13 @@ public class EquationList {
 
     // Physics equations
     public static double predefinedEquation(String _equation, String type) {
-        String equation = _equation.substring(7, _equation.length() -1);
+        String equation = _equation.substring(5, _equation.length() -1);
         int firstBreak = util.until(0, equation, ',');
-        double a = Double.parseDouble(equation.substring(0, firstBreak)),
-                b = Double.parseDouble(equation.substring(firstBreak + 1, equation.length() - 1));
-        char eqType = equation.charAt(5);
+        double a = HandleStack.evaluate(equation.substring(0, firstBreak)),
+                b = HandleStack.evaluate(equation.substring(firstBreak + 1, equation.length() - 1));
+        char eqType = _equation.charAt(5);
 
-        return switch (type) {
+        HandleStack.ans = switch (type) {
             case "mfd" -> (Constants.pico0 / (2 * Constants.pi)) * (a/b);
             case "tev" -> Math.sqrt((2 * Constants.protonCharge * a) / b);
             case "spd" -> a/b;
@@ -24,6 +25,8 @@ public class EquationList {
             case "mas" -> eqType == '0' ? a/b : a*b;
             default -> 0.0;
         };
+
+        return HandleStack.ans;
     }
 
     public static double isExpression(String element) {

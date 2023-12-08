@@ -51,7 +51,6 @@ public class GCController implements Initializable {
     public Button cosBtn;
     public Button tanBtn;
     public Button rootBtn;
-    public Button sqrtBtn;
     public Button convBtn;
     public Button solveBtn;
     public Button expandBtn;
@@ -100,6 +99,7 @@ public class GCController implements Initializable {
     public Button aFxBtn;
     public Button integralBtn;
     public Button integralIZBtn;
+    public Button sqrdBtn;
     boolean menuOpen = false;
 
     public static List<String> loadedEquations = readEqs();
@@ -191,74 +191,15 @@ public class GCController implements Initializable {
         scrollViewMain.setPrefHeight(scrollHeight);
         apScroolView.setPrefHeight(scrollHeight);
 
+        _clearType();
+
         invalidEquation = false;
-    }
-
-    public void addPi(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "pi");
-    }
-
-    public void addE(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "e");
-    }
-
-    public void log(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "log(");
-    }
-
-    public void sin(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "sin(");
-    }
-
-    public void cos(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "cos(");
-    }
-
-    public void tan(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "tan(");
-    }
-
-    public void root(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "r(");
-    }
-
-    public void sqrd(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "^2");
-    }
-
-    public void poe(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "^e");
-    }
-
-    public void mfd(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "mfd(");
-        type = "mfd";
-    }
-
-    public void spd(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "spd(");
-        type = "spd";
-    }
-
-    public void mas(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "mas(");
-        type = "mas";
-    }
-
-    public void sop(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "sop(");
-        type = "sop";
     }
 
     public void conv(ActionEvent actionEvent) throws Exception {
         openPopup op = new openPopup();
         op.popupType = "convert";
         op.start(new Stage());
-    }
-
-    public void tev(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "tev(");
-        type = "tev";
     }
 
     public void solve(ActionEvent actionEvent) {
@@ -274,21 +215,6 @@ public class GCController implements Initializable {
     public void factor(ActionEvent actionEvent) {
         EquationField.setText("factor(");
         type = "factor";
-    }
-
-    public void openBrace(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "(");
-    }
-
-    public void closeBrace(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + ")");
-    }
-
-    public void arthsymb(ActionEvent actionEvent) throws Exception {
-        openPopup op = new openPopup();
-        Stage s = new Stage();
-        op.popupType = "operator";
-        op.start(s);
     }
 
     public void close(ActionEvent actionEvent) {
@@ -358,34 +284,6 @@ public class GCController implements Initializable {
         opsm.start(s);
     }
 
-    public void addPlus(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "+");
-    }
-
-    public void addMinus(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "-");
-    }
-
-    public void addDivide(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "/");
-    }
-
-    public void addMult(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "*");
-    }
-
-    public void addAbsol(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "|");
-    }
-
-    public void addPower(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "^");
-    }
-
-    public void addEquals(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "=");
-    }
-
     public static Parent LoadScene(String type) throws IOException {
         FXMLLoader x = switch (type) {
             case "general" -> new FXMLLoader(GCMain.class.getResource("Settings/SettingsSubPanes/general.fxml"));
@@ -448,26 +346,6 @@ public class GCController implements Initializable {
         remapConstants();
     }
 
-    public void matrix(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "|[][]|;|[][]|");
-    }
-
-    public void array(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "[{},{}]");
-    }
-
-    public void absolute(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "|0|");
-    }
-
-    public void fraction(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "/");
-    }
-
-    public void percent(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "%");
-    }
-
     public void Inequality(ActionEvent actionEvent) {
         remapInequalities();
     }
@@ -487,44 +365,8 @@ public class GCController implements Initializable {
         type = "lcf";
     }
 
-    public void power10(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "*10^");
-    }
-
-    public void cubeRoot(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "cqrt[]{");
-    }
-
-    public void add(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "+");
-    }
-
-    public void minus(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "-");
-    }
-
-    public void mult(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "*");
-    }
-
-    public void div(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "/");
-    }
-
-    public void infinity(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "inf");
-    }
-
-    public void pow(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "^");
-    }
-
-    public void logn(ActionEvent actionEvent) {
-        EquationField.setText(EquationField.getText() + "_ln(");
-    }
-
     public void clearType(ActionEvent actionEvent) {
-        type = "equation";
+        _clearType();
     }
 
     public void clear(ActionEvent actionEvent) {
@@ -563,7 +405,7 @@ public class GCController implements Initializable {
     }
 
     public void remapConstants() {
-        initializeButton(sqrtBtn, "Tau", actionEvent -> EquationField.setText(EquationField.getText() + "tu"));
+        initializeButton(sqrdBtn, "Tau", actionEvent -> EquationField.setText(EquationField.getText() + "tu"));
         initializeButton(poeBtn, "Phi", actionEvent -> EquationField.setText(EquationField.getText() + "ph"));
         initializeButton(power, "i", actionEvent -> EquationField.setText(EquationField.getText() + "i"));
         initializeButton(logNBtn, "Sgr", actionEvent -> EquationField.setText(EquationField.getText() + "sg"));
@@ -579,7 +421,7 @@ public class GCController implements Initializable {
     public void remapInequalities() {
         initializeButton(piBtn, "<", actionEvent -> EquationField.setText(EquationField.getText() + " <"));
         initializeButton(eBtn, ">", actionEvent -> EquationField.setText(EquationField.getText() + " >"));
-        initializeButton(sqrtBtn, "<=", actionEvent -> EquationField.setText(EquationField.getText() + " <="));
+        initializeButton(sqrdBtn, "<=", actionEvent -> EquationField.setText(EquationField.getText() + " <="));
         initializeButton(poeBtn, ">=", actionEvent -> EquationField.setText(EquationField.getText() + " >="));
         initializeButton(power, "!=", actionEvent -> EquationField.setText(EquationField.getText() + " !="));
         initializeButton(plus, "X", actionEvent -> remapKeys());
@@ -589,15 +431,33 @@ public class GCController implements Initializable {
     }
 
     public void remapFunctions() {
-        initializeButton(piBtn, "MFD", actionEvent -> EquationField.setText(EquationField.getText() + "mfd("));
-        initializeButton(eBtn, "SPD", actionEvent -> EquationField.setText(EquationField.getText() + "spd("));
-        initializeButton(sqrtBtn, "MAS", actionEvent -> EquationField.setText(EquationField.getText() + "mas("));
-        initializeButton(poeBtn, "SOP", actionEvent -> EquationField.setText(EquationField.getText() + "sop("));
-        initializeButton(power, "TEV", actionEvent -> EquationField.setText(EquationField.getText() + "tev("));
-        initializeButton(logNBtn, "ACL", actionEvent -> EquationField.setText(EquationField.getText() + "acl("));
+        initializeButton(piBtn, "MFD", actionEvent -> {
+            EquationField.setText(EquationField.getText() + "mfd0(");
+            type = "mfd";
+        });
+        initializeButton(eBtn, "SPD", actionEvent -> {
+            EquationField.setText(EquationField.getText() + "spd0(");
+            type = "spd";
+        });
+        initializeButton(sqrdBtn, "MAS", actionEvent -> {
+            EquationField.setText(EquationField.getText() + "mas0(");
+            type = "mas";
+        });
+        initializeButton(poeBtn, "SOP", actionEvent -> {
+            EquationField.setText(EquationField.getText() + "sop0(");
+            type = "sop";
+        });
+        initializeButton(power, "TEV", actionEvent -> {
+            EquationField.setText(EquationField.getText() + "tev0(");
+            type = "tev";
+        });
+        initializeButton(logNBtn, "ACL", actionEvent -> {
+            EquationField.setText(EquationField.getText() + "acl0(");
+            type = "acl";
+        });
         initializeButton(plus, "X", actionEvent -> remapKeys());
 
-        List<Object> empty = List.of(logNBtn, sinBtn, cosBtn, tanBtn, ConstantsBtn, MatrixBtn, ArrayBtn, AbsoluteBtn, FractionBtn, PercentBtn, InequalityBtn, SimplifyBtn, HCFBtn, LCFBtn, power10, cubeRoot, minus, multi, div, InfinityBtn, functionsBtn, convBtn, solveBtn, expandBtn, factorBtn, rootBtn, braoBtn, bracBtn);
+        List<Object> empty = List.of(logBtn, sinBtn, cosBtn, tanBtn, ConstantsBtn, MatrixBtn, ArrayBtn, AbsoluteBtn, FractionBtn, PercentBtn, InequalityBtn, SimplifyBtn, HCFBtn, LCFBtn, power10, cubeRoot, minus, multi, div, InfinityBtn, functionsBtn, convBtn, solveBtn, expandBtn, factorBtn, rootBtn, braoBtn, bracBtn);
         setElementToEmpty(empty);
     }
 
@@ -615,16 +475,16 @@ public class GCController implements Initializable {
     }
 
     private void remapKeys() {
-        initializeButton(piBtn, "π", actionEvent -> addPi(null));
-        initializeButton(eBtn, "e", actionEvent -> addE(null));
-        initializeButton(sqrtBtn, "x^2", actionEvent -> sqrd(null));
-        initializeButton(poeBtn, "e^", actionEvent -> poe(null));
-        initializeButton(power, "x^y", actionEvent -> addPower(null));
-        initializeButton(logNBtn, "ln()", actionEvent -> logn(null));
-        initializeButton(logBtn, "log()", actionEvent -> log(null));
-        initializeButton(sinBtn, "sin()", actionEvent -> sin(null));
-        initializeButton(cosBtn, "cos()", actionEvent -> cos(null));
-        initializeButton(tanBtn, "tan()", actionEvent -> tan(null));
+        initializeButton(piBtn, "π", actionEvent -> addText(new ActionEvent(piBtn, piBtn)));
+        initializeButton(eBtn, "e", actionEvent -> addText(new ActionEvent(eBtn, eBtn)));
+        initializeButton(sqrdBtn, "x^2", actionEvent -> addText(new ActionEvent(sqrdBtn, sqrdBtn)));
+        initializeButton(poeBtn, "e^", actionEvent -> addText(new ActionEvent(poeBtn, poeBtn)));
+        initializeButton(power, "x^y", actionEvent -> addText(new ActionEvent(power, power)));
+        initializeButton(logNBtn, "ln()", actionEvent -> addText(new ActionEvent(logNBtn, logNBtn)));
+        initializeButton(logBtn, "log()", actionEvent -> addText(new ActionEvent(logBtn, logBtn)));
+        initializeButton(sinBtn, "sin()", actionEvent -> addText(new ActionEvent(sinBtn, sinBtn)));
+        initializeButton(cosBtn, "cos()", actionEvent -> addText(new ActionEvent(cosBtn, cosBtn)));
+        initializeButton(tanBtn, "tan()", actionEvent -> addText(new ActionEvent(tanBtn, tanBtn)));
         initializeButton(functionsBtn, "FUNCTIONS", actionEvent -> showFunctionsMenu(null));
         initializeButton(convBtn, "CONVERT", actionEvent -> {
             try {
@@ -640,28 +500,28 @@ public class GCController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
-        initializeButton(MatrixBtn, "MATRIX", actionEvent -> matrix(new ActionEvent(MatrixBtn, MatrixBtn)));
-        initializeButton(ArrayBtn, "ARRAY", actionEvent -> array(null));
-        initializeButton(AbsoluteBtn, "|x|", actionEvent -> absolute(null));
-        initializeButton(FractionBtn, "FRAC", actionEvent -> fraction(null));
-        initializeButton(PercentBtn, "%", actionEvent -> percent(null));
+        initializeButton(MatrixBtn, "MATRIX", actionEvent -> addText(new ActionEvent(MatrixBtn, MatrixBtn)));
+        initializeButton(ArrayBtn, "ARRAY", actionEvent -> addText(new ActionEvent(ArrayBtn, ArrayBtn)));
+        initializeButton(AbsoluteBtn, "|x|", actionEvent -> addText(new ActionEvent(AbsoluteBtn, AbsoluteBtn)));
+        initializeButton(FractionBtn, "FRAC", actionEvent -> addText(new ActionEvent(FractionBtn, FractionBtn)));
+        initializeButton(PercentBtn, "%", actionEvent -> addText(new ActionEvent(PercentBtn, PercentBtn)));
         initializeButton(InequalityBtn, "INEQUALITY", actionEvent -> Inequality(null));
-        initializeButton(InfinityBtn, "∞", actionEvent -> infinity(null));
+        initializeButton(InfinityBtn, "∞", actionEvent -> addText(new ActionEvent(InfinityBtn, InfinityBtn)));
         initializeButton(SimplifyBtn, "SIMPLIFY", actionEvent -> simplify(null));
         initializeButton(solveBtn, "SOLVE", actionEvent -> solve(null));
         initializeButton(expandBtn, "EXPAND", actionEvent -> expand(null));
         initializeButton(factorBtn, "FACTOR", actionEvent -> factor(null));
         initializeButton(HCFBtn, "HCF", actionEvent -> HCF(null));
         initializeButton(LCFBtn, "LCF", actionEvent -> LCF(null));
-        initializeButton(power10, "10^x", actionEvent -> power10(null));
-        initializeButton(cubeRoot, "∛", actionEvent -> cubeRoot(null));
-        initializeButton(rootBtn, "√", actionEvent -> root(null));
-        initializeButton(braoBtn, "(", actionEvent -> openBrace(null));
-        initializeButton(plus, "+", actionEvent -> addPlus(null));
-        initializeButton(minus, "-", actionEvent -> addMinus(null));
-        initializeButton(multi, "*", actionEvent -> addMult(null));
-        initializeButton(div, "/", actionEvent -> addDivide(null));
-        initializeButton(bracBtn, ")", actionEvent -> closeBrace(null));
+        initializeButton(power10, "10^x", actionEvent -> addText(new ActionEvent(power10, power10)));
+        initializeButton(cubeRoot, "∛", actionEvent -> addText(new ActionEvent(cubeRoot, cubeRoot)));
+        initializeButton(rootBtn, "√", actionEvent -> addText(new ActionEvent(rootBtn, rootBtn)));
+        initializeButton(braoBtn, "(", actionEvent -> addText(new ActionEvent(braoBtn, braoBtn)));
+        initializeButton(plus, "+", actionEvent -> addText(new ActionEvent(plus, plus)));
+        initializeButton(minus, "-", actionEvent -> addText(new ActionEvent(minus, minus)));
+        initializeButton(multi, "*", actionEvent -> addText(new ActionEvent(multi, multi)));
+        initializeButton(div, "/", actionEvent -> addText(new ActionEvent(div, div)));
+        initializeButton(bracBtn, ")", actionEvent -> addText(new ActionEvent(bracBtn, bracBtn)));
     }
 
     public void addText(ActionEvent actionEvent) {
@@ -669,6 +529,29 @@ public class GCController implements Initializable {
         switch (sender.getId()) {
             case "piBtn" -> addText(EquationField, "pi");
             case "eBtn" -> addText(EquationField, "e");
+            case "sqrdBtn" -> addText(EquationField, "^2");
+            case "poeBtn" -> addText(EquationField, "^e");
+            case "power" -> addText(EquationField, "^");
+            case "logNBtn" -> addText(EquationField, "_ln(");
+            case "logBtn" -> addText(EquationField, "log(");
+            case "sinBtn" -> addText(EquationField, "sin(");
+            case "cosBtn" -> addText(EquationField, "cos(");
+            case "tanBtn" -> addText(EquationField, "tan(");
+            case "MatrixBtn" -> addText(EquationField, "|[][]|;|[][]|" );
+            case "ArrayBtn" -> addText(EquationField, "[{},{}]");
+            case "AbsoluteBtn" -> addText(EquationField, "|x|");
+            case "FractionBtn" -> addText(EquationField, "/");
+            case "PercentBtn" -> addText(EquationField, "%");
+            case "InfinityBtn" -> addText(EquationField, "inf");
+            case "power10" -> addText(EquationField, "*10^");
+            case "cubeRoot" -> addText(EquationField, "cqrt[]{");
+            case "rootBtn" -> addText(EquationField, "r(");
+            case "braoBtn" -> addText(EquationField, "(");
+            case "plus" -> addText(EquationField, "+");
+            case "minus" -> addText(EquationField, "-");
+            case "multi" -> addText(EquationField, "*");
+            case "div" -> addText(EquationField, "/");
+            case "bracBtn" -> addText(EquationField, ")");
             default -> throw new IllegalStateException("Unexpected value: " + actionEvent.getSource());
         }
     }
@@ -712,5 +595,9 @@ public class GCController implements Initializable {
 
     public void refreshEquationList() {
         loadedEquations = readEqs();
+    }
+
+    public void _clearType() {
+        type = "equation";
     }
 }

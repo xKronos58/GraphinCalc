@@ -18,6 +18,7 @@ public class util {
         for(int i = startIndex; i < x.length(); i++)
             if(x.charAt(i) == until) return i;
 
+        errorMessage("'" + until + "' not found inside string", "Error");
         throw new IllegalArgumentException("Char not found inside string");
     }
 

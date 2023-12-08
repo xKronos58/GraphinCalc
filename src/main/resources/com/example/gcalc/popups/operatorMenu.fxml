@@ -16,15 +16,7 @@
           <RowConstraints minHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="33.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
-          <Button text="+" prefWidth="Infinity" prefHeight="Infinity" onAction="#addPlus" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-          <Button text="-" prefWidth="Infinity" prefHeight="Infinity" onAction="#addMinus" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-          <Button text="/" prefWidth="Infinity" prefHeight="Infinity" onAction="#addDivide" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-          <Button text="*" prefWidth="Infinity" prefHeight="Infinity" onAction="#addMult" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-          <Button text="(" prefWidth="Infinity" prefHeight="Infinity" onAction="#openBrace" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-          <Button text=")" prefWidth="Infinity" prefHeight="Infinity" onAction="#closeBrace" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-          <Button text="|" prefWidth="Infinity" prefHeight="Infinity" onAction="#addAbsol" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-          <Button text="^" prefWidth="Infinity" prefHeight="Infinity" onAction="#addPower" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-          <Button text="=" prefWidth="Infinity" prefHeight="Infinity" onAction="#addEquals" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+
       </GridPane>
    </children>
 </AnchorPane>
