@@ -14,8 +14,12 @@ public class EquationList {
         String equation = _equation.substring(5, _equation.length() -1);
         int firstBreak = util.until(0, equation, ',');
         double a = HandleStack.evaluate(equation.substring(0, firstBreak)),
-                b = HandleStack.evaluate(equation.substring(firstBreak + 1, equation.length() - 1));
-        char eqType = _equation.charAt(5);
+                b = HandleStack.evaluate(equation.substring(firstBreak + 1));
+        double c = 0;
+        if(type.equals("wrk")){
+            c = HandleStack.evaluate(equation.substring(util.until(firstBreak + 1, equation, ','), equation.length() - 1));
+        }
+        char eqType = _equation.charAt(3);
 
         HandleStack.ans = switch (type) {
             case "mfd" -> (Constants.pico0 / (2 * Constants.pi)) * (a/b);
@@ -23,7 +27,13 @@ public class EquationList {
             case "spd" -> a/b;
             case "sop" -> ((Constants.protonMass * a) / (Constants.protonCharge * b))/4;
             case "mas" -> eqType == '0' ? a/b : a*b;
-            default -> 0.0;
+            case "wrk" -> a * b * c == 0 ? 1 : Math.cos(c);
+            case "kne" -> (1.0/2.0) * a * Math.pow(b, 2);
+            case "dpe" -> a * Constants.gravity * b;
+            default -> {
+                util.errorMessage("Invalid equation type: " + type, "Invalid Equation");
+                throw new IllegalArgumentException("Unexpected Arg");
+            }
         };
 
         return HandleStack.ans;

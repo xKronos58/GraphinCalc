@@ -24,4 +24,11 @@
 
   - `W = m * gs`
 
+- ## Work Done
+
+  - `W = F' * D * cos(θ)`
+  - `F' = M * A`
+- ## Kinetic Energy
+
+  - `KE = ½ * m * v²`
 # Supported Equations 

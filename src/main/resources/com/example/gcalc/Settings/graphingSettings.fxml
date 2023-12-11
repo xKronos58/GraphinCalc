@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.gcalc.GCController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane prefHeight="250.0" prefWidth="500.0" stylesheets="../css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gcalc.GCController">
+    <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <center>
+            <SubScene fx:id="_generalSceneMid" width="390" height="250">
+                <root>
+                    <Group fx:id="generalSceneMid">
+                        <!--                        Where FXML content will go-->
+                    </Group>
+                </root>
+            </SubScene>
+        </center>
+        <left>
+            <AnchorPane prefWidth="110" styleClass="scrollMenuView">
+                <VBox prefHeight="250" prefWidth="100" styleClass="scrollMenuView">
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • General" onAction="#openGeneralSettingsMenu"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Style" onAction="#openStyleSettingsMenu"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Performance" onAction="#openPerformanceSettingsMenu"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Units" onAction="#openUnitsSettingsMenu"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Import" onAction="#openImportSettingsMenu"/>
+                </VBox>
+            </AnchorPane>
+        </left>
+    </BorderPane>
 </AnchorPane>

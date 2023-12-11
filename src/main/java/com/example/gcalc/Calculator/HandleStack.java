@@ -28,13 +28,13 @@ public class HandleStack {
             char currentChar = expression.charAt(i);
 
             if (Character.isDigit(currentChar) || (currentChar == '.')) {
-                StringBuilder operand = new StringBuilder();
-                while (i < expression.length() && (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) {
+                StringBuilder operand = new StringBuilder(16);
+                while (i < expression.length() && (Character.isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) { //TODO: Optimize
                     operand.append(expression.charAt(i));
                     i++;
                 }
                 i--; // Move back one step to account for the loop increment
-                double number = Double.parseDouble(operand.toString());
+                double number = Double.parseDouble(operand.toString()); //TODO: Optimize
                 if (negative) {
                     negative = false;
                     operandStack.push(number * -1);
@@ -95,8 +95,18 @@ public class HandleStack {
                 String root = expression.substring(util.until(i, expression, '{') + 1, expEnd);
                 i += expEnd;
                 operandStack.push(Math.pow(HandleStack.evaluate(root), 1 / Double.parseDouble(rootPow)));
-            } else if (expression.startsWith("derive[")) {
-                return diffirentiate.derive(expression);
+            } else if (expression.startsWith("derive")) {
+                System.out.println(diffirentiate.derive(expression));
+                return 0.0;
+            } else if (expression.startsWith("arc", i)) {
+                switch (expression.substring(i, i + 6)) {
+                    case "arcsin" -> operandStack.push(Math.asin(evaluate(expression.substring(i + 7, util.until(i + 7, expression, ')')))));
+                    case "arccos" -> operandStack.push(Math.acos(evaluate(expression.substring(i + 7, util.until(i + 7, expression, ')')))));
+                    case "arctan" -> operandStack.push(Math.atan(evaluate(expression.substring(i + 7, util.until(i + 7, expression, ')')))));
+                    default -> util.errorMessage("Invalid arc function", "Invalid arc function");
+                }
+                lastTokenWasOperator = false;
+                i+= util.until(i + 7, expression, ')');
             } else if (i + 4 < expression.length() && (
                     (currentChar == 's' && expression.charAt(i + 1) == 'i')
                             || (currentChar == 'c' && expression.charAt(i + 1) == 'o')
@@ -110,13 +120,12 @@ public class HandleStack {
                     operand.append(expression.charAt(i));
                     i++;
                 }
-                switch (expression.substring(o, o + 3)) {
+                switch (expression.substring(o, o + 3)) { //TODO: Optimize
                     case "sin" -> operandStack.push(Math.sin(evaluate(operand.toString())));
                     case "cos" -> operandStack.push(Math.cos(evaluate(operand.toString())));
                     case "tan" -> operandStack.push(Math.tan(evaluate(operand.toString())));
                     case "log" -> operandStack.push(Math.log10(evaluate(operand.toString())));
                     case "_ln" -> operandStack.push(Math.log(evaluate(operand.toString())));
-
                 }
                 lastTokenWasOperator = false;
             } else if (expression.length() > i + 5 && (expression.charAt(i) == 'c' && expression.charAt(i + 1) == 'q')) {
@@ -139,11 +148,16 @@ public class HandleStack {
                 boolean canPush = expressionCheck(i, expression);
                 switch (currentChar) {
                     case 'e' -> operandStack.push(Constants.e);
+                    case 'g' -> operandStack.push(Constants.gravity);
                     case 'p' -> {
                         if (canPush && expression.charAt(i + 1) == 'i')
                             operandStack.push(Constants.pi);
                         else if (canPush && (expression.charAt(i + 1) == 'h'))
                             operandStack.push(Constants.phi);
+                        else if(canPush && expression.charAt(i + 1) == 'm')
+                            operandStack.push(Constants.protonMass);
+                        else if(canPush && expression.charAt(i + 1) == 'c')
+                            operandStack.push(Constants.protonCharge);
                     } case '_' -> {
                         if (canPush && expression.charAt(i + 1) == 'm')
                             operandStack.push(Constants.pico0);
@@ -155,13 +169,16 @@ public class HandleStack {
                             operandStack.push(Constants.superGoldenRatio);
                     } case 'm' -> {
                         if(c)
-                            operandStack.push(Constants.superGoldenRatio);
+                            operandStack.push(Constants.CCHL);
                     } case 'k' -> {
                         if(canPush && expression.charAt(i + 1) == 'b')
                             operandStack.push(Constants.KBC);
                     } case 'w' -> {
                         if(c)
                             operandStack.push(Constants.WC);
+                    } case 'n' -> {
+                        if (canPush && expression.charAt(i + 1) == 'm')
+                            operandStack.push(Constants.neutronMass);
                     }
                 }
                 lastTokenWasOperator = false;
@@ -169,7 +186,7 @@ public class HandleStack {
         }
 
         while (!operatorStack.isEmpty()) {
-            performOperation(operandStack, operatorStack);
+            performOperation(operandStack, operatorStack); //TODO: Optimize
         }
 
         if (operandStack.size() == 1) {
@@ -197,7 +214,7 @@ public class HandleStack {
     public static String replaceVariables(String equation) {
         String newEquation = equation;
         for(Variable v : HandleStack.variables)
-            newEquation = newEquation.replace(v.name(), String.valueOf(v.value()));
+            newEquation = newEquation.replace(":" + v.name(), String.valueOf(v.value()));
         System.out.println(newEquation);
         return newEquation;
     }
@@ -216,6 +233,10 @@ public class HandleStack {
                 || (c == 'm' && c1 == 'c') // CCHL
                 || (c == 'k' && c1 == 'b') // KBC
                 || (c == 'w' && c1 == 'c') // WC
+                || (c == 'g')              // gravity
+                || (c == 'p' && c1 == 'm') // proton mass
+                || (c == 'n' && c1 == 'm') // neutron mass
+                || (c == 'p' && c1 == 'c') // proton charge
                 ;
     }
 

@@ -25,13 +25,13 @@
             </rowConstraints>
 
             <Button fx:id="Equals" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" text="=" GridPane.columnIndex="7" GridPane.rowIndex="0" />
-            <Button fx:id="gCalcBtn" onAction="#changeCalc" prefHeight="20" prefWidth="Infinity" text="Graphing" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-            <Button fx:id="PCalcBtn" onAction="#changeCalcP" prefHeight="20" prefWidth="Infinity" text="Physics" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-            <Button fx:id="BCalcBtn" onAction="#changeCalcB" prefHeight="20" prefWidth="Infinity" text="Calculus" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+            <Button fx:id="gCalcBtn" onAction="#showGraphing" prefHeight="20" prefWidth="Infinity" text="Graphing" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Button fx:id="PCalcBtn" onAction="#showPhysics" prefHeight="20" prefWidth="Infinity" text="Physics" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+            <Button fx:id="BCalcBtn" onAction="#showCalculus" prefHeight="20" prefWidth="Infinity" text="Calculus" GridPane.columnIndex="7" GridPane.rowIndex="3" />
             <Button fx:id="clearType" onAction="#clearType" prefHeight="20" prefWidth="Infinity" text="Clear Type" GridPane.columnIndex="7" GridPane.rowIndex="4" />
             <Button fx:id="clearBtm" onAction="#clear" prefHeight="20" prefWidth="Infinity" text="Clear" GridPane.columnIndex="7" GridPane.rowIndex="5" />
 
-            <TextField fx:id="EquationField" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" GridPane.columnIndex="0" GridPane.columnSpan="7" GridPane.rowIndex="0" />
+            <TextField fx:id="EquationField" onKeyPressed="#loadEquation" onAction="#onEnter" prefHeight="40" prefWidth="Infinity" GridPane.columnIndex="0" GridPane.columnSpan="7" GridPane.rowIndex="0" />
 
 
         </GridPane>

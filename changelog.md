@@ -1,7 +1,14 @@
 # CHANGE LOG 
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
-
+## B-0.05.A
+- Added the ability to remove graphs from the graphing plane, This is done by left clicking on the equation corresponding to the graph you want to remove.
+- Refactored the settings menus for better resource file structure.
+- More minor work on `Differentiate.java`
+- Increased size of the `EquationList.java` and added `wrk` Work for calculating energy output from a force and an angle. Also added `kne` for calculating kinetic energy.
+- Fixed bug where if you input an invalid equation and it output -0.0 the scroll panel would not be extended cause some of the future equations to be rendered off the panel. 
+- Added past equation cycling for the graphing menu and calculus menu. 
+- Updated `Constants.md` to include the new constants and updated the `Constants.java` to include the new constants.
 ## B-0.04.A
 - Added `ans` handling to other methods, allowing for `ans` to be used in places like `solve()` and `expand()` and functions.
 - Fixed most* bugs surrounding Functions and how they interact with the other classes.

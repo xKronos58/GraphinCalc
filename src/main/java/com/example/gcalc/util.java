@@ -136,7 +136,6 @@ public class util {
      */
     public static List<String> readFile(String fileName) throws IOException {
         Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", fileName);
-        System.out.println(filePath);
         if(!filePath.toFile().exists())
             throw new IllegalArgumentException("File does not exist");
 

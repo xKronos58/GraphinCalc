@@ -44,4 +44,9 @@ public class Constants {
      * Charge of a proton in coulombs
      * */
     public static final double protonCharge = 1.602176634 * Math.pow(10, -19);
+
+    /**
+     * Gravitational Constant
+     * */
+    public static final double gravity = 9.80665;
 }

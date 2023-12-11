@@ -6,6 +6,7 @@ import com.example.gcalc.Calculator.Main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Random;
 
 public class GCMain extends Application {
@@ -31,6 +33,13 @@ public class GCMain extends Application {
 
     /** Main stage should be used when outside main class */
     static Stage _stage = null;
+
+    /**
+     * List of all the graphs that have been saved.
+     * */
+    public static List<String> graphs;
+
+    int currentGraph = 0;
 
     /**
      * The main method to launch the calculator
@@ -51,14 +60,22 @@ public class GCMain extends Application {
         // Displaying the contents of the stage
         stage.show();
 
-        //Checks if the save file is there
-        Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", "equations.txt");
-        if(!Files.exists(filePath))
-            try {
-                Files.createFile(filePath);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        //Paths to history files.
+        Path equationsPath = Path.of(System.getProperty("user.dir"), "SavedEquations", "equations.txt");
+        Path graphsPath = Path.of(System.getProperty("user.dir"), "SavedEquations", "graphs.txt");
+
+        //Creates the history files if they don't exist
+        try {
+            if(!Files.exists(graphsPath))
+                Files.createFile(graphsPath);
+            if(!Files.exists(equationsPath))
+                Files.createFile(equationsPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Loads / Refreshes the history list
+        refreshGraphsList();
 
         // Default accuracy is 0.01; once settings menus are
         // implemented it will be pulled from the performance
@@ -67,24 +84,55 @@ public class GCMain extends Application {
         tf.setOnKeyPressed( event -> {
             switch (event.getCode()) {
                 case ENTER -> {
-                    if (isGraphingCalc)
-                    {
-                        // When enter is pressed, it creates a line array
-                        // which essentially acts as a node array but
-                        // Has a better renderer for the user.
-                        // From there it calculates the x & y pos of the
-                        // point in the graph and adds a line with those
-                        // positions
-                        boolean xy = tf.getText().charAt(2) == 'x';
-                        Line[] graphLine = (xy ? populateGraphX(graph(accuracy, true), tf.getText().substring(5), accuracy)
-                                : populateGraphY(graph(accuracy, false), tf.getText().substring(5), accuracy));
-                        Text graph = new Text(tf.getText());
-                        equations.getChildren().add(graph);
-                        for(Line x : graphLine) gp.getChildren().add(x);
-                        tf.setText("f(x)=");
-                    }
-                    else
+                    if (!isGraphingCalc)
                         gp.getChildren().add(addAns(Main.tfEval(tf.getText()), tf.getText()));
+
+                    //Saves the graph
+                    try {
+                        util.writeFile("graphs.txt", tf.getText());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    refreshGraphsList();
+                    // When enter is pressed, it creates a line array
+                    // which essentially acts as a node array but
+                    // Has a better renderer for the user.
+                    // From there it calculates the x & y pos of the
+                    // point in the graph and adds a line with those
+                    // positions.
+                    boolean xy = tf.getText().charAt(2) == 'x';
+                    //TODO: Optimize Memory Usage
+                    Line[] graphLine = (xy ? populateGraphX(graph(accuracy, true), tf.getText().substring(5), accuracy)
+                            : populateGraphY(graph(accuracy, false), tf.getText().substring(5), accuracy));
+                    Text graphText = new Text(tf.getText());
+                    equations.getChildren().add(graphText);
+                    Group graph = new Group();
+
+                    // Sets the id of the graph and the respective equation to the current graph number
+                    // Note:
+                    // The id number is not respective to the current index of graphs on the grid
+                    // as it is just an uuid for each graph.
+                    currentGraph++;
+                    graph.setId(currentGraph + "");
+                    graphText.setId(currentGraph + "");
+
+                    // Adds all the lines to the group to be added to the main pane.
+                    for(Line x : graphLine) graph.getChildren().add(x);
+
+                    // Using the id of the graph, it removes the graph from the grid and the equation from the list.
+                    gp.getChildren().add(graph);
+                    graphText.setOnMouseClicked(e -> {
+                        for(Node x : gp.getChildren()) {
+                            if(x.getId() == null) continue;
+                            if(!x.getId().equals(graphText.getId())) continue;
+                            gp.getChildren().remove(x);
+                            equations.getChildren().remove(graphText);
+                            break;
+                        }
+                    });
+
+                    // Resets the text field to the default value.
+                    tf.setText("f(x)=");
                 }
                 case P ->
                     // In the case the p is pressed, it changes view to
@@ -97,9 +145,46 @@ public class GCMain extends Application {
                         throw new RuntimeException(e);
                     }
                 }
+                // Allows the user to cycle through past graphs.
+                case UP ->
+                    loadLastGraphEquation();
+                case DOWN ->
+                    loadNextGraphEquation();
+                // Displays the current accuracy of the graph.
+                case ALT ->
+                    util.infoMessage("Accuracy is " + accuracy, "Accuracy");
             }
         } );
 
+    }
+
+    /**
+     * Refreshes the list of graphs that have been saved.
+     * */
+    static void refreshGraphsList() {
+        try {
+            graphs = util.readFile("graphs.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Current point in the list of graphs.
+     * */
+    private int currentPos = graphs == null ? 0 : graphs.size() - 1;
+    private void loadLastGraphEquation() {
+        if(graphs.isEmpty()) return;
+        if(currentPos < 0) currentPos = graphs.size() - 1;
+        tf.setText(graphs.get(currentPos));
+        currentPos--;
+    }
+
+    private void loadNextGraphEquation() {
+        if(graphs.isEmpty()) return;
+        if(currentPos > graphs.size() - 1) currentPos = 0;
+        tf.setText(graphs.get(currentPos));
+        currentPos++;
     }
 
     /** Main method */
@@ -138,7 +223,7 @@ public class GCMain extends Application {
             graph[i] = new Line(xConverted, yConverted, xConverted, yConverted);
 
             // Console output for the raw values as using breakpoints takes too long depending on accuracy
-            System.out.printf("(raw)(x = %s, y = %s)%n",String.format("%.2f",x),String.format("%.2f",y));
+//            System.out.printf("(raw)(x = %s, y = %s)%n",String.format("%.2f",x),String.format("%.2f",y));
 
             // Visual customization for the graph
             graph[i].setStrokeWidth(2);
@@ -255,6 +340,7 @@ public class GCMain extends Application {
         _stage.setTitle(calc + " Calculator");
     }
 
+    /** Enum for the different calculators that can be displayed */
     public enum displayCalc {
         PHYSICS {
             @Override

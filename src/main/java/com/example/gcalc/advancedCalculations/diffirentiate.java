@@ -7,7 +7,7 @@ import java.util.List;
 
 public class diffirentiate {
 
-    public static double derive(String equation) {
+    public static String derive(String equation) {
 //        DerivativeType type = switch (equation.substring(7, util.until(7, equation, ','))) {
 //            case "t=chain" -> DerivativeType.CHAIN_RULE;
 //            case "t=other" -> DerivativeType.OTHER;
@@ -16,7 +16,7 @@ public class diffirentiate {
 
         DerivativeEquationType equationType = findDerivativeType(equation.substring(util.until(7, equation, ',') + 1, equation.length() - 1));
 
-        return equationType.derive(equation);
+        return String.valueOf(equationType.derive(equation));
     }
 
     private static DerivativeEquationType findDerivativeType(String equation) {
@@ -85,66 +85,73 @@ public class diffirentiate {
     public enum DerivativeEquationType {
         ADDITIVE {
             @Override   // f(x) = f'(x)
-            public Double derive(String equation) {
-                List<DerivativeEquationElement> elements = new ArrayList<>();
-
-
-                return null;
+            public Equation derive(String equation) {
+                List<DerivativeEquationElement> elements = convertEquationToElements(equation);
+                StringBuilder newEquation = new StringBuilder();
+                for(DerivativeEquationElement element : elements) {
+                    if(element.variable() == null) continue;
+                    if(element.exponent() == 1.0) {
+                        newEquation.append(1*element.coefficient());
+                    } else {
+                        newEquation.append(element.coefficient()*element.exponent()).append(element.variable()).append("^").append(element.exponent() - 1);
+                    }
+                }
+                return new Equation(newEquation.toString());
             }
         }, SUBTRACTIVE {
             @Override   // f(x) = f'(x)
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
 
                 return null;
             }
         }, MULTIPLICATIVE {
             @Override   // f(x) * g(x) = f'(x) * g(x) + f(x) * g'(x)
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, DIVISIVE {
             @Override   // (f(x)/g(x) = f'(x) * g(x) -(f(x) * g'(x))) / g(x)^2
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, BRACKET {
             @Override   // (f(x))^a = a(f(x))^(a-1) * f'(x)
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, EXPONENTIAL {
             @Override   // f(x)^g(x) = f(x)^g(x) * ln f(x)
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, LOGARITHMIC {
             @Override // f(x) = a ln x = d/dx [ a ln x ] = a/x
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, TRIGONOMETRIC {
             @Override
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, HYPERBOLIC {
             @Override
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, INVERSE {
             @Override
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         }, OTHER {
             @Override
-            public Double derive(String equation) {
+            public Equation derive(String equation) {
                 return null;
             }
         };
 
-        public abstract Double derive(String equation);
+        public abstract Equation derive(String equation);
     }
 
     public record DerivativeEquationElement(Double coefficient, Character variable, Double exponent) {
@@ -152,4 +159,6 @@ public class diffirentiate {
             this(coefficient, variable, 1.0);
         }
     }
+
+    public record Equation(String equation) {}
 }
