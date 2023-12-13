@@ -254,6 +254,11 @@ public class HandleStack {
         char operator = operatorStack.pop();
         // Check if the operator stack is empty before accessing it
 
+        if(operandStack.isEmpty() || operandStack.size() == 1) {
+            util.errorMessage("Operator stack is empty", "Operator stack is empty");
+            return;
+        }
+
         double operand2 = operandStack.pop();
         double operand1 = operandStack.pop();
 

@@ -1,7 +1,14 @@
 # CHANGE LOG 
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
-## B-0.05.A
+## B-1.06.A
+- Added graph menu, accesed by left clicking on the equation related to the graph. The menu has two options `Find intersepts` and `Remove Graph`.
+- Found a bug when an equation such as `-2-2` an error will occur, The cause is unknown but it is being worked on, for now use `(-2)-2` or `-2+(-2)` as a workaround.
+- Added support for customizable key bindings with the keybindings.txt file, not yet implemented into the application but will be in the future.
+- Added Find intersects to the graphing plane via the graph menu.
+- Added Removal of points that render off the plane so they are not shown.
+- Added a error message visible to the user when the equation is invalid leading to a empty stack. 
+## B-1.05.A
 - Added the ability to remove graphs from the graphing plane, This is done by left clicking on the equation corresponding to the graph you want to remove.
 - Refactored the settings menus for better resource file structure.
 - More minor work on `Differentiate.java`
@@ -9,7 +16,7 @@ See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A =
 - Fixed bug where if you input an invalid equation and it output -0.0 the scroll panel would not be extended cause some of the future equations to be rendered off the panel. 
 - Added past equation cycling for the graphing menu and calculus menu. 
 - Updated `Constants.md` to include the new constants and updated the `Constants.java` to include the new constants.
-## B-0.04.A
+## B-1.04.A
 - Added `ans` handling to other methods, allowing for `ans` to be used in places like `solve()` and `expand()` and functions.
 - Fixed most* bugs surrounding Functions and how they interact with the other classes.
 - Issue with `let[x]=y` If the using `ans` within let if the last answer contained `E` (e.g. `1.2E+3`) it would will throw an error as `E` is not recognised. This will be fixed but as java converts smaller numbers to scientific notation automatically it will come in a later patch.
@@ -17,11 +24,11 @@ See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A =
   - `addText()` takes an `ActionEvent` when used outside of the fxml the even should be parsed as `(new ActionEvent(button, button))`
 - Added a visible error message to the user for the `util.untill()` when the car is not found inside the string.
 
-## B-0.03.A-1
+## B-1.03.A-1
 Preview of previous changes
 ![Test.gif](src/images/Test.gif)
 
-## B-0.03.A
+## B-1.03.A
 - Added Saved equations, allowing you to use the `Up-Arrow` or `Down-Arrow` keys to scroll through previous equations, saving equations from previous sessions.
   - Note it will constantly save equations unless changed in settings (Under general), A new button has been added in the grneral settings to clear the history.
 - New File handling methods have been added to `Utils.java` to allow for easier file handling.

@@ -4,22 +4,31 @@ import com.example.gcalc.Calculator.ConvertCoPx;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.Calculator.Main;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class GCMain extends Application {
@@ -27,8 +36,10 @@ public class GCMain extends Application {
 
     /** Main text field for calculation input */
     static TextField tf = new TextField();
+    static Group equationsParent = new Group();
     static VBox equations = new VBox();
     static Group gp = new Group();
+    static Button help = new Button("?");
     static Scene main = drawGraphingCalc();
 
     /** Main stage should be used when outside main class */
@@ -39,7 +50,13 @@ public class GCMain extends Application {
      * */
     public static List<String> graphs;
 
+    /** uuid for graphs, used for connection between equation and group*/
     int currentGraph = 0;
+
+    /** Based off the keybindings.txt allows the user to change default keybindings*/
+    public static List<KeyCode> keyBinds = getKeyBinds();
+
+    public static List<intercepts> intercepts = new ArrayList<>();
 
     /**
      * The main method to launch the calculator
@@ -77,85 +94,78 @@ public class GCMain extends Application {
         // Loads / Refreshes the history list
         refreshGraphsList();
 
+        KeyCode changePhysics = keyBinds.get(0);
+        KeyCode cycleUp = keyBinds.get(1);
+        KeyCode cycleDown = keyBinds.get(2);
+        KeyCode acc = keyBinds.get(3);
+
+        for(KeyCode k : keyBinds)
+            System.out.println(k);
+
         // Default accuracy is 0.01; once settings menus are
         // implemented it will be pulled from the performance
         // tab inside the graphing section.
-        double accuracy = 0.01;
+        double accuracy = 0.001;
         tf.setOnKeyPressed( event -> {
-            switch (event.getCode()) {
-                case ENTER -> {
-                    if (!isGraphingCalc)
-                        gp.getChildren().add(addAns(Main.tfEval(tf.getText()), tf.getText()));
+            if (event.getCode() == KeyCode.ENTER) {
+                if (!isGraphingCalc)
+                    gp.getChildren().add(addAns(Main.tfEval(tf.getText()), tf.getText()));
 
-                    //Saves the graph
-                    try {
-                        util.writeFile("graphs.txt", tf.getText());
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    refreshGraphsList();
-                    // When enter is pressed, it creates a line array
-                    // which essentially acts as a node array but
-                    // Has a better renderer for the user.
-                    // From there it calculates the x & y pos of the
-                    // point in the graph and adds a line with those
-                    // positions.
-                    boolean xy = tf.getText().charAt(2) == 'x';
-                    //TODO: Optimize Memory Usage
-                    Line[] graphLine = (xy ? populateGraphX(graph(accuracy, true), tf.getText().substring(5), accuracy)
-                            : populateGraphY(graph(accuracy, false), tf.getText().substring(5), accuracy));
-                    Text graphText = new Text(tf.getText());
-                    equations.getChildren().add(graphText);
-                    Group graph = new Group();
-
-                    // Sets the id of the graph and the respective equation to the current graph number
-                    // Note:
-                    // The id number is not respective to the current index of graphs on the grid
-                    // as it is just an uuid for each graph.
-                    currentGraph++;
-                    graph.setId(currentGraph + "");
-                    graphText.setId(currentGraph + "");
-
-                    // Adds all the lines to the group to be added to the main pane.
-                    for(Line x : graphLine) graph.getChildren().add(x);
-
-                    // Using the id of the graph, it removes the graph from the grid and the equation from the list.
-                    gp.getChildren().add(graph);
-                    graphText.setOnMouseClicked(e -> {
-                        for(Node x : gp.getChildren()) {
-                            if(x.getId() == null) continue;
-                            if(!x.getId().equals(graphText.getId())) continue;
-                            gp.getChildren().remove(x);
-                            equations.getChildren().remove(graphText);
-                            break;
-                        }
-                    });
-
-                    // Resets the text field to the default value.
-                    tf.setText("f(x)=");
+                //Saves the graph
+                try {
+                    util.writeFile("graphs.txt", tf.getText());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-                case P ->
-                    // In the case the p is pressed, it changes view to
-                    // the physics calculator.
-                    // This may be changed in future implementations
-                {
+                refreshGraphsList();
+                currentGraph++;
+                // When enter is pressed, it creates a line array
+                // which essentially acts as a node array but
+                // Has a better renderer for the user.
+                // From there it calculates the x & y pos of the
+                // point in the graph and adds a line with those
+                // positions.
+                boolean xy = tf.getText().charAt(2) == 'x';
+                Line[] graphLine = (xy ? populateGraphX(graph(accuracy, true), tf.getText().substring(5), accuracy, currentGraph + "")
+                        : populateGraphY(graph(accuracy, false), tf.getText().substring(5), accuracy));
+                Text graphText = new Text(tf.getText());
+                equations.getChildren().add(graphText);
+                Group graph = new Group();
+
+                // Sets the id of the graph and the respective equation to the current graph number
+                // Note:
+                // The id number is not respective to the current index of graphs on the grid
+                // as it is just an uuid for each graph.
+                graph.setId(currentGraph + "");
+                graphText.setId(currentGraph + "");
+
+                // Adds all the lines to the group to be added to the main pane.
+                for (Line x : graphLine) graph.getChildren().add(x);
+
+                // Using the id of the graph, it removes the graph from the grid and the equation from the list.
+                gp.getChildren().add(graph);
+                graphText.setOnMouseClicked(e -> {
+                    graphOptions(graphText);
+                });
+
+                // Resets the text field to the default value.
+                tf.setText("f(x)=");
+            } else if (event.getCode() == changePhysics) {
+                // In the case the p is pressed, it changes view to
+                // the physics calculator.
+                // This may be changed in future implementations
                     try {
                         displayCalc.PHYSICS.showCalc();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                }
-                // Allows the user to cycle through past graphs.
-                case UP ->
-                    loadLastGraphEquation();
-                case DOWN ->
+            } else if (event.getCode() == cycleUp)
+                    loadLastGraphEquation();     // Allows the user to cycle through past graphs.
+            else if (event.getCode() == cycleDown)
                     loadNextGraphEquation();
-                // Displays the current accuracy of the graph.
-                case ALT ->
-                    util.infoMessage("Accuracy is " + accuracy, "Accuracy");
-            }
-        } );
-
+            else if (event.getCode() == acc) // Displays the current accuracy of the graph.
+                    util.infoMessage("Accuracy is " + accuracy + " px/x", "Accuracy");
+        });
     }
 
     /**
@@ -167,6 +177,61 @@ public class GCMain extends Application {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static void findZeros(String id) {
+        for(intercepts x : intercepts) {
+            if(!Objects.equals(x.id, id)) continue;
+
+            for(point y : x.zeros) {
+                if (Math.round(y.rawY) == 0 && Math.round(y.rawX) == 0) continue;
+
+                Line line = new Line(y.x, y.y, y.x, y.y);
+                line.setStroke(Color.RED);
+                line.setStrokeWidth(5);
+
+                Text text = new Text(String.format("(%.2f, %.2f)", y.rawX, y.rawY));
+                text.setX(y.x);
+                text.setY(y.y);
+                text.setId(id);
+                text.setFont(new javafx.scene.text.Font(16));
+
+                gp.getChildren().addAll(line, text);
+
+            }
+
+        }
+    }
+
+    public static void graphOptions(Text graphText) {
+        Button RemoveBtn = new Button("Remove");
+        RemoveBtn.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
+        Button ZeroBtn = new Button("Find");
+        ZeroBtn.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
+        VBox main = new VBox(
+                new Group(new HBox(new Text("Remove Graph"), RemoveBtn)),
+                new Group(new HBox(new Text("Find intersects"), ZeroBtn))
+        );
+
+        Scene graphOptions = new Scene(main, 200, 200);
+        Stage stage = new Stage();
+        stage.setScene(graphOptions);
+        stage.show();
+
+        RemoveBtn.setOnAction(actionEvent -> {
+            for (Node x : gp.getChildren()) {
+                if (x.getId() == null) continue;
+                if (!x.getId().equals(graphText.getId())) continue;
+                gp.getChildren().remove(x);
+                equations.getChildren().remove(graphText);
+                stage.close();
+                break;
+            }
+        });
+
+        ZeroBtn.setOnAction(actionEvent -> {
+            findZeros(graphText.getId());
+        });
     }
 
     /**
@@ -205,7 +270,8 @@ public class GCMain extends Application {
      * @param accuracy double of 0.01d by default, modifies how smooth the line generated by the program is
      * @param equation String of the graph equation provided by the user
      * */
-    public static Line[] populateGraphX(Line[] graph, String equation, double accuracy) {
+    public static Line[] populateGraphX(Line[] graph, String equation, double accuracy, String id) {
+        List<point> points = new ArrayList<>();
         Color color = RandomColor();
         for(int i = 0; i < graph.length; i++) {
 
@@ -219,6 +285,16 @@ public class GCMain extends Application {
             double x = i*accuracy-ScaleX, y = HandleStack.evaluateGraphX(equation, (i * accuracy) - ScaleX),
                     xConverted = ConvertCoPx.convertX(x, ScaleX), yConverted = ConvertCoPx.convertY(y, ScaleY);
 
+            if(String.format("%.2f", y).equals("0.00"))
+                points.add(new point(xConverted, yConverted, x, y));
+            else if(String.format("%.2f", x).equals("0.00"))
+                points.add(new point(xConverted, yConverted, x, y));
+
+            if(yConverted > 300 || yConverted < 0) {
+                graph[i] = new Line(-1, -1, -1, -1);
+                continue;
+            }
+
             // Creates the line with the calculated points
             graph[i] = new Line(xConverted, yConverted, xConverted, yConverted);
 
@@ -229,6 +305,7 @@ public class GCMain extends Application {
             graph[i].setStrokeWidth(2);
             graph[i].setStroke(color);
         }
+        intercepts.add(new intercepts(points, id , equation));
         // Returns the graph array to be added to the group pane.
         return graph;
     }
@@ -244,6 +321,7 @@ public class GCMain extends Application {
                 graph[i] = new Line(-1, -1, -1, -1);
                 continue;
             }
+
             graph[i] = new Line(xConverted, yConverted, xConverted, yConverted);
 
             System.out.printf("(raw)(x = %s, y = %s)%n",String.format("%.2f",x),String.format("%.2f",y));
@@ -254,6 +332,8 @@ public class GCMain extends Application {
         return graph;
     }
 
+    /** Randomly generates a color for the graph
+     * @return Randomized color of five options*/
     public static Color RandomColor() {
         Random r = new Random();
         return switch (r.nextInt(5)) {
@@ -265,6 +345,10 @@ public class GCMain extends Application {
         };
     }
 
+    /** Adds the answer to the group pane
+     * @param ans double of the answer to the equation
+     * @param eq String of the equation provided by the user
+     * */
     public static Text addAns(double ans, String eq) {
         Text text = new Text();
         text.setX(1);
@@ -302,23 +386,44 @@ public class GCMain extends Application {
         BG_grid[47] = new Line(150, 0, 150, MinX);
         BG_grid[47].setStrokeWidth(3);
 
-        //Adds the text box for input
-        tf.setMaxWidth(150);
-        tf.setPrefWidth(150);
-        tf.setMaxHeight(50);
-        tf.setPrefHeight(50);
-        tf.snapPositionX(600);
+        tf.setMaxSize(150, 50);
+        tf.setPrefSize(150, 50);
         tf.setText("f(x)=");
+        help.setOnAction(GCMain::showHelp);
+        help.setPrefSize(15, 15);
+        help.setMaxSize(15, 15);
+        help.setLayoutY(260);
+        help.setLayoutX(15);
         equations.setPrefWidth(150);
         equations.setLayoutY(50);
-
-        gp.getChildren().add(tf);
-        gp.getChildren().add(equations);
+        equationsParent.getChildren().addAll(equations, help);
+        gp.getChildren().addAll(tf, equationsParent);
         //Creating a Group object
         for (Line line : BG_grid) gp.getChildren().add(line);
 
         //Creating a scene object
         return new Scene(gp, MaxX, MinX);
+    }
+
+    public static void showHelp(ActionEvent ae) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Help");
+        Hyperlink test = new Hyperlink("https://github.com/xKronos58/GraphinCalc.git");
+        alert.setContentText("""
+                Welcome to the Graphing Calculator!
+                To use the calculator, type in an equation in the text box and press enter.
+                The equation must be in the form of f(x) = x^2 + 2x + 1.
+                The calculator will then graph the equation.
+                To change the accuracy of the graph, press the 'ALT' or 'Option' key.
+                To cycle through past graphs, press the 'up' and 'down' arrow keys.
+                To change to the physics calculator, press the 'p' key.
+                To change the keybindings, press the 'k' key.
+                Note: For the key inputs to work you must click on the input box.
+                For more information or help go to GraphingCalc.git and read the README.md.
+                """);
+        // TODO Make custom fxml file for the help menu rather than an alert.
+        alert.show();
+
     }
 
     //NOTE Change a public stage rather than parse it through the methods as it can not be parsed into the controller where
@@ -366,5 +471,21 @@ public class GCMain extends Application {
         };
 
         public abstract void showCalc() throws IOException;
+    }
+
+    public static List<KeyCode> getKeyBinds() {
+        try {
+            return util.readFile("keybindings.txt").stream().map(KeyCode::valueOf).toList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public record point(double x, double y, double rawX, double rawY) {
+
+    }
+
+    public record intercepts(List<point> zeros, String id, String equation) {
+
     }
 }
