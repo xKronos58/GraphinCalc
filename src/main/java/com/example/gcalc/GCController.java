@@ -16,7 +16,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.SubScene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -44,9 +43,6 @@ public class GCController implements Initializable {
     public Button piBtn;
     public Button eBtn;
     public Button logBtn;
-    public Button sinBtn;
-    public Button cosBtn;
-    public Button tanBtn;
     public Button rootBtn;
     public Button convBtn;
     public Button solveBtn;
@@ -62,7 +58,6 @@ public class GCController implements Initializable {
     public AnchorPane apScroolView;
     public MenuItem CloseMenuItem;
     public Group generalSceneMid;
-    public SubScene _generalSceneMid;
     public static boolean invalidEquation = false;
     public ChoiceBox<String> langBox;
     public List<String> SupportedLang = List.of(new String[]{"English", "Finnish", "Italian"});
@@ -101,29 +96,29 @@ public class GCController implements Initializable {
     public Button empty;
 
     @FXML
-    protected void showGraphing(ActionEvent actionEvent) throws IOException {
+    protected void showGraphing(ActionEvent ignoredActionEvent) throws IOException {
         GCMain.displayCalc.GRAPHING.showCalc();
     }
 
-
-    public void showScientific(ActionEvent actionEvent) throws IOException {
+    public void showScientific(ActionEvent ignoredActionEvent) throws IOException {
         GCMain.displayCalc.SCIENTIFIC.showCalc();
     }
 
-    public void showCalculus(ActionEvent actionEvent) throws IOException {
+    public void showCalculus(ActionEvent ignoredActionEvent) throws IOException {
         GCMain.displayCalc.CALCULUS.showCalc();
     }
 
-    public void showPhysics(ActionEvent actionEvent) throws IOException {
+    public void showPhysics(ActionEvent ignoredActionEvent) throws IOException {
         GCMain.displayCalc.PHYSICS.showCalc();
     }
+
 
     public static String combineArrays(double[] ans) {
         if(ans.length == 1)
             return ans[0] + " ";
         else
         {
-            // For the case of a quadratic or other type of equation where more than one ans will be returned,
+            // For the case of a quadratic or other type of equation where more than one answer will be returned,
             // specifically when calculating x intersects within graphing
             StringBuilder sb = new StringBuilder();
             for(double _ans : ans) sb.append(_ans).append(", ");
@@ -132,7 +127,7 @@ public class GCController implements Initializable {
     }
 
     public static int equationNum = 0;
-    public void onEnter(ActionEvent actionEvent) throws IOException {
+    public void onEnter(ActionEvent ignoredActionEvent) {
         Text t;
         equationNum++;
 
@@ -191,88 +186,88 @@ public class GCController implements Initializable {
         invalidEquation = false;
     }
 
-    public void conv(ActionEvent actionEvent) throws Exception {
+    public void conv(ActionEvent ignoredActionEvent) throws Exception {
         openPopup op = new openPopup();
         op.popupType = "convert";
         op.start(new Stage());
     }
 
-    public void solve(ActionEvent actionEvent) {
+    public void solve(ActionEvent ignoredActionEvent) {
         EquationField.setText("solve(");
         type = "solve";
     }
 
-    public void expand(ActionEvent actionEvent) {
+    public void expand(ActionEvent ignoredActionEvent) {
         EquationField.setText("expand(");
         type = "expand";
     }
 
-    public void factor(ActionEvent actionEvent) {
+    public void factor(ActionEvent ignoredActionEvent) {
         EquationField.setText("factor(");
         type = "factor";
     }
 
-    public void close(ActionEvent actionEvent) {
+    public void close(ActionEvent ignoredActionEvent) {
         GCMain._stage.close();
     }
 
-    public void openReadme(ActionEvent actionEvent) {
+    public void openReadme(ActionEvent ignoredActionEvent) {
         openMd wbe = new openMd();
         Stage test = new Stage();
         wbe.inpType = "readme";
         wbe.start(test);
     }
 
-    public void openEqHelp(ActionEvent actionEvent) {
+    public void openEqHelp(ActionEvent ignoredActionEvent) {
         openMd wbe = new openMd();
         Stage test = new Stage();
         wbe.inpType = "eqhelp";
         wbe.start(test);
     }
 
-    public void openAbout(ActionEvent actionEvent) throws Exception {
+    public void openAbout(ActionEvent ignoredActionEvent) throws Exception {
         openMd wbe = new openMd();
         Stage test = new Stage();
         wbe.inpType = "about";
         wbe.start(test);
     }
 
-    public void openSolveSupported(ActionEvent actionEvent) {
+    public void openSolveSupported(ActionEvent ignoredActionEvent) {
         openMd wbe = new openMd();
         Stage test = new Stage();
         wbe.inpType = "solveSupported";
         wbe.start(test);
     }
 
-    public void openFunctionsSupported(ActionEvent actionEvent) {
+    public void openFunctionsSupported(ActionEvent ignoredActionEvent) {
         openMd wbe = new openMd();
         Stage test = new Stage();
         wbe.inpType = "functionsSupported";
         wbe.start(test);
     }
 
-    public void openConstantsSupported(ActionEvent actionEvent) {
+    public void openConstantsSupported(ActionEvent ignoredActionEvent) {
         openMd wbe = new openMd();
         Stage test = new Stage();
         wbe.inpType = "constantsSupported";
         wbe.start(test);
     }
 
-    public void openPhysicsSettings(ActionEvent actionEvent) throws Exception {
+    public void openPhysicsSettings(ActionEvent ignoredActionEvent) throws Exception {
         openSettingsMenu opsm = new openSettingsMenu();
         Stage s = new Stage();
         opsm.menuType = "physics";
         opsm.start(s);
     }
 
-    public void openGeneralSettings(ActionEvent actionEvent) throws Exception {
+    public void openGeneralSettings(ActionEvent ignoredActionEvent) throws Exception {
         openSettingsMenu opsm = new openSettingsMenu();
         Stage s = new Stage();
         opsm.menuType = "general";
         opsm.start(s);
     }
 
-    public void openGraphingSettings(ActionEvent actionEvent) throws Exception {
+    public void openGraphingSettings(ActionEvent ignoredActionEvent) throws Exception {
         openSettingsMenu opsm = new openSettingsMenu();
         Stage s = new Stage();
         opsm.menuType = "graphing";
@@ -292,32 +287,32 @@ public class GCController implements Initializable {
         return x.load();
     }
 
-    public void openGeneralSettingsMenu(ActionEvent actionEvent) throws IOException {
+    public void openGeneralSettingsMenu(ActionEvent ignoredActionEvent) throws IOException {
         Parent general = LoadScene("general");
         generalSceneMid.getChildren().setAll(general);
     }
 
-    public void openStyleSettingsMenu(ActionEvent actionEvent) throws IOException {
+    public void openStyleSettingsMenu(ActionEvent ignoredActionEvent) throws IOException {
         Parent style = LoadScene("style");
         generalSceneMid.getChildren().setAll(style);
     }
 
-    public void openPerformanceSettingsMenu(ActionEvent actionEvent) throws IOException {
+    public void openPerformanceSettingsMenu(ActionEvent ignoredActionEvent) throws IOException {
         Parent performance = LoadScene("performance");
         generalSceneMid.getChildren().setAll(performance);
     }
 
-    public void openUnitsSettingsMenu(ActionEvent actionEvent) throws IOException {
+    public void openUnitsSettingsMenu(ActionEvent ignoredActionEvent) throws IOException {
         Parent units = LoadScene("units");
         generalSceneMid.getChildren().setAll(units);
     }
 
-    public void openImportSettingsMenu(ActionEvent actionEvent) throws IOException {
+    public void openImportSettingsMenu(ActionEvent ignoredActionEvent) throws IOException {
         Parent _import = LoadScene("import");
         generalSceneMid.getChildren().setAll(_import);
     }
 
-    public void AutoUpdate(ActionEvent actionEvent) {
+    public void AutoUpdate(ActionEvent ignoredActionEvent) {
 
     }
 
@@ -333,59 +328,59 @@ public class GCController implements Initializable {
             initializeLangChoices();
     }
 
-    public void showFunctionsMenu(ActionEvent actionEvent) {
+    public void showFunctionsMenu(ActionEvent ignoredActionEvent) {
         remapFunctions();
     }
 
-    public void showConstantMenu(ActionEvent actionEvent) throws Exception {
+    public void showConstantMenu(ActionEvent ignoredActionEvent) {
         remapConstants();
     }
 
-    public void Inequality(ActionEvent actionEvent) {
+    public void Inequality(ActionEvent ignoredActionEvent) {
         remapInequalities();
     }
 
-    public void simplify(ActionEvent actionEvent) {
+    public void simplify(ActionEvent ignoredActionEvent) {
         EquationField.setText("simplify(");
         type = "simplify";
     }
 
-    public void HCF(ActionEvent actionEvent) {
+    public void HCF(ActionEvent ignoredActionEvent) {
         EquationField.setText("HCF(");
         type = "hcf";
     }
 
-    public void LCF(ActionEvent actionEvent) {
+    public void LCF(ActionEvent ignoredActionEvent) {
         EquationField.setText("LCF(");
         type = "lcf";
     }
 
-    public void clearType(ActionEvent actionEvent) {
+    public void clearType(ActionEvent ignoredActionEvent) {
         _clearType();
     }
 
-    public void clear(ActionEvent actionEvent) {
+    public void clear(ActionEvent ignoredActionEvent) {
         EquationField.setText("");
         type = "equation";
     }
 
-    public void chainDerive(ActionEvent actionEvent) {
+    public void chainDerive(ActionEvent ignoredActionEvent) {
         EquationField.setText("derive{t=chain,f(x)=");
     }
 
-    public void Derive(ActionEvent actionEvent) {
+    public void Derive(ActionEvent ignoredActionEvent) {
         EquationField.setText("derive{f(x)=");
     }
 
-    public void addFx(ActionEvent actionEvent) {
+    public void addFx(ActionEvent ignoredActionEvent) {
         EquationField.setText(EquationField.getText() + "f(x)=");
     }
 
-    public void addIntegralIZ(ActionEvent actionEvent) {
+    public void addIntegralIZ(ActionEvent ignoredActionEvent) {
         EquationField.setText("integrate[inf][0]{f(x)=");
     }
 
-    public void addIntegral(ActionEvent actionEvent) {
+    public void addIntegral(ActionEvent ignoredActionEvent) {
         EquationField.setText("integrate[][]{f(x)=");
     }
 
@@ -568,7 +563,7 @@ public class GCController implements Initializable {
         field.setText(field.getText() + text);
     }
 
-    public void emptyEquations(ActionEvent actionEvent) {
+    public void emptyEquations(ActionEvent ignoredActionEvent) {
         try {
             util.clearFile("equations.txt");
             util.infoMessage("File Cleared Successfully", "Success");
@@ -609,7 +604,7 @@ public class GCController implements Initializable {
         type = "equation";
     }
 
-    public void showTrig(ActionEvent actionEvent) {
+    public void showTrig(ActionEvent ignoredActionEvent) {
         initializeButton(piBtn, "sin()", actionEvent1 -> setText(EquationField, "sin("));
         initializeButton(eBtn, "cos()", actionEvent1 -> setText(EquationField, "cos("));
         initializeButton(sqrdBtn, "tan()", actionEvent1 -> setText(EquationField, "tan("));

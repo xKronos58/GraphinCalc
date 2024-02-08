@@ -1,0 +1,22 @@
+Begin
+
+class keyToMath
+
+key => null
+equation => file.getPath(temp.txt)
+
+function Convert:
+    key => getInputKey()
+
+    if key = operator(key)
+        createOperator(key)
+    else if key =
+
+boolean function operator(calls key)
+    return true if key = +, -, *, /
+end function
+
+function createOperator(calls key)
+    if key = +
+        temp.txt => temp.txt + "<>"
+end function

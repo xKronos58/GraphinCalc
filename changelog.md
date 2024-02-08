@@ -1,6 +1,14 @@
 # CHANGE LOG 
 ### How to use 
 See B-0.01.A, B = beta (version), 0 = major iteration, 01 = minor iteration, A = First in patch order
+## B-1.07.A
+- Added `Domain.java`
+- Added beginning support for `MathMl` for correct equation rendering withn the application
+- Fixed bugs within `GCController.java` & `GCMain.java`
+- Started `Key To Math` which converts keystrokes into MathML code 
+- Added preferences
+- Added more methods to `Util.java`
+- ### NOTE THIS CHANGELOG IS LIMITED AS IT IS A HASTY COMMIT WILL BE UPDATED IN NEXT PATCH 
 ## B-1.06.A
 - Added graph menu, accesed by left clicking on the equation related to the graph. The menu has two options `Find intersepts` and `Remove Graph`.
 - Found a bug when an equation such as `-2-2` an error will occur, The cause is unknown but it is being worked on, for now use `(-2)-2` or `-2+(-2)` as a workaround.

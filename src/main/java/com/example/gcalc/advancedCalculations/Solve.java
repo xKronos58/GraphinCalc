@@ -5,6 +5,9 @@ import com.example.gcalc.util;
 import javafx.scene.control.Alert;
 
 import java.util.Arrays;
+import java.util.List;
+
+import static com.example.gcalc.Calculator.HandleStack.replaceVariables;
 
 public class Solve {
 
@@ -13,6 +16,10 @@ public class Solve {
     public static String sol2 = "";
     public static char Var2 = 'y';
     public static double solve(String rawEquation) {
+        List<HandleStack.Variable> variableList = HandleStack.variables;
+        if(!variableList.isEmpty())
+            rawEquation = replaceVariables(rawEquation);
+        rawEquation = rawEquation.replace("ans", String.valueOf(HandleStack.ans));
         // Types of equations that are supported view solveSupported.md
 
         String equation = rawEquation.substring(util.until(0, rawEquation, '(') + 1, rawEquation.length() - 3);
@@ -44,25 +51,25 @@ public class Solve {
 
         if (equation.matches("[-+]?[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*[-+]?\\s*[0-9]+\n"))
             return Equation.LINEAR;
-         else if (equation.matches("[-+]?[0-9]*x\\^2\\s*[-+]?\\s*[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*0"))
-            return Equation.QUADRATIC;
-//         else if (equation.matches("" /* NOTE: POLYNOMIAL can not be defined in this context and thus */))
-//            return Equation.POLYNOMIAL;        Must be specified with the t= function
-         else if (equation.contains("e^"))
+        else if (equation.matches("[-+]?[0-9]*x\\^2\\s*[-+]?\\s*[0-9]*x\\s*[-+]?\\s*[0-9]+\\s*=\\s*0"))
+             return Equation.QUADRATIC;
+//         else if (equation.matches("" /* NOTE: POLYNOMIAL cannot be defined in this context and thus */))
+//            return Equation.POLYNOMIAL; Must be specified with the t= function
+        else if (equation.contains("e^"))
             return Equation.EXPONENTIAL;
-         else if (equation.contains("log("))
+        else if (equation.contains("log("))
             return Equation.LOGARITHMIC;
-         else if (equation.contains("sin(") || equation.contains("cos(") || equation.contains("tan("))
+        else if (equation.contains("sin(") || equation.contains("cos(") || equation.contains("tan("))
             return Equation.TRIGONOMETRIC;
-         else if (equation.contains(";"))
+        else if (equation.contains(";"))
             return Equation.SIMULTANEOUS;
-         else if (equation.contains("<") || equation.contains(">") || equation.contains("<=") || equation.contains(">="))
+        else if (equation.contains("<") || equation.contains(">") || equation.contains("<=") || equation.contains(">="))
             return Equation.INEQUALITY;
-         else if (equation.matches("[xy]=.*"))
+        else if (equation.matches("[xy]=.*"))
             return Equation.PARAMETRIC;
-         else if (equation.matches("|x|[><=[<=][>=]][0-9]]"))
+        else if (equation.matches("|x|[><=[<=][>=]][0-9]]"))
              return Equation.ABSOLUTE_INEQUALITY;
-         else
+        else
             return Equation.OTHER;
 
     }
@@ -112,7 +119,8 @@ public class Solve {
                     return (-b / (2 * a));
                 } else {
                     sol2 = "NO REAL SOLUTIONS";
-                    return -0.0;
+                    util.infoMessage("There are no real solutions to this equation", "No real solutions");
+                    throw new ArithmeticException("No real solutions for this Quadratic equation");
                 }
             }
         },
@@ -225,6 +233,9 @@ public class Solve {
         INEQUALITY {
             @Override
             public Double solve(String equation, char variable) {
+
+
+
                 return 0.0;
             }
         },
@@ -251,8 +262,11 @@ public class Solve {
 
     public static double[] getCoefficients(String equation) {
         equation = equation.replaceAll(" ", ""); // Remove spaces
-
+        boolean negativeA = equation.charAt(0) == '-';
+        if (negativeA)
+            equation = equation.substring(1); // Remove negative sign if it exists
         String[] parts = equation.split("(?=[-+])"); // Split at + or - signs
+
 
         double a = 0, b = 0, c = 0;
 
@@ -263,6 +277,8 @@ public class Solve {
                 b += parseCoefficient(part);
             else
                 c += parseCoefficient(part);
+
+        if(negativeA) a *= -1;
 
         return new double[]{a, b, c};
     }

@@ -1,0 +1,4 @@
+accuracy=0.005
+scaleX=15
+scaleY=7.5
+

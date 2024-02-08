@@ -3,6 +3,8 @@ package com.example.gcalc;
 import com.example.gcalc.Calculator.ConvertCoPx;
 import com.example.gcalc.Calculator.HandleStack;
 import com.example.gcalc.Calculator.Main;
+import com.example.gcalc.Launchers.readOptions;
+import com.example.gcalc.fancyMath.fancyMathTest;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -56,7 +58,14 @@ public class GCMain extends Application {
     /** Based off the keybindings.txt allows the user to change default keybindings*/
     public static List<KeyCode> keyBinds = getKeyBinds();
 
+    /** Stores the intercepts of the graph */
     public static List<intercepts> intercepts = new ArrayList<>();
+
+    readOptions read = new readOptions("options.txt");
+
+    public double accuracy = read.getAccuracy();
+
+    public GCMain() throws IOException {}
 
     /**
      * The main method to launch the calculator
@@ -105,7 +114,7 @@ public class GCMain extends Application {
         // Default accuracy is 0.01; once settings menus are
         // implemented it will be pulled from the performance
         // tab inside the graphing section.
-        double accuracy = 0.001;
+        double accuracy = this.accuracy;
         tf.setOnKeyPressed( event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 if (!isGraphingCalc)
@@ -165,6 +174,11 @@ public class GCMain extends Application {
                     loadNextGraphEquation();
             else if (event.getCode() == acc) // Displays the current accuracy of the graph.
                     util.infoMessage("Accuracy is " + accuracy + " px/x", "Accuracy");
+            else if (event.getCode() == KeyCode.M) {
+                Stage s = new Stage();
+                fancyMathTest f = new fancyMathTest();
+                f.start(s);
+            }
         });
     }
 
@@ -189,11 +203,12 @@ public class GCMain extends Application {
                 Line line = new Line(y.x, y.y, y.x, y.y);
                 line.setStroke(Color.RED);
                 line.setStrokeWidth(5);
+                line.setId(id + "ic");
 
                 Text text = new Text(String.format("(%.2f, %.2f)", y.rawX, y.rawY));
                 text.setX(y.x);
                 text.setY(y.y);
-                text.setId(id);
+                text.setId(id + "ic");
                 text.setFont(new javafx.scene.text.Font(16));
 
                 gp.getChildren().addAll(line, text);
@@ -203,14 +218,21 @@ public class GCMain extends Application {
         }
     }
 
+    /**
+     * Takes the id $graphText and calculates the Significant positions and the intersecting
+     * */
     public static void graphOptions(Text graphText) {
+
         Button RemoveBtn = new Button("Remove");
-        RemoveBtn.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
         Button ZeroBtn = new Button("Find");
-        ZeroBtn.setPadding(new javafx.geometry.Insets(5, 5, 5, 5));
+        Button FindTangent = new Button("Find");
+        Button removeZeros = new Button("Remove");
+
         VBox main = new VBox(
-                new Group(new HBox(new Text("Remove Graph"), RemoveBtn)),
-                new Group(new HBox(new Text("Find intersects"), ZeroBtn))
+                createButtonGroup("Remove Graph", RemoveBtn),
+                createButtonGroup("Find Zeros", ZeroBtn),
+                createButtonGroup("Remove Zeros", removeZeros),
+                createButtonGroup("Find Tangent", FindTangent)
         );
 
         Scene graphOptions = new Scene(main, 200, 200);
@@ -219,25 +241,78 @@ public class GCMain extends Application {
         stage.show();
 
         RemoveBtn.setOnAction(actionEvent -> {
+            List<Node> temp = new ArrayList<>();
             for (Node x : gp.getChildren()) {
                 if (x.getId() == null) continue;
-                if (!x.getId().equals(graphText.getId())) continue;
-                gp.getChildren().remove(x);
-                equations.getChildren().remove(graphText);
-                stage.close();
-                break;
+                if (!x.getId().equals(graphText.getId()) && !x.getId().equals(graphText.getId() + "ic")) continue;
+                temp.add(x);
             }
+            gp.getChildren().removeAll(temp);
+            equations.getChildren().remove(graphText);
+            stage.close();
         });
 
         ZeroBtn.setOnAction(actionEvent -> {
             findZeros(graphText.getId());
         });
+
+        removeZeros.setOnAction(actionEvent -> {
+            List<Node> temp = new ArrayList<>();
+            for (Node x : gp.getChildren()) {
+                if (x.getId() == null) continue;
+                if (!x.getId().equals(graphText.getId() + "ic")) continue;
+                temp.add(x);
+            }
+            gp.getChildren().removeAll(temp);
+        });
+    }
+
+    public static double Integrate(String equation) {
+
+        return 0.0;
+    }
+
+    public static double Differentiate(String equation) {
+        // Say we have a cubic function of x^3 - 2x
+        // We can take the f'(x) which is 3x^2 - 2
+        // then we can take the x intercepts
+        // which are ± 0.816 which correspond to the
+        // Max and min turning point respective
+
+        List<term> terms = new ArrayList<>();
+
+        for(int i = 0; i < equation.length(); i++){
+            String temp = equation.substring(i, util.untilBasicOp(i, equation));
+            terms.add(new term((util.contains('^').test(temp) ?
+                    Double.parseDouble(temp.substring(
+                            util.until(0, temp, '^') + 1)) : 1),(
+                    util.charCheck(0, temp) ?
+                            temp.substring(util.untilLetter(0, temp), util.untilLetter(util.untilLetter(0, temp), temp)) : ""),
+                    Double.parseDouble(temp.substring(0, util.untilLetter(0, temp)))));
+        }
+
+        return 0.0;
+    }
+
+    record term(double power, String proNumeral, double coefficient) {};
+
+    private static Group createButtonGroup(String labelText, Button button) {
+        Text label = new Text(labelText);
+        HBox hbox = new HBox(label, button);
+        button.setLayoutX(150); // Align to the right - TODO: fix
+        hbox.setSpacing(50); // Spacing between label and button
+        hbox.setPrefWidth(200);
+        return new Group(hbox);
     }
 
     /**
      * Current point in the list of graphs.
      * */
     private int currentPos = graphs == null ? 0 : graphs.size() - 1;
+
+    /**
+     *
+     * */
     private void loadLastGraphEquation() {
         if(graphs.isEmpty()) return;
         if(currentPos < 0) currentPos = graphs.size() - 1;
@@ -258,7 +333,7 @@ public class GCMain extends Application {
     }
 
     /** Builds the main line array when a graph is added to the grid.
-     * @param accuracy double of 0.01d by default, modifies how smooth the line generated by the program is*/
+     * @param accuracy double of 0.01d by default, modifies how smooth the line generated by the program is */
     public static Line[] graph(double accuracy, boolean xy) {
         // XY : true = f(x), false = f(y)
         return new Line[(int)((xy ? 30 : 15)/accuracy)];
@@ -278,8 +353,8 @@ public class GCMain extends Application {
             //Used variables,
             // x = raw x value of the graph,
             // y = raw y value of the graph,
-            // xConverted = the px value of the position of x
-            // yConverted = the px value of the position of y
+            // xConverted = the converted value at the position of x
+            // yConverted = the converted value at the position of y
             // Scale X(Y) = the scale of the graph in raw values
             double ScaleX = 15, ScaleY = ScaleX/2;
             double x = i*accuracy-ScaleX, y = HandleStack.evaluateGraphX(equation, (i * accuracy) - ScaleX),
@@ -324,7 +399,7 @@ public class GCMain extends Application {
 
             graph[i] = new Line(xConverted, yConverted, xConverted, yConverted);
 
-            System.out.printf("(raw)(x = %s, y = %s)%n",String.format("%.2f",x),String.format("%.2f",y));
+//            System.out.printf("(raw)(x = %s, y = %s)%n",String.format("%.2f",x),String.format("%.2f",y));
 
             graph[i].setStrokeWidth(2);
             graph[i].setStroke(color);

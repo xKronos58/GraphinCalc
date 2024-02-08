@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="250.0" prefWidth="500.0" stylesheets="../css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gcalc.GCController">
+<AnchorPane prefHeight="250.0" prefWidth="500.0" stylesheets="../css/Style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gcalc.SettingsControllers.settings">
     <BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <center>
             <SubScene fx:id="_generalSceneMid" width="390" height="250">
@@ -18,11 +18,11 @@
         <left>
             <AnchorPane prefWidth="110" styleClass="scrollMenuView">
                 <VBox prefHeight="250" prefWidth="100" styleClass="scrollMenuView">
-                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • General" onAction="#openGeneralSettingsMenu"/>
-                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Style" onAction="#openStyleSettingsMenu"/>
-                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Performance" onAction="#openPerformanceSettingsMenu"/>
-                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Units" onAction="#openUnitsSettingsMenu"/>
-                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Import" onAction="#openImportSettingsMenu"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • General" onAction="#openSettingsMenu" fx:id="graphingGeneral"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Style" onAction="#openSettingsMenu" fx:id="graphingStyle"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Performance" onAction="#openSettingsMenu" fx:id="graphingPerformance"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Units" onAction="#openSettingsMenu" fx:id="graphingUnits"/>
+                    <Button mnemonicParsing="false" prefHeight="30" prefWidth="Infinity" styleClass="settingsMenuButton" text=" • Import" onAction="#openSettingsMenu" fx:id="graphingImport"/>
                 </VBox>
             </AnchorPane>
         </left>

@@ -2,12 +2,14 @@ package com.example.gcalc;
 
 import javafx.scene.control.Alert;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class util {
 
@@ -22,6 +24,14 @@ public class util {
         throw new IllegalArgumentException("Char not found inside string");
     }
 
+    public static int untilInequality(int startIndex, String x) {
+        for(int i = startIndex; i < x.length(); i++)
+            if(isInequality(x.charAt(i))) return i;
+
+        errorMessage( "' inequality' not found inside string", "Error");
+        throw new IllegalArgumentException("Char not found inside string");
+    }
+
     /**
      * Takes a `Start index` and returns the position of the next operator inside the string.
      * */
@@ -29,6 +39,7 @@ public class util {
         for(int i = startIndex; i < x.length(); i++)
             if(isOperator(x.charAt(i))) return i;
 
+        errorMessage("' operator" + "' not found inside string", "Error");
         throw new IllegalArgumentException("Char not found inside string");
     }
 
@@ -39,6 +50,7 @@ public class util {
         for(int i = startIndex; i < x.length(); i++)
             if(Character.isDigit(x.charAt(i))) return i;
 
+        errorMessage("' Number" + "' not found inside string", "Error");
         throw new IllegalArgumentException("Char not found inside string");
     }
 
@@ -49,7 +61,27 @@ public class util {
         for(int i = startIndex; i < x.length(); i++)
             if(Character.isLetter(x.charAt(i))) return i;
 
+        errorMessage("' letter" + "' not found inside string", "Error");
         throw new IllegalArgumentException("Char not found inside string");
+    }
+
+    public static int untilBasicOp(int startIndex, String x) {
+        for (int i = startIndex; i < x.length(); i++)
+            if(isBasicOperator(x.charAt(i)))
+                return i;
+
+        errorMessage("' + | - " + "' not found inside string", "Error");
+        throw new IllegalArgumentException("Char not found inside string");
+    }
+
+    public static Predicate<String> contains(Character c) {
+        return s -> s.indexOf(c) != -1;
+    }
+
+    public static boolean charCheck(int startIndex, String x) {
+        for (int i = startIndex; i < x.length(); i++)
+            if(Character.isLetter(x.charAt(i))) return true;
+        return false;
     }
 
     /**
@@ -57,6 +89,12 @@ public class util {
      * */
     public static boolean isOperator(char x) {
         return x == '+' || x == '-' || x == '*' || x == '/';
+    }
+
+    public static boolean isBasicOperator(char x) { return x == '+' || x == '-'; }
+
+    public static boolean isInequality(char x) {
+        return x == '>' || x == '<' || x == '=' || x == '!';
     }
 
     public static int countChar(int startIndex, String x, char c) {
@@ -142,6 +180,9 @@ public class util {
         return Files.readAllLines(filePath);
     }
 
+    public static Path convertFileToPath(String fileName) {
+        return Path.of(System.getProperty("user.dir"), "SavedEquations", fileName);
+    }
 
     /**
      * Takes a file name and a line and appends the line to the file.
@@ -162,5 +203,10 @@ public class util {
     public static void clearFile(String fileName) throws IOException {
         Path filePath = Path.of(System.getProperty("user.dir"), "SavedEquations", fileName);
         Files.writeString(filePath, "", StandardOpenOption.TRUNCATE_EXISTING);
+    }
+
+    public static void replaceLine(Path filePath, int line) throws IOException {
+        String t = Files.readString(filePath);
+        System.out.println(t);
     }
 }

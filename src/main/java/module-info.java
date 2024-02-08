@@ -1,9 +1,9 @@
 module com.example.gcalc {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.web;
 
     requires org.controlsfx.controls;
-    requires javafx.web;
 
     opens com.example.gcalc to javafx.fxml;
     exports com.example.gcalc;
